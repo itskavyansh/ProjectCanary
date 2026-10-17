@@ -232,6 +232,3 @@ The web console provides seven dedicated views:
 - **Person 1 (Data / Backend)**: Supabase PostgreSQL schema, Edge Function ingestion pipeline, hardware simulator, and database verification.
 - **Person 2 (Analysis / AI)**: Sensor processing engine, ground displacement calculation, threshold logic, and automated risk scoring.
 - **Person 3 (Frontend / Dashboard)**: Live monitoring console, multi-node status views, real-time WebSocket subscriptions, and time-series telemetry charts.
-
-### Hardware Repository
-- Hardware design schematics, wiring diagrams, and ESP32 firmware source code: [Bhoomi-NETr Hardware Repository](https://github.com/itskavyansh/Bhoomi-NETr.git) (repo name predates the rename).
