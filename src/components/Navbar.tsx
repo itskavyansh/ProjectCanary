@@ -192,7 +192,7 @@ export function Navbar() {
             />
             <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--nav-top-text)] truncate">
               <span className="hidden sm:inline">National Ground Stability Monitoring Network</span>
-              <span className="sm:hidden">NGSMN · BHOOMI-NETr</span>
+              <span className="sm:hidden">NGSMN · ProjectCanary</span>
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -213,18 +213,17 @@ export function Navbar() {
             <Link
               to="/"
               className="group flex shrink-0 items-center gap-2.5 py-1"
-              aria-label="BHOOMI-NETr — Go to homepage"
+              aria-label="ProjectCanary - Go to homepage"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded border border-white/20 bg-white/10 text-white transition-colors group-hover:bg-white/20">
                 <Activity className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="leading-none">
                 <span className="block text-[0.9375rem] font-extrabold tracking-tight text-white">
-                  BHOOMI
-                  <span className="text-emerald-300">-NETr</span>
+                  Project<span className="text-emerald-300">Canary</span>
                 </span>
                 <span className="mt-0.5 hidden text-[0.58rem] font-semibold uppercase tracking-[0.13em] text-emerald-200/90 sm:block">
-                  Ground Monitoring System
+                  Subsidence Early-Warning System
                 </span>
               </div>
             </Link>

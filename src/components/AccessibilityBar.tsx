@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import { STORAGE_KEYS, getStorageItemWithFallback, setStorageItem } from "../constants/storageKeys";
 
 type FontSize = "sm" | "md" | "lg" | "xl";
 type ThemeMode = "light" | "dark";
@@ -15,7 +16,7 @@ const SIZE_ORDER: FontSize[] = ["sm", "md", "lg", "xl"];
 
 function loadSize(): FontSize {
   try {
-    const stored = localStorage.getItem("bhoomi_font_size");
+    const stored = getStorageItemWithFallback(STORAGE_KEYS.FONT_SIZE, STORAGE_KEYS.LEGACY_FONT_SIZE);
     if (stored && SIZE_ORDER.includes(stored as FontSize)) return stored as FontSize;
   } catch {
     /* ignore */
@@ -30,7 +31,11 @@ function applySize(size: FontSize) {
 }
 
 function loadContrast(): boolean {
-  try { return localStorage.getItem("bhoomi_high_contrast") === "1"; } catch { return false; }
+  try {
+    return getStorageItemWithFallback(STORAGE_KEYS.HIGH_CONTRAST, STORAGE_KEYS.LEGACY_HIGH_CONTRAST) === "1";
+  } catch {
+    return false;
+  }
 }
 
 function applyContrast(on: boolean) {
@@ -40,7 +45,7 @@ function applyContrast(on: boolean) {
 
 function loadTheme(): ThemeMode {
   try {
-    const stored = localStorage.getItem("bhoomi_theme");
+    const stored = getStorageItemWithFallback(STORAGE_KEYS.THEME, STORAGE_KEYS.LEGACY_THEME);
     if (stored === "light" || stored === "dark") return stored;
   } catch {
     /* ignore */
@@ -65,9 +70,9 @@ export function AccessibilityBar({ compact = false }: { compact?: boolean }) {
   const [contrast, setContrast] = useState<boolean>(loadContrast);
   const [theme, setTheme]       = useState<ThemeMode>(loadTheme);
 
-  useEffect(() => { applySize(size); try { localStorage.setItem("bhoomi_font_size", size); } catch { /* ignore */ } }, [size]);
-  useEffect(() => { applyContrast(contrast); try { localStorage.setItem("bhoomi_high_contrast", contrast ? "1" : "0"); } catch { /* ignore */ } }, [contrast]);
-  useEffect(() => { applyTheme(theme); try { localStorage.setItem("bhoomi_theme", theme); } catch { /* ignore */ } }, [theme]);
+  useEffect(() => { applySize(size); setStorageItem(STORAGE_KEYS.FONT_SIZE, size); }, [size]);
+  useEffect(() => { applyContrast(contrast); setStorageItem(STORAGE_KEYS.HIGH_CONTRAST, contrast ? "1" : "0"); }, [contrast]);
+  useEffect(() => { applyTheme(theme); setStorageItem(STORAGE_KEYS.THEME, theme); }, [theme]);
 
   const decrease = () => {
     const idx = SIZE_ORDER.indexOf(size);

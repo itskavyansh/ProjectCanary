@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr | Backend Risk Assessment Module
+// ProjectCanary | Backend Risk Assessment Module
 // Evaluates raw telemetry against authoritative thresholds.
 // Logic mirrors engine/risk.py and src/services/analysisAdapter.ts.
 // =============================================================================

@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr  |  Edge Function Test Suite
+// ProjectCanary  |  Edge Function Test Suite
 // Tests the DEPLOYED function at: https://bnnrikqlhvcqpuqsujsf.supabase.co/functions/v1/sensor-data
 //
 // Run: node test_function.js

@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * Bhoomi-NETr | Trend Analysis & Predictive Early Failure Engine
+ * ProjectCanary | Trend Analysis & Predictive Early Failure Engine
  * 
  * Performs kinematics, time-series progression detection, multi-sensor correlation,
  * and threshold projection based on historical telemetry.
@@ -494,7 +494,7 @@ export function correlateSensors(
     patternDescription = "Isolated displacement progression without corresponding tilt or vibration escalation.";
     compoundSeverity = "ELEVATED";
   } else if (vibSummary.isSpike) {
-    patternDescription = "Temporary vibration spike detected — no sustained displacement progression.";
+    patternDescription = "Temporary vibration spike detected - no sustained displacement progression.";
     compoundSeverity = "NONE";
   }
 
@@ -694,7 +694,7 @@ function computeConfidence(
   return {
     level,
     score: normalizedScore,
-    label: "Trend-based estimate — requires field calibration.",
+    label: "Trend-based estimate - requires field calibration.",
     factors,
   };
 }

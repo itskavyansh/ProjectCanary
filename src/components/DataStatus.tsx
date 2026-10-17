@@ -16,7 +16,7 @@ export function DataStatus({ loading, error, loadingLabel = "Loading nodes…" }
           <Activity className="h-7 w-7 animate-[spin_3s_linear_infinite] text-[var(--brand-teal)]" aria-hidden="true" />
         </div>
         <p className="mt-5 text-sm font-semibold tracking-wide text-[var(--text-primary)]">{loadingLabel}</p>
-        <p className="mt-1 text-xs text-[var(--text-muted)]">Connecting to the BHOOMI-NETr telemetry stream</p>
+        <p className="mt-1 text-xs text-[var(--text-muted)]">Connecting to the ProjectCanary telemetry stream</p>
         <div className="mt-5 flex gap-1.5" aria-hidden="true">
           <span className="h-1 w-1 animate-bounce rounded-full bg-[var(--brand-teal)] [animation-delay:-0.3s]" />
           <span className="h-1 w-1 animate-bounce rounded-full bg-[var(--brand-teal)] [animation-delay:-0.15s]" />

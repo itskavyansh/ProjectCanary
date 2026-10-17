@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr | Single Controlled Live Fast2SMS Test
+// ProjectCanary | Single Controlled Live Fast2SMS Test
 // Dispatches a single test SMS using credentials configured in .env.
 // Never exposes the API key in output.
 // =============================================================================
@@ -35,7 +35,7 @@ loadEnv();
 
 async function runLiveTest() {
   console.log("============================================================");
-  console.log("  Bhoomi-NETr — Live Fast2SMS Controlled Single Test        ");
+  console.log("  ProjectCanary — Live Fast2SMS Controlled Single Test      ");
   console.log("============================================================\n");
 
   const apiKey = process.env.FAST2SMS_API_KEY;

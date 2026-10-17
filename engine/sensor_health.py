@@ -1,4 +1,4 @@
-"""Sensor health and data confidence evaluation module for Bhoomi-NETr."""
+"""Sensor health and data confidence evaluation module for ProjectCanary."""
 
 import math
 from typing import Any, Dict, List, Optional

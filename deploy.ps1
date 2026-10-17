@@ -1,11 +1,11 @@
 # =============================================================================
-# Bhoomi-NETr  |  Edge Function Deploy Script
+# ProjectCanary  |  Edge Function Deploy Script
 # Run this in PowerShell from the project root ONCE you have a PAT.
 #
 # How to get a Personal Access Token (PAT):
 #   1. Go to: https://supabase.com/dashboard/account/tokens
 #   2. Click "Generate new token"
-#   3. Name it "bhoomi-cli" — copy the value (shown only once)
+#   3. Name it "projectcanary-cli" — copy the value (shown only once)
 #   4. Replace YOUR_PAT_HERE below, or set it as an env var
 # =============================================================================
 

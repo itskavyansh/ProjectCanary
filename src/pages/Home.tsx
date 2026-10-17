@@ -54,7 +54,7 @@ function ServiceCard({
     <Link
       to={to}
       className="group flex items-start gap-3.5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] p-4 shadow-xs transition-all hover:border-[var(--brand-green)] hover:bg-[var(--card-bg-hover)] min-w-0"
-      aria-label={`${label} — ${desc}`}
+      aria-label={`${label} - ${desc}`}
     >
       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] text-[var(--icon-primary)] group-hover:bg-[var(--brand-green)] group-hover:text-white transition-colors">
         {icon}
@@ -125,9 +125,8 @@ function StatusRow({
     <div className="flex items-center justify-between gap-4 py-3 border-b border-[var(--border)] last:border-b-0 min-w-0">
       <div className="flex items-center gap-3 min-w-0">
         <span
-          className={`h-2 w-2 shrink-0 rounded-full ${
-            ok ? "bg-[var(--status-success)]" : "bg-[var(--status-danger)] animate-pulse"
-          }`}
+          className={`h-2 w-2 shrink-0 rounded-full ${ok ? "bg-[var(--status-success)]" : "bg-[var(--status-danger)] animate-pulse"
+            }`}
           aria-hidden="true"
         />
         <span className="text-[0.8125rem] font-semibold text-[var(--text-primary)] truncate">
@@ -136,9 +135,8 @@ function StatusRow({
       </div>
       <div className="shrink-0 text-right">
         <span
-          className={`block text-[0.8125rem] font-bold ${
-            ok ? "text-[var(--status-success)]" : "text-[var(--status-danger)] font-bold"
-          }`}
+          className={`block text-[0.8125rem] font-bold ${ok ? "text-[var(--status-success)]" : "text-[var(--status-danger)] font-bold"
+            }`}
         >
           {value}
         </span>
@@ -153,8 +151,8 @@ function StatusRow({
    ═══════════════════════════════════════════════════════════════ */
 const FAQ_ITEMS = [
   {
-    q: "What is BHOOMI-NETr?",
-    a: "BHOOMI-NETr is a real-time ground stability monitoring network. It uses a distributed sensor array — including tilt sensors (MPU6050), ultrasonic distance sensors (HC-SR04), and piezo-electric acoustic sensors (ADS1115) — to detect subsidence, vibration anomalies, and potential structural instabilities in underground or ground-level sites.",
+    q: "What is ProjectCanary?",
+    a: "ProjectCanary is a real-time ground stability and subsidence early-warning system. It uses a distributed sensor array - including tilt sensors (MPU6050), laser distance sensors (TFmini-i-CAN), and piezo-electric acoustic sensors (ADS1115) - to detect subsidence, vibration anomalies, and potential structural instabilities in underground or ground-level sites.",
   },
   {
     q: "What does the system monitor?",
@@ -166,7 +164,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What does the piezo-electric sensor contribute?",
-    a: "The ADS1115-connected piezo-electric transducer captures high-frequency acoustic shock signals from the ground. The detection engine analyses peak, RMS, and peak-to-peak voltage relative to a calibrated baseline to identify crack initiation events, structural vibrations, and critical failure propagation — distinct from bulk ground oscillation.",
+    a: "The ADS1115-connected piezo-electric transducer captures high-frequency acoustic shock signals from the ground. The detection engine analyses peak, RMS, and peak-to-peak voltage relative to a calibrated baseline to identify crack initiation events, structural vibrations, and critical failure propagation - distinct from bulk ground oscillation.",
   },
   {
     q: "What happens when abnormal movement is detected?",
@@ -174,7 +172,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Who uses the monitoring platform?",
-    a: "The BHOOMI-NETr dashboard is accessible to site operators, structural engineers, and safety monitoring personnel who need to track real-time ground conditions. The platform provides both current readings and historical trend analysis to support evidence-based decisions.",
+    a: "The ProjectCanary dashboard is accessible to site operators, structural engineers, and safety monitoring personnel who need to track real-time ground conditions. The platform provides both current readings and historical trend analysis to support evidence-based decisions.",
   },
 ];
 
@@ -204,9 +202,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         id={`${id}-panel`}
         role="region"
         aria-labelledby={id}
-        className={`overflow-hidden transition-all duration-200 ${
-          open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-200 ${open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <p className="pb-5 text-[0.8125rem] leading-relaxed text-[var(--text-secondary)] break-words">
           {a}
@@ -223,8 +220,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export function Home() {
   /* ── Existing data fetching — untouched ── */
   const [readings, setReadings] = useState<SensorReading[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -258,18 +255,18 @@ export function Home() {
   }, []);
 
   /* ── Derived stats (same calculations as before) ── */
-  const totalNodes    = readings.length;
-  const normalCount   = countByStatus(readings, "NORMAL");
-  const warningCount  = countByStatus(readings, "WARNING");
+  const totalNodes = readings.length;
+  const normalCount = countByStatus(readings, "NORMAL");
+  const warningCount = countByStatus(readings, "WARNING");
   const criticalCount = countByStatus(readings, "CRITICAL");
-  const networkOk     = totalNodes > 0 && criticalCount === 0;
-  const dataOk        = !loading && !error;
+  const networkOk = totalNodes > 0 && criticalCount === 0;
+  const dataOk = !loading && !error;
 
   const avgConfidence =
     totalNodes > 0
       ? Math.round(
-          readings.reduce((acc, r) => acc + r.sensor_confidence, 0) / totalNodes,
-        )
+        readings.reduce((acc, r) => acc + r.sensor_confidence, 0) / totalNodes,
+      )
       : null;
 
   return (
@@ -301,9 +298,9 @@ export function Home() {
             <h1
               id="hero-heading"
               className="page-title mb-3"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.2rem)" }}
+              style={{ fontSize: "clamp(6.5rem, 6.5vw, 6.5rem)" }}
             >
-              BHOOMI<span className="text-[var(--brand-green)]">-NETr</span>
+              Project<span className="text-[var(--brand-green)]">Canary</span>
             </h1>
             <p className="max-w-lg text-[0.9375rem] leading-7 text-[var(--text-secondary)]">
               A distributed sensor network for real-time detection of ground
@@ -343,9 +340,8 @@ export function Home() {
                   aria-label={`${s.label}: ${s.value}`}
                 >
                   <span
-                    className={`h-2 w-2 shrink-0 rounded-full ${
-                      s.ok ? "bg-[var(--status-success)]" : s.value > 0 ? "bg-[var(--status-danger)] animate-pulse" : "bg-[var(--status-success)]"
-                    }`}
+                    className={`h-2 w-2 shrink-0 rounded-full ${s.ok ? "bg-[var(--status-success)]" : s.value > 0 ? "bg-[var(--status-danger)] animate-pulse" : "bg-[var(--status-success)]"
+                      }`}
                     aria-hidden="true"
                   />
                   <span className="font-mono text-sm font-bold text-[var(--text-primary)]">
@@ -374,7 +370,7 @@ export function Home() {
             <div>
               <p className="section-eyebrow mb-1">Platform Services</p>
               <h2 id="services-heading" className="section-title">
-                Access BHOOMI-NETr Services
+                Access ProjectCanary Services
               </h2>
             </div>
             <Link
@@ -518,18 +514,17 @@ export function Home() {
                     reading.status === "CRITICAL"
                       ? "border-l-[var(--status-danger)]"
                       : reading.status === "WARNING"
-                      ? "border-l-[var(--status-warning)]"
-                      : "border-l-[var(--brand-green)]";
+                        ? "border-l-[var(--status-warning)]"
+                        : "border-l-[var(--brand-green)]";
 
                   return (
                     <Link
                       key={reading.node_id}
                       to={`/node/${reading.node_id}`}
                       role="listitem"
-                      className={`flex items-center justify-between gap-4 border-b border-l-4 border-[var(--table-border)] px-4 sm:px-5 py-3.5 transition hover:bg-[var(--surface-elevated)] ${statusBorder} ${rowBg} ${
-                        isLast ? "border-b-0" : ""
-                      }`}
-                      aria-label={`${reading.node_id} — ${reading.status} — Risk score: ${reading.risk_score}`}
+                      className={`flex items-center justify-between gap-4 border-b border-l-4 border-[var(--table-border)] px-4 sm:px-5 py-3.5 transition hover:bg-[var(--surface-elevated)] ${statusBorder} ${rowBg} ${isLast ? "border-b-0" : ""
+                        }`}
+                      aria-label={`${reading.node_id} - ${reading.status} - Risk score: ${reading.risk_score}`}
                     >
                       <div className="flex flex-wrap items-center gap-4 sm:gap-8 min-w-0">
                         <div className="min-w-0">
@@ -609,8 +604,8 @@ export function Home() {
                         networkOk
                           ? "Operational"
                           : criticalCount > 0
-                          ? "Critical"
-                          : "Elevated"
+                            ? "Critical"
+                            : "Elevated"
                       }
                       ok={networkOk}
                       detail={`${totalNodes} node${totalNodes !== 1 ? "s" : ""} connected`}
@@ -622,8 +617,8 @@ export function Home() {
                           ? avgConfidence >= 85
                             ? "High"
                             : avgConfidence >= 60
-                            ? "Moderate"
-                            : "Degraded"
+                              ? "Moderate"
+                              : "Degraded"
                           : "Checking…"
                       }
                       ok={avgConfidence != null && avgConfidence >= 85}
@@ -639,8 +634,8 @@ export function Home() {
                         criticalCount > 0
                           ? "Critical Active"
                           : warningCount > 0
-                          ? "Warnings Active"
-                          : "All Clear"
+                            ? "Warnings Active"
+                            : "All Clear"
                       }
                       ok={criticalCount === 0 && warningCount === 0}
                       detail={`${criticalCount} critical · ${warningCount} warning`}
@@ -671,7 +666,7 @@ export function Home() {
                       date: "Aug 2026",
                       tag: "Analysis",
                       title: "Multi-Sensor Risk Correlation",
-                      body: "Deterministic Subsidence Risk Index engine — correlated tilt, displacement, vibration, and acoustic signals into a 0–100 composite score.",
+                      body: "Deterministic Subsidence Risk Index engine - correlated tilt, displacement, vibration, and acoustic signals into a 0–100 composite score.",
                     },
                     {
                       date: "Jul 2026",
@@ -713,7 +708,7 @@ export function Home() {
           <div className="mb-8 max-w-xl">
             <p className="section-eyebrow mb-1">Detection Architecture</p>
             <h2 id="tech-heading" className="section-title">
-              How BHOOMI-NETr Works
+              How ProjectCanary Works
             </h2>
             <p className="mt-2 text-[0.85rem] leading-relaxed text-[var(--text-secondary)]">
               A six-stage sensing-to-alert pipeline built on embedded hardware
@@ -811,7 +806,7 @@ export function Home() {
               Frequently Asked Questions
             </p>
             <h2 id="faq-heading" className="section-title mb-8 text-center">
-              About BHOOMI-NETr
+              About ProjectCanary
             </h2>
 
             <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-6 shadow-xs">
@@ -823,7 +818,7 @@ export function Home() {
             <p className="mt-6 text-center text-[0.85rem] text-[var(--text-secondary)]">
               Have a technical question?{" "}
               <a
-                href="mailto:support@bhoomi-netr.in"
+                href="mailto:support@projectcanary.in"
                 className="text-[var(--brand-green)] hover:underline font-semibold transition-colors"
               >
                 Contact support

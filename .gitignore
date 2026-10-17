@@ -1,11 +1,14 @@
 # =============================================================================
-# Bhoomi-NETr  —  .gitignore
+# ProjectCanary  -  .gitignore
 # =============================================================================
 
 # Environment / secrets — NEVER commit real credentials
 .env
 .env.local
 .env.*.local
+
+# Supabase CLI local cache
+supabase/.temp/
 
 # Node
 node_modules/

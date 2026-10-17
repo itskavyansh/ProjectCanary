@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr  |  Sensor Simulator (fake ESP32)
+// ProjectCanary  |  Sensor Simulator (fake ESP32)
 // Usage:
 //   node simulator.js                            # normal, all nodes
 //   node simulator.js --scenario=normal          # same as above
@@ -292,7 +292,7 @@ const SCENARIO_LABEL = TARGET_NODE
     : `scenario=${SCENARIO}  nodes=[${ACTIVE_NODES.join(", ")}]`;
 
 console.log(`\n${"─".repeat(72)}`);
-console.log(`  Bhoomi-NETr Simulator  |  ${SCENARIO_LABEL}`);
+console.log(`  ProjectCanary Simulator  |  ${SCENARIO_LABEL}`);
 console.log(`  Endpoint : ${ENDPOINT}`);
 console.log(`  Interval : ${INTERVAL / 1000}s   Press Ctrl+C to stop`);
 console.log(`${"─".repeat(72)}\n`);

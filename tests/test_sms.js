@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr | SMS Alert System Test Suite
+// ProjectCanary | SMS Alert System Test Suite
 // Executes all 11 required test cases for the Fast2SMS alert integration.
 // Run: node tests/test_sms.js
 // =============================================================================
@@ -30,7 +30,7 @@ function assert(condition, message) {
 
 async function runTests() {
   console.log("============================================================");
-  console.log("  Bhoomi-NETr SMS Alert System — Comprehensive Test Suite   ");
+  console.log("  ProjectCanary SMS Alert System — Comprehensive Test Suite ");
   console.log("============================================================\n");
 
   const DUMMY_KEY = "test_fast2sms_secret_key_abcdef123456";

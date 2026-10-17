@@ -24,8 +24,8 @@ const COLUMNS: Record<string, { label: string; to?: string; href?: string }[]> =
     { label: "Schema",            href: "/schema.sql" },
   ],
   Support: [
-    { label: "Contact",           href: "mailto:contact@bhoomi-netr.in" },
-    { label: "Feedback",          href: "mailto:support@bhoomi-netr.in" },
+    { label: "Contact",           href: "mailto:contact@projectcanary.in" },
+    { label: "Feedback",          href: "mailto:support@projectcanary.in" },
   ],
 };
 
@@ -67,13 +67,13 @@ export function Footer() {
             <Link
               to="/"
               className="mb-4 inline-flex items-center gap-2"
-              aria-label="BHOOMI-NETr home"
+              aria-label="ProjectCanary home"
             >
               <span className="flex h-7 w-7 items-center justify-center rounded border border-[var(--footer-accent)]/30 bg-[var(--footer-accent)]/10 text-[var(--footer-accent)]">
                 <Activity className="h-3.5 w-3.5" aria-hidden="true" />
               </span>
               <span className="font-bold tracking-tight text-[var(--footer-text-primary)]">
-                BHOOMI<span className="text-[var(--footer-accent)]">-NETr</span>
+                Project<span className="text-[var(--footer-accent)]">Canary</span>
               </span>
             </Link>
             <p className="mt-3 max-w-xs text-[0.78rem] leading-relaxed text-[var(--footer-text-secondary)]">
@@ -112,11 +112,11 @@ export function Footer() {
       <div className="border-t border-black/20">
         <div className="dashboard-shell flex flex-wrap items-center justify-between gap-4 py-4">
           <p className="text-[0.73rem] text-[var(--footer-text-secondary)] opacity-90">
-            © {YEAR} BHOOMI-NETr — Ground Stability Monitoring System
+            © {YEAR} ProjectCanary - Ground Stability Monitoring System
           </p>
           <div className="flex flex-wrap items-center gap-4 text-[0.73rem] text-[var(--footer-text-secondary)]">
             <a
-              href="mailto:support@bhoomi-netr.in"
+              href="mailto:support@projectcanary.in"
               className="inline-flex items-center gap-1 text-[var(--footer-links)] hover:text-[var(--footer-text-primary)] transition-colors"
             >
               <Mail className="h-3 w-3" aria-hidden="true" />

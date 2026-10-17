@@ -1,4 +1,4 @@
-# Bhoomi-NETr — Sensor Ingestion API Reference
+# ProjectCanary - Sensor Ingestion API Reference
 
 ## Live Endpoint
 ```http
@@ -17,18 +17,25 @@ apikey: <SUPABASE_ANON_KEY>
 
 ## Request Body Schema (JSON)
 
-Strict adherence to the Phase 1 Data Contract is required.
+Strict adherence to the ingestion schema is required. The Edge Function validates every field before committing to PostgreSQL.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `node_id` | String | **Yes** | Must be non-empty (e.g. `"NODE_01"`) |
+| `node_id` | String | **Yes** | Must be a non-empty string (e.g. `"NODE_01"`) |
 | `timestamp` | String | No | ISO 8601 format. If missing, the server defaults to hardware `now()`. |
-| `tilt_x` | Number | **Yes** | Must be a true JSON number, not a string |
-| `tilt_y` | Number | **Yes** | Must be a true JSON number, not a string |
-| `vibration`| Number | **Yes** | Must be a true JSON number, not a string |
-| `distance` | Number | **Yes** | Must be a true JSON number, not a string |
-| `mpu6050_status` | String | **Yes** | `"ok"` or `"fault"` |
-| `hc_sr04_status` | String | **Yes** | `"ok"` or `"fault"` |
+| `tilt_x` | Number | **Yes** | True JSON number in degrees |
+| `tilt_y` | Number | **Yes** | True JSON number in degrees |
+| `vibration`| Number | **Yes** | True JSON number in g |
+| `distance` | Number | **Yes** | True JSON number in cm |
+| `mpu6050_status` | String | **Yes** | Transducer health flag: `"ok"` or `"fault"` |
+| `hc_sr04_status` | String | **Yes** | Transducer health flag: `"ok"` or `"fault"` |
+| `displacement` | Number | No | Optional calculated displacement in cm |
+| `ads1115_status` | String | No | Optional transducer health flag: `"ok"` or `"fault"` |
+| `piezo_peak` | Number | No | Optional peak voltage from piezo channel |
+| `piezo_rms` | Number | No | Optional RMS voltage from piezo channel |
+| `piezo_peak_to_peak` | Number | No | Optional peak-to-peak voltage from piezo channel |
+
+> **Note on `sensor_status`:** A generic `sensor_status` field is not accepted by the validator. Only the explicit per-sensor flags listed above (`mpu6050_status`, `hc_sr04_status`, and optional `ads1115_status`) are valid. Sending an unexpected generic field will not be recognized as a transducer status flag.
 
 ---
 

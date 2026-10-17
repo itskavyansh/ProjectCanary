@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr  |  Edge Function: sensor-data
+// ProjectCanary  |  Edge Function: sensor-data
 // Runtime: Deno (Supabase Edge Functions)
 // Endpoint: POST /functions/v1/sensor-data
 //

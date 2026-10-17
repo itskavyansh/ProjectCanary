@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { subscribeToReadings, fetchLatestReadings } from "../services/sensorService";
 import type { SensorReading } from "../types/sensor";
+import { STORAGE_KEYS, getStorageItemWithFallback, setStorageItem } from "../constants/storageKeys";
 
 interface AcknowledgedState {
   [node_id: string]: {
@@ -12,7 +13,7 @@ export function NotificationPanel() {
   const [criticalNodes, setCriticalNodes] = useState<SensorReading[]>([]);
   const [acknowledged, setAcknowledged] = useState<AcknowledgedState>(() => {
     try {
-      const stored = localStorage.getItem("bhoomi_ack");
+      const stored = getStorageItemWithFallback(STORAGE_KEYS.NOTIFICATION_ACK, STORAGE_KEYS.LEGACY_NOTIFICATION_ACK);
       return stored ? JSON.parse(stored) : {};
     } catch {
       return {};
@@ -21,7 +22,7 @@ export function NotificationPanel() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("bhoomi_ack", JSON.stringify(acknowledged));
+      setStorageItem(STORAGE_KEYS.NOTIFICATION_ACK, JSON.stringify(acknowledged));
     } catch (e) {
       console.error("Failed to save ack state", e);
     }

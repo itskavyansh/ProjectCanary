@@ -1,5 +1,5 @@
 -- =============================================================================
--- Bhoomi-NETr  |  Mine Subsidence Monitoring System
+-- ProjectCanary  |  Mine Subsidence Monitoring System
 -- Phase 1 Schema
 -- Data Contract: node_id, timestamp, tilt_x, tilt_y, vibration, distance
 -- Created: 2026-09-05

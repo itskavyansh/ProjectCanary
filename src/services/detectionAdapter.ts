@@ -1,5 +1,5 @@
 /**
- * Bhoomi-NETr | Vibration Index & Crack Index Detection Layer
+ * ProjectCanary | Vibration Index & Crack Index Detection Layer
  *
  * Frontend-only interpretation layer built on top of high-frequency
  * piezo vibration telemetry (ADS1115 channel A0) and macro vibration (MPU6050).
@@ -101,8 +101,14 @@ const inMemoryBaselines = new Map<string, NodePiezoBaseline>();
 // Baseline Helpers (localStorage + in-memory fallback)
 // ---------------------------------------------------------------------------
 
+import { STORAGE_KEYS, getStorageItemWithFallback, setStorageItem } from "../constants/storageKeys";
+
 function getStorageKey(nodeId: string): string {
-  return `bhoomi_baseline_${nodeId}`;
+  return `${STORAGE_KEYS.BASELINE_PREFIX}${nodeId}`;
+}
+
+function getLegacyStorageKey(nodeId: string): string {
+  return `${STORAGE_KEYS.LEGACY_BASELINE_PREFIX}${nodeId}`;
 }
 
 export function loadBaseline(nodeId: string): NodePiezoBaseline | null {
@@ -113,7 +119,7 @@ export function loadBaseline(nodeId: string): NodePiezoBaseline | null {
     return null;
   }
   try {
-    const raw = window.localStorage.getItem(getStorageKey(nodeId));
+    const raw = getStorageItemWithFallback(getStorageKey(nodeId), getLegacyStorageKey(nodeId));
     if (!raw) return null;
     const parsed = JSON.parse(raw) as NodePiezoBaseline;
     if (
@@ -137,7 +143,8 @@ export function saveBaseline(nodeId: string, baseline: NodePiezoBaseline): void 
     return;
   }
   try {
-    window.localStorage.setItem(getStorageKey(nodeId), JSON.stringify(baseline));
+    const serialized = JSON.stringify(baseline);
+    setStorageItem(getStorageKey(nodeId), serialized);
   } catch (err) {
     console.warn(`Failed to save baseline for node ${nodeId}:`, err);
   }

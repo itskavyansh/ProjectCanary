@@ -1,5 +1,5 @@
 // =============================================================================
-// Bhoomi-NETr | SMS Alert Service (Production Fast2SMS Dev API Client)
+// ProjectCanary | SMS Alert Service (Production Fast2SMS Dev API Client)
 // Quick SMS Route ("q") with state transition deduplication & cooldown.
 // =============================================================================
 
@@ -78,7 +78,7 @@ export function buildAlertMessage(
       ? warnings.map((w) => w.replace(/_/g, " ")).join(", ")
       : "Multiple sensor thresholds breached";
 
-  return `Bhoomi-NETr ALERT: Node ${nodeId} is at ${status} risk. Risk Score: ${riskScore}. (${warningsFormatted}). Immediate inspection required.`;
+  return `ProjectCanary ALERT: Node ${nodeId} is at ${status} risk. Risk Score: ${riskScore}. (${warningsFormatted}). Immediate inspection required.`;
 }
 
 /**
