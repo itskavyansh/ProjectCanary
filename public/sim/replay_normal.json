@@ -1,0 +1,5381 @@
+{
+  "synthetic": true,
+  "banner": "SYNTHETIC / SIMULATION - NOT VALIDATED ON REAL DATA",
+  "compression_factor": {
+    "gradual": 360,
+    "normal": 360,
+    "abnormal_vibration": 360,
+    "sensor_fault": 360,
+    "comm_fault": 360,
+    "rapid": 1,
+    "sensor_duration_s": 240,
+    "slow_process_hours_per_run": 24.0,
+    "sensor_hours_per_run": 0.066667,
+    "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
+  },
+  "git_commit": "8e3cdde347ca577531abfae4791809f2f229906d",
+  "seed": 20261117,
+  "file_id": "replay_normal",
+  "run_class": "normal",
+  "simulation_id": "sim_test_normal_2026112191",
+  "selection_rule": "Fixed deterministic rule: filter outputs/datasets_v3/manifest.csv to split == 'test' (20 runs per class), sort each class by ['snr_vs_imu_noise', 'simulation_id'] ascending (stable), and select index len(class_runs) // 2 (index 10 of 20, the upper-median SNR run).",
+  "selected_rank_in_class_test_split": 10,
+  "class_test_split_run_count": 20,
+  "downsample_step": 1,
+  "run_metadata": {
+    "seed": 2026112191,
+    "split": "test",
+    "run_class": "normal",
+    "peak_tilt_deg": 0.0,
+    "imu_noise_sd_deg": 0.3091,
+    "noise_multiplier": 1.6452,
+    "snr_vs_imu_noise": 0.0,
+    "run_compression_factor": 360.0,
+    "duration_s": 240.0,
+    "n_windows": 95,
+    "fault_types": null
+  },
+  "operating_point": {
+    "model": "random_forest (v3 frozen)",
+    "regime": "episode_fa<=1 (k=3, m=3)",
+    "k": 3,
+    "m": 3,
+    "group_thresholds": {
+      "basin": 0.34337,
+      "vibration": 0.25,
+      "sensor_fault": 0.29415,
+      "comm_fault": 0.22
+    },
+    "n_alarm_episodes_in_run": 2,
+    "n_alarm_windows_in_run": 13,
+    "unknown_detector_advisory": {
+      "detector": "robust_mahalanobis (train-normal frozen stats)",
+      "threshold": 9.759898,
+      "k": 3,
+      "m": 3,
+      "n_flagged_windows_in_run": 9
+    }
+  },
+  "windows": [
+    {
+      "window_idx": 0,
+      "t_start": 0.0,
+      "t_end": 5.0,
+      "t_mid": 2.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.9105,
+      "predicted_class_model_score": 0.9105,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0015,
+        "gradual": 0.0427,
+        "normal": 0.9105,
+        "rapid": 0.0249,
+        "sensor_fault": 0.0203
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2459,
+        "NODE_02": 0.505,
+        "NODE_03": 0.4499,
+        "NODE_04": 0.3343
+      },
+      "piezo_rms": {
+        "network_mean": 0.00652,
+        "NODE_01": 0.00551,
+        "NODE_02": 0.00396,
+        "NODE_03": 0.00649,
+        "NODE_04": 0.01012
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0,
+        "hub_residual_abs_max_m": 0.0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 16.697,
+      "dir_convergence_weighted_cos": -0.3103,
+      "anomaly_score": 7.7141,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 1,
+      "t_start": 2.5,
+      "t_end": 7.5,
+      "t_mid": 5.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.875,
+      "predicted_class_model_score": 0.875,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.001,
+        "gradual": 0.0587,
+        "normal": 0.875,
+        "rapid": 0.0299,
+        "sensor_fault": 0.0355
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.27,
+        "NODE_02": 0.5005,
+        "NODE_03": 0.4853,
+        "NODE_04": 0.3086
+      },
+      "piezo_rms": {
+        "network_mean": 0.00643,
+        "NODE_01": 0.00715,
+        "NODE_02": 0.00258,
+        "NODE_03": 0.00642,
+        "NODE_04": 0.00958
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0,
+        "hub_residual_abs_max_m": 0.0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 16.31,
+      "dir_convergence_weighted_cos": -0.8355,
+      "anomaly_score": 10.471,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 2,
+      "t_start": 5.0,
+      "t_end": 10.0,
+      "t_mid": 7.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.9435,
+      "predicted_class_model_score": 0.9435,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0006,
+        "gradual": 0.0295,
+        "normal": 0.9435,
+        "rapid": 0.0147,
+        "sensor_fault": 0.0117
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4393,
+        "NODE_02": 0.446,
+        "NODE_03": 0.2966,
+        "NODE_04": 0.2511
+      },
+      "piezo_rms": {
+        "network_mean": 0.00531,
+        "NODE_01": 0.0067,
+        "NODE_02": 0.00369,
+        "NODE_03": 0.00483,
+        "NODE_04": 0.00601
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0,
+        "hub_residual_abs_max_m": 0.0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 23.318,
+      "dir_convergence_weighted_cos": -0.9294,
+      "anomaly_score": 9.9171,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 3,
+      "t_start": 7.5,
+      "t_end": 12.5,
+      "t_mid": 10.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.8402,
+      "predicted_class_model_score": 0.8402,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0286,
+        "gradual": 0.0435,
+        "normal": 0.8402,
+        "rapid": 0.0433,
+        "sensor_fault": 0.0443
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4778,
+        "NODE_02": 0.2377,
+        "NODE_03": 0.2434,
+        "NODE_04": 0.2319
+      },
+      "piezo_rms": {
+        "network_mean": 0.00514,
+        "NODE_01": 0.00886,
+        "NODE_02": 0.0053,
+        "NODE_03": 0.00247,
+        "NODE_04": 0.00395
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0,
+        "hub_residual_abs_max_m": 0.0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.1,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.2,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 14.47,
+      "dir_convergence_weighted_cos": 0.2505,
+      "anomaly_score": 12.1904,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 4,
+      "t_start": 10.0,
+      "t_end": 15.0,
+      "t_mid": 12.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.7764,
+      "predicted_class_model_score": 0.7764,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0734,
+        "gradual": 0.057,
+        "normal": 0.7764,
+        "rapid": 0.0421,
+        "sensor_fault": 0.0511
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3635,
+        "NODE_02": 0.2093,
+        "NODE_03": 0.1896,
+        "NODE_04": 0.2522
+      },
+      "piezo_rms": {
+        "network_mean": 0.00595,
+        "NODE_01": 0.00999,
+        "NODE_02": 0.0058,
+        "NODE_03": 0.00479,
+        "NODE_04": 0.00321
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0067,
+        "hub_residual_abs_max_m": 0.0133,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.1,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.2,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 16.116,
+      "dir_convergence_weighted_cos": -0.2365,
+      "anomaly_score": 9.6956,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 5,
+      "t_start": 12.5,
+      "t_end": 17.5,
+      "t_mid": 15.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.603,
+      "predicted_class_model_score": 0.603,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0088,
+        "gradual": 0.128,
+        "normal": 0.603,
+        "rapid": 0.1219,
+        "sensor_fault": 0.1381
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3035,
+        "NODE_02": 0.2294,
+        "NODE_03": 0.2441,
+        "NODE_04": 0.1932
+      },
+      "piezo_rms": {
+        "network_mean": 0.00769,
+        "NODE_01": 0.00888,
+        "NODE_02": 0.00822,
+        "NODE_03": 0.01102,
+        "NODE_04": 0.00264
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0067,
+        "hub_residual_abs_max_m": 0.0133,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 18.415,
+      "dir_convergence_weighted_cos": -0.4124,
+      "anomaly_score": 7.9134,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 6,
+      "t_start": 15.0,
+      "t_end": 20.0,
+      "t_mid": 17.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.5915,
+      "predicted_class_model_score": 0.5915,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0163,
+        "gradual": 0.1575,
+        "normal": 0.5915,
+        "rapid": 0.1236,
+        "sensor_fault": 0.1109
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2774,
+        "NODE_02": 0.2307,
+        "NODE_03": 0.3908,
+        "NODE_04": 0.2503
+      },
+      "piezo_rms": {
+        "network_mean": 0.00869,
+        "NODE_01": 0.00979,
+        "NODE_02": 0.00903,
+        "NODE_03": 0.01323,
+        "NODE_04": 0.00272
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0162,
+        "NODE_01": 0.0,
+        "NODE_02": -0.005,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 20.445,
+      "dir_convergence_weighted_cos": -0.5444,
+      "anomaly_score": 9.3504,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 7,
+      "t_start": 17.5,
+      "t_end": 22.5,
+      "t_mid": 20.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4642,
+      "predicted_class_model_score": 0.4642,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0144,
+        "gradual": 0.2369,
+        "normal": 0.4642,
+        "rapid": 0.1773,
+        "sensor_fault": 0.1071
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4029,
+        "NODE_02": 0.2219,
+        "NODE_03": 0.4404,
+        "NODE_04": 0.5016
+      },
+      "piezo_rms": {
+        "network_mean": 0.00829,
+        "NODE_01": 0.00939,
+        "NODE_02": 0.00895,
+        "NODE_03": 0.01076,
+        "NODE_04": 0.00405
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0162,
+        "NODE_01": 0.0,
+        "NODE_02": -0.005,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 22.637,
+      "dir_convergence_weighted_cos": -0.6175,
+      "anomaly_score": 9.4187,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 8,
+      "t_start": 20.0,
+      "t_end": 25.0,
+      "t_mid": 22.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4536,
+      "predicted_class_model_score": 0.4536,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0009,
+        "comm_fault": 0.0109,
+        "gradual": 0.2315,
+        "normal": 0.4536,
+        "rapid": 0.1638,
+        "sensor_fault": 0.1393
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4527,
+        "NODE_02": 0.1887,
+        "NODE_03": 0.3192,
+        "NODE_04": 0.6574
+      },
+      "piezo_rms": {
+        "network_mean": 0.00787,
+        "NODE_01": 0.00652,
+        "NODE_02": 0.0118,
+        "NODE_03": 0.00821,
+        "NODE_04": 0.00495
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0137,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 23.032,
+      "dir_convergence_weighted_cos": -0.6489,
+      "anomaly_score": 9.969,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 9,
+      "t_start": 22.5,
+      "t_end": 27.5,
+      "t_mid": 25.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4689,
+      "predicted_class_model_score": 0.4689,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.011,
+        "gradual": 0.2349,
+        "normal": 0.4689,
+        "rapid": 0.1864,
+        "sensor_fault": 0.0988
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4341,
+        "NODE_02": 0.2333,
+        "NODE_03": 0.3293,
+        "NODE_04": 0.4943
+      },
+      "piezo_rms": {
+        "network_mean": 0.00742,
+        "NODE_01": 0.00691,
+        "NODE_02": 0.0108,
+        "NODE_03": 0.00619,
+        "NODE_04": 0.0058
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0137,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": 0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 19.75,
+      "dir_convergence_weighted_cos": -0.294,
+      "anomaly_score": 9.2261,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 10,
+      "t_start": 25.0,
+      "t_end": 30.0,
+      "t_mid": 27.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.416,
+      "predicted_class_model_score": 0.416,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0112,
+        "gradual": 0.2735,
+        "normal": 0.416,
+        "rapid": 0.1923,
+        "sensor_fault": 0.1067
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5257,
+        "NODE_02": 0.2331,
+        "NODE_03": 0.4101,
+        "NODE_04": 0.3886
+      },
+      "piezo_rms": {
+        "network_mean": 0.00688,
+        "NODE_01": 0.00673,
+        "NODE_02": 0.00865,
+        "NODE_03": 0.00562,
+        "NODE_04": 0.00651
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0162,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 14.0,
+      "dir_convergence_weighted_cos": 0.2678,
+      "anomaly_score": 6.7419,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 11,
+      "t_start": 27.5,
+      "t_end": 32.5,
+      "t_mid": 30.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3893,
+      "predicted_class_model_score": 0.3893,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.011,
+        "gradual": 0.281,
+        "normal": 0.3893,
+        "rapid": 0.2044,
+        "sensor_fault": 0.1141
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5537,
+        "NODE_02": 0.3177,
+        "NODE_03": 0.2643,
+        "NODE_04": 0.401
+      },
+      "piezo_rms": {
+        "network_mean": 0.00684,
+        "NODE_01": 0.00326,
+        "NODE_02": 0.01106,
+        "NODE_03": 0.00684,
+        "NODE_04": 0.00618
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0162,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 9.734,
+      "dir_convergence_weighted_cos": 0.6697,
+      "anomaly_score": 6.8977,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 12,
+      "t_start": 30.0,
+      "t_end": 35.0,
+      "t_mid": 32.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3518,
+      "predicted_class_model_score": 0.3518,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0123,
+        "gradual": 0.2863,
+        "normal": 0.3518,
+        "rapid": 0.2199,
+        "sensor_fault": 0.1295
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5318,
+        "NODE_02": 0.3819,
+        "NODE_03": 0.18,
+        "NODE_04": 0.2777
+      },
+      "piezo_rms": {
+        "network_mean": 0.00807,
+        "NODE_01": 0.00311,
+        "NODE_02": 0.01115,
+        "NODE_03": 0.00805,
+        "NODE_04": 0.00997
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0337,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.276,
+      "dir_convergence_weighted_cos": 0.8103,
+      "anomaly_score": 7.4104,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 13,
+      "t_start": 32.5,
+      "t_end": 37.5,
+      "t_mid": 35.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3563,
+      "predicted_class_model_score": 0.3563,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.014,
+        "gradual": 0.297,
+        "normal": 0.3563,
+        "rapid": 0.203,
+        "sensor_fault": 0.1293
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4384,
+        "NODE_02": 0.3356,
+        "NODE_03": 0.3019,
+        "NODE_04": 0.3179
+      },
+      "piezo_rms": {
+        "network_mean": 0.00987,
+        "NODE_01": 0.00423,
+        "NODE_02": 0.0085,
+        "NODE_03": 0.00879,
+        "NODE_04": 0.01798
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0337,
+        "NODE_01": 0.0,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 9.768,
+      "dir_convergence_weighted_cos": 0.6897,
+      "anomaly_score": 8.9761,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 14,
+      "t_start": 35.0,
+      "t_end": 40.0,
+      "t_mid": 37.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3483,
+      "predicted_class_model_score": 0.3483,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.015,
+        "gradual": 0.3207,
+        "normal": 0.3483,
+        "rapid": 0.2224,
+        "sensor_fault": 0.0935
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3921,
+        "NODE_02": 0.3002,
+        "NODE_03": 0.2697,
+        "NODE_04": 0.5019
+      },
+      "piezo_rms": {
+        "network_mean": 0.00987,
+        "NODE_01": 0.00535,
+        "NODE_02": 0.00655,
+        "NODE_03": 0.0107,
+        "NODE_04": 0.01687
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.01,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.974,
+      "dir_convergence_weighted_cos": 0.8291,
+      "anomaly_score": 7.8093,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 15,
+      "t_start": 37.5,
+      "t_end": 42.5,
+      "t_mid": 40.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4021,
+      "predicted_class_model_score": 0.4021,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0055,
+        "gradual": 0.4021,
+        "normal": 0.3083,
+        "rapid": 0.2149,
+        "sensor_fault": 0.0692
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3034,
+        "NODE_02": 0.2731,
+        "NODE_03": 0.3383,
+        "NODE_04": 0.5465
+      },
+      "piezo_rms": {
+        "network_mean": 0.00922,
+        "NODE_01": 0.00728,
+        "NODE_02": 0.009,
+        "NODE_03": 0.01169,
+        "NODE_04": 0.00892
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.01,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 1.499,
+      "dir_convergence_weighted_cos": 0.9906,
+      "anomaly_score": 6.7548,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 16,
+      "t_start": 40.0,
+      "t_end": 45.0,
+      "t_mid": 42.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3565,
+      "predicted_class_model_score": 0.3565,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0092,
+        "gradual": 0.3565,
+        "normal": 0.2998,
+        "rapid": 0.2956,
+        "sensor_fault": 0.0389
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3055,
+        "NODE_02": 0.3034,
+        "NODE_03": 0.3958,
+        "NODE_04": 0.4204
+      },
+      "piezo_rms": {
+        "network_mean": 0.00878,
+        "NODE_01": 0.00675,
+        "NODE_02": 0.01222,
+        "NODE_03": 0.01066,
+        "NODE_04": 0.00549
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0538,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 1.198,
+      "dir_convergence_weighted_cos": 0.9969,
+      "anomaly_score": 7.1071,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 17,
+      "t_start": 42.5,
+      "t_end": 47.5,
+      "t_mid": 45.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3212,
+      "predicted_class_model_score": 0.2799,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.035,
+        "gradual": 0.3065,
+        "normal": 0.2799,
+        "rapid": 0.3212,
+        "sensor_fault": 0.0574
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "rapid",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3903,
+        "NODE_02": 0.2332,
+        "NODE_03": 0.2917,
+        "NODE_04": 0.3541
+      },
+      "piezo_rms": {
+        "network_mean": 0.00774,
+        "NODE_01": 0.00558,
+        "NODE_02": 0.01232,
+        "NODE_03": 0.00823,
+        "NODE_04": 0.00483
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0538,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.04
+      },
+      "comm_missing_fraction": {
+        "network": 0.1,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 2.494,
+      "dir_convergence_weighted_cos": 0.9839,
+      "anomaly_score": 10.3213,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 18,
+      "t_start": 45.0,
+      "t_end": 50.0,
+      "t_mid": 47.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.326,
+      "predicted_class_model_score": 0.326,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0498,
+        "gradual": 0.2944,
+        "normal": 0.326,
+        "rapid": 0.2842,
+        "sensor_fault": 0.0457
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3535,
+        "NODE_02": 0.2395,
+        "NODE_03": 0.295,
+        "NODE_04": 0.477
+      },
+      "piezo_rms": {
+        "network_mean": 0.00661,
+        "NODE_01": 0.00474,
+        "NODE_02": 0.01058,
+        "NODE_03": 0.00607,
+        "NODE_04": 0.00504
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0237,
+        "hub_residual_abs_max_m": 0.0563,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.1,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 2.184,
+      "dir_convergence_weighted_cos": 0.9756,
+      "anomaly_score": 10.4189,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 19,
+      "t_start": 47.5,
+      "t_end": 52.5,
+      "t_mid": 50.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4122,
+      "predicted_class_model_score": 0.4122,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0013,
+        "gradual": 0.2703,
+        "normal": 0.4122,
+        "rapid": 0.2352,
+        "sensor_fault": 0.0811
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.324,
+        "NODE_02": 0.3559,
+        "NODE_03": 0.3726,
+        "NODE_04": 0.5284
+      },
+      "piezo_rms": {
+        "network_mean": 0.0072,
+        "NODE_01": 0.00489,
+        "NODE_02": 0.00785,
+        "NODE_03": 0.00583,
+        "NODE_04": 0.01025
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0237,
+        "hub_residual_abs_max_m": 0.0563,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 2.66,
+      "dir_convergence_weighted_cos": 0.9726,
+      "anomaly_score": 6.6871,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 20,
+      "t_start": 50.0,
+      "t_end": 55.0,
+      "t_mid": 52.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3552,
+      "predicted_class_model_score": 0.3552,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0055,
+        "gradual": 0.2959,
+        "normal": 0.3552,
+        "rapid": 0.275,
+        "sensor_fault": 0.0683
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2568,
+        "NODE_02": 0.3577,
+        "NODE_03": 0.2937,
+        "NODE_04": 0.5096
+      },
+      "piezo_rms": {
+        "network_mean": 0.00806,
+        "NODE_01": 0.00623,
+        "NODE_02": 0.00588,
+        "NODE_03": 0.00675,
+        "NODE_04": 0.01339
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0538,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 2.27,
+      "dir_convergence_weighted_cos": 0.9928,
+      "anomaly_score": 7.52,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 21,
+      "t_start": 52.5,
+      "t_end": 57.5,
+      "t_mid": 55.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3841,
+      "predicted_class_model_score": 0.3841,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.006,
+        "gradual": 0.3024,
+        "normal": 0.3841,
+        "rapid": 0.2671,
+        "sensor_fault": 0.0404
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2101,
+        "NODE_02": 0.287,
+        "NODE_03": 0.1734,
+        "NODE_04": 0.3723
+      },
+      "piezo_rms": {
+        "network_mean": 0.00683,
+        "NODE_01": 0.00699,
+        "NODE_02": 0.0059,
+        "NODE_03": 0.00625,
+        "NODE_04": 0.00818
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0538,
+        "NODE_01": 0.08,
+        "NODE_02": 0.005,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 2.565,
+      "dir_convergence_weighted_cos": 0.9919,
+      "anomaly_score": 7.1511,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 22,
+      "t_start": 55.0,
+      "t_end": 60.0,
+      "t_mid": 57.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4032,
+      "predicted_class_model_score": 0.3579,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0029,
+        "gradual": 0.3579,
+        "normal": 0.4032,
+        "rapid": 0.1974,
+        "sensor_fault": 0.0385
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2774,
+        "NODE_02": 0.312,
+        "NODE_03": 0.2743,
+        "NODE_04": 0.4167
+      },
+      "piezo_rms": {
+        "network_mean": 0.00664,
+        "NODE_01": 0.00869,
+        "NODE_02": 0.00597,
+        "NODE_03": 0.006,
+        "NODE_04": 0.00588
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0312,
+        "hub_residual_abs_max_m": 0.0488,
+        "NODE_01": 0.08,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 4.732,
+      "dir_convergence_weighted_cos": 0.931,
+      "anomaly_score": 6.4994,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 23,
+      "t_start": 57.5,
+      "t_end": 62.5,
+      "t_mid": 60.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3491,
+      "predicted_class_model_score": 0.3491,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0133,
+        "gradual": 0.3088,
+        "normal": 0.3491,
+        "rapid": 0.1845,
+        "sensor_fault": 0.1439
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2991,
+        "NODE_02": 0.3193,
+        "NODE_03": 0.3996,
+        "NODE_04": 0.4382
+      },
+      "piezo_rms": {
+        "network_mean": 0.00668,
+        "NODE_01": 0.00948,
+        "NODE_02": 0.00269,
+        "NODE_03": 0.0061,
+        "NODE_04": 0.00847
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0312,
+        "hub_residual_abs_max_m": 0.0488,
+        "NODE_01": 0.08,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.624,
+      "dir_convergence_weighted_cos": 0.353,
+      "anomaly_score": 7.8536,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 24,
+      "t_start": 60.0,
+      "t_end": 65.0,
+      "t_mid": 62.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3633,
+      "predicted_class_model_score": 0.3633,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0123,
+        "gradual": 0.2913,
+        "normal": 0.3633,
+        "rapid": 0.1576,
+        "sensor_fault": 0.1752
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3528,
+        "NODE_02": 0.3733,
+        "NODE_03": 0.3694,
+        "NODE_04": 0.3066
+      },
+      "piezo_rms": {
+        "network_mean": 0.00576,
+        "NODE_01": 0.00704,
+        "NODE_02": 0.00205,
+        "NODE_03": 0.00444,
+        "NODE_04": 0.00951
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0387,
+        "hub_residual_abs_max_m": 0.0487,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 9.906,
+      "dir_convergence_weighted_cos": -0.0737,
+      "anomaly_score": 7.7333,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 25,
+      "t_start": 62.5,
+      "t_end": 67.5,
+      "t_mid": 65.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.352,
+      "predicted_class_model_score": 0.352,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0091,
+        "gradual": 0.2943,
+        "normal": 0.352,
+        "rapid": 0.2216,
+        "sensor_fault": 0.1228
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5266,
+        "NODE_02": 0.3623,
+        "NODE_03": 0.4442,
+        "NODE_04": 0.3296
+      },
+      "piezo_rms": {
+        "network_mean": 0.00672,
+        "NODE_01": 0.00611,
+        "NODE_02": 0.00838,
+        "NODE_03": 0.00413,
+        "NODE_04": 0.00828
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0387,
+        "hub_residual_abs_max_m": 0.0487,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.234,
+      "dir_convergence_weighted_cos": -0.0399,
+      "anomaly_score": 10.0059,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 26,
+      "t_start": 65.0,
+      "t_end": 70.0,
+      "t_mid": 67.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3393,
+      "predicted_class_model_score": 0.2868,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0059,
+        "gradual": 0.3393,
+        "normal": 0.2868,
+        "rapid": 0.2038,
+        "sensor_fault": 0.1641
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5805,
+        "NODE_02": 0.3298,
+        "NODE_03": 0.6291,
+        "NODE_04": 0.4531
+      },
+      "piezo_rms": {
+        "network_mean": 0.0071,
+        "NODE_01": 0.00745,
+        "NODE_02": 0.00968,
+        "NODE_03": 0.00455,
+        "NODE_04": 0.00672
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0862,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.944,
+      "dir_convergence_weighted_cos": 0.0854,
+      "anomaly_score": 10.791,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 27,
+      "t_start": 67.5,
+      "t_end": 72.5,
+      "t_mid": 70.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3389,
+      "predicted_class_model_score": 0.3389,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0097,
+        "gradual": 0.301,
+        "normal": 0.3389,
+        "rapid": 0.1674,
+        "sensor_fault": 0.1829
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4648,
+        "NODE_02": 0.4084,
+        "NODE_03": 0.5486,
+        "NODE_04": 0.4594
+      },
+      "piezo_rms": {
+        "network_mean": 0.00674,
+        "NODE_01": 0.00895,
+        "NODE_02": 0.00757,
+        "NODE_03": 0.00397,
+        "NODE_04": 0.00645
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0262,
+        "hub_residual_abs_max_m": 0.0862,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.985,
+      "dir_convergence_weighted_cos": 0.3309,
+      "anomaly_score": 9.8557,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 28,
+      "t_start": 70.0,
+      "t_end": 75.0,
+      "t_mid": 72.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3829,
+      "predicted_class_model_score": 0.3829,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0101,
+        "gradual": 0.2638,
+        "normal": 0.3829,
+        "rapid": 0.1767,
+        "sensor_fault": 0.1662
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3193,
+        "NODE_02": 0.3954,
+        "NODE_03": 0.4407,
+        "NODE_04": 0.512
+      },
+      "piezo_rms": {
+        "network_mean": 0.00642,
+        "NODE_01": 0.0083,
+        "NODE_02": 0.00682,
+        "NODE_03": 0.00555,
+        "NODE_04": 0.005
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0712,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.731,
+      "dir_convergence_weighted_cos": 0.2831,
+      "anomaly_score": 8.5727,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 29,
+      "t_start": 72.5,
+      "t_end": 77.5,
+      "t_mid": 75.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3749,
+      "predicted_class_model_score": 0.3749,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0179,
+        "gradual": 0.2779,
+        "normal": 0.3749,
+        "rapid": 0.1437,
+        "sensor_fault": 0.1854
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4711,
+        "NODE_02": 0.3774,
+        "NODE_03": 0.3854,
+        "NODE_04": 0.5133
+      },
+      "piezo_rms": {
+        "network_mean": 0.00443,
+        "NODE_01": 0.00641,
+        "NODE_02": 0.00278,
+        "NODE_03": 0.00548,
+        "NODE_04": 0.00305
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0712,
+        "NODE_01": 0.08,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.434,
+      "dir_convergence_weighted_cos": 0.3006,
+      "anomaly_score": 9.108,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 30,
+      "t_start": 75.0,
+      "t_end": 80.0,
+      "t_mid": 77.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.2918,
+      "predicted_class_model_score": 0.2918,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0155,
+        "gradual": 0.245,
+        "normal": 0.2918,
+        "rapid": 0.2432,
+        "sensor_fault": 0.2045
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5445,
+        "NODE_02": 0.6648,
+        "NODE_03": 0.3927,
+        "NODE_04": 0.3825
+      },
+      "piezo_rms": {
+        "network_mean": 0.00444,
+        "NODE_01": 0.00472,
+        "NODE_02": 0.00289,
+        "NODE_03": 0.00514,
+        "NODE_04": 0.005
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0213,
+        "hub_residual_abs_max_m": 0.0762,
+        "NODE_01": -0.05,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.549,
+      "dir_convergence_weighted_cos": 0.615,
+      "anomaly_score": 10.2986,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 31,
+      "t_start": 77.5,
+      "t_end": 82.5,
+      "t_mid": 80.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3256,
+      "predicted_class_model_score": 0.3256,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0066,
+        "gradual": 0.3046,
+        "normal": 0.3256,
+        "rapid": 0.2487,
+        "sensor_fault": 0.1142
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2913,
+        "NODE_02": 0.6453,
+        "NODE_03": 0.4476,
+        "NODE_04": 0.3069
+      },
+      "piezo_rms": {
+        "network_mean": 0.00779,
+        "NODE_01": 0.00364,
+        "NODE_02": 0.00671,
+        "NODE_03": 0.00725,
+        "NODE_04": 0.01358
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0213,
+        "hub_residual_abs_max_m": 0.0762,
+        "NODE_01": -0.05,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.489,
+      "dir_convergence_weighted_cos": 0.7427,
+      "anomaly_score": 9.2748,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 32,
+      "t_start": 80.0,
+      "t_end": 85.0,
+      "t_mid": 82.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3798,
+      "predicted_class_model_score": 0.3798,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0006,
+        "comm_fault": 0.0098,
+        "gradual": 0.2878,
+        "normal": 0.3798,
+        "rapid": 0.2293,
+        "sensor_fault": 0.0927
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2792,
+        "NODE_02": 0.2758,
+        "NODE_03": 0.347,
+        "NODE_04": 0.2995
+      },
+      "piezo_rms": {
+        "network_mean": 0.00866,
+        "NODE_01": 0.00469,
+        "NODE_02": 0.00719,
+        "NODE_03": 0.00733,
+        "NODE_04": 0.01544
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0088,
+        "hub_residual_abs_max_m": 0.0637,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.998,
+      "dir_convergence_weighted_cos": 0.6904,
+      "anomaly_score": 6.1072,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": true
+    },
+    {
+      "window_idx": 33,
+      "t_start": 82.5,
+      "t_end": 87.5,
+      "t_mid": 85.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3549,
+      "predicted_class_model_score": 0.3549,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0128,
+        "gradual": 0.2887,
+        "normal": 0.3549,
+        "rapid": 0.2207,
+        "sensor_fault": 0.1225
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4341,
+        "NODE_02": 0.3562,
+        "NODE_03": 0.3456,
+        "NODE_04": 0.3482
+      },
+      "piezo_rms": {
+        "network_mean": 0.00937,
+        "NODE_01": 0.00593,
+        "NODE_02": 0.00569,
+        "NODE_03": 0.01747,
+        "NODE_04": 0.0084
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0088,
+        "hub_residual_abs_max_m": 0.0637,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.189,
+      "dir_convergence_weighted_cos": 0.8345,
+      "anomaly_score": 7.5336,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 34,
+      "t_start": 85.0,
+      "t_end": 90.0,
+      "t_mid": 87.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3302,
+      "predicted_class_model_score": 0.3302,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0192,
+        "gradual": 0.2981,
+        "normal": 0.3302,
+        "rapid": 0.2057,
+        "sensor_fault": 0.1466
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4273,
+        "NODE_02": 0.3892,
+        "NODE_03": 0.4028,
+        "NODE_04": 0.353
+      },
+      "piezo_rms": {
+        "network_mean": 0.00985,
+        "NODE_01": 0.00554,
+        "NODE_02": 0.00623,
+        "NODE_03": 0.02203,
+        "NODE_04": 0.0056
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0662,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.969,
+      "dir_convergence_weighted_cos": 0.8074,
+      "anomaly_score": 7.3805,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 35,
+      "t_start": 87.5,
+      "t_end": 92.5,
+      "t_mid": 90.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.2859,
+      "predicted_class_model_score": 0.2826,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0213,
+        "gradual": 0.2859,
+        "normal": 0.2826,
+        "rapid": 0.2281,
+        "sensor_fault": 0.182
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5341,
+        "NODE_02": 0.387,
+        "NODE_03": 0.3977,
+        "NODE_04": 0.4029
+      },
+      "piezo_rms": {
+        "network_mean": 0.00786,
+        "NODE_01": 0.00752,
+        "NODE_02": 0.00507,
+        "NODE_03": 0.013,
+        "NODE_04": 0.00585
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0662,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": -0.06,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.389,
+      "dir_convergence_weighted_cos": 0.714,
+      "anomaly_score": 8.7162,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 36,
+      "t_start": 90.0,
+      "t_end": 95.0,
+      "t_mid": 92.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3795,
+      "predicted_class_model_score": 0.3795,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0229,
+        "gradual": 0.3795,
+        "normal": 0.2622,
+        "rapid": 0.2378,
+        "sensor_fault": 0.0975
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5492,
+        "NODE_02": 0.4734,
+        "NODE_03": 0.4,
+        "NODE_04": 0.4717
+      },
+      "piezo_rms": {
+        "network_mean": 0.00666,
+        "NODE_01": 0.00808,
+        "NODE_02": 0.00348,
+        "NODE_03": 0.00795,
+        "NODE_04": 0.00712
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0312,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.37,
+      "dir_convergence_weighted_cos": 0.7655,
+      "anomaly_score": 8.3008,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 37,
+      "t_start": 92.5,
+      "t_end": 97.5,
+      "t_mid": 95.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3584,
+      "predicted_class_model_score": 0.3584,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0075,
+        "gradual": 0.3068,
+        "normal": 0.3584,
+        "rapid": 0.2335,
+        "sensor_fault": 0.0934
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3358,
+        "NODE_02": 0.4206,
+        "NODE_03": 0.3461,
+        "NODE_04": 0.513
+      },
+      "piezo_rms": {
+        "network_mean": 0.00721,
+        "NODE_01": 0.00516,
+        "NODE_02": 0.00367,
+        "NODE_03": 0.01166,
+        "NODE_04": 0.00834
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0312,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.0,
+        "NODE_02": 0.055,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.965,
+      "dir_convergence_weighted_cos": 0.7198,
+      "anomaly_score": 8.0118,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 38,
+      "t_start": 95.0,
+      "t_end": 100.0,
+      "t_mid": 97.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.331,
+      "predicted_class_model_score": 0.331,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0179,
+        "gradual": 0.2986,
+        "normal": 0.331,
+        "rapid": 0.2205,
+        "sensor_fault": 0.1316
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3018,
+        "NODE_02": 0.3841,
+        "NODE_03": 0.2276,
+        "NODE_04": 0.414
+      },
+      "piezo_rms": {
+        "network_mean": 0.00902,
+        "NODE_01": 0.00441,
+        "NODE_02": 0.00438,
+        "NODE_03": 0.0204,
+        "NODE_04": 0.00689
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0287,
+        "hub_residual_abs_max_m": 0.0287,
+        "NODE_01": 0.0,
+        "NODE_02": 0.045,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.2,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 11.667,
+      "dir_convergence_weighted_cos": 0.4684,
+      "anomaly_score": 9.4808,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 39,
+      "t_start": 97.5,
+      "t_end": 102.5,
+      "t_mid": 100.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3509,
+      "predicted_class_model_score": 0.3509,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0133,
+        "gradual": 0.2927,
+        "normal": 0.3509,
+        "rapid": 0.2064,
+        "sensor_fault": 0.1366
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3575,
+        "NODE_02": 0.6258,
+        "NODE_03": 0.3347,
+        "NODE_04": 0.3355
+      },
+      "piezo_rms": {
+        "network_mean": 0.01016,
+        "NODE_01": 0.00483,
+        "NODE_02": 0.00441,
+        "NODE_03": 0.02506,
+        "NODE_04": 0.00633
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0287,
+        "hub_residual_abs_max_m": 0.0287,
+        "NODE_01": 0.0,
+        "NODE_02": 0.045,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 12.481,
+      "dir_convergence_weighted_cos": -0.1304,
+      "anomaly_score": 9.2421,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 40,
+      "t_start": 100.0,
+      "t_end": 105.0,
+      "t_mid": 102.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3359,
+      "predicted_class_model_score": 0.3359,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0065,
+        "comm_fault": 0.017,
+        "gradual": 0.283,
+        "normal": 0.3359,
+        "rapid": 0.2189,
+        "sensor_fault": 0.1387
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4193,
+        "NODE_02": 0.5537,
+        "NODE_03": 0.4657,
+        "NODE_04": 0.4683
+      },
+      "piezo_rms": {
+        "network_mean": 0.00934,
+        "NODE_01": 0.00635,
+        "NODE_02": 0.00625,
+        "NODE_03": 0.0158,
+        "NODE_04": 0.00896
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0237,
+        "hub_residual_abs_max_m": 0.0237,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.953,
+      "dir_convergence_weighted_cos": -0.2992,
+      "anomaly_score": 10.7591,
+      "unknown_anomaly_raw": true,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 41,
+      "t_start": 102.5,
+      "t_end": 107.5,
+      "t_mid": 105.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.315,
+      "predicted_class_model_score": 0.3053,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.013,
+        "gradual": 0.315,
+        "normal": 0.3053,
+        "rapid": 0.2214,
+        "sensor_fault": 0.1451
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4205,
+        "NODE_02": 0.3419,
+        "NODE_03": 0.3914,
+        "NODE_04": 0.4646
+      },
+      "piezo_rms": {
+        "network_mean": 0.00723,
+        "NODE_01": 0.00488,
+        "NODE_02": 0.00701,
+        "NODE_03": 0.00583,
+        "NODE_04": 0.01118
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0237,
+        "hub_residual_abs_max_m": 0.0237,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": 0.04,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.174,
+      "dir_convergence_weighted_cos": -0.2342,
+      "anomaly_score": 8.608,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 42,
+      "t_start": 105.0,
+      "t_end": 110.0,
+      "t_mid": 107.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3431,
+      "predicted_class_model_score": 0.3431,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0126,
+        "gradual": 0.3051,
+        "normal": 0.3431,
+        "rapid": 0.1819,
+        "sensor_fault": 0.157
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4518,
+        "NODE_02": 0.4379,
+        "NODE_03": 0.2435,
+        "NODE_04": 0.386
+      },
+      "piezo_rms": {
+        "network_mean": 0.00609,
+        "NODE_01": 0.00229,
+        "NODE_02": 0.00482,
+        "NODE_03": 0.00691,
+        "NODE_04": 0.01033
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0212,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 9.721,
+      "dir_convergence_weighted_cos": -0.3154,
+      "anomaly_score": 6.7879,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 43,
+      "t_start": 107.5,
+      "t_end": 112.5,
+      "t_mid": 110.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3242,
+      "predicted_class_model_score": 0.3158,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0134,
+        "gradual": 0.3242,
+        "normal": 0.3158,
+        "rapid": 0.2008,
+        "sensor_fault": 0.1454
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5045,
+        "NODE_02": 0.5158,
+        "NODE_03": 0.3588,
+        "NODE_04": 0.3918
+      },
+      "piezo_rms": {
+        "network_mean": 0.00559,
+        "NODE_01": 0.00366,
+        "NODE_02": 0.00445,
+        "NODE_03": 0.00758,
+        "NODE_04": 0.00668
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0212,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 10.383,
+      "dir_convergence_weighted_cos": -0.44,
+      "anomaly_score": 7.2557,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 44,
+      "t_start": 110.0,
+      "t_end": 115.0,
+      "t_mid": 112.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3238,
+      "predicted_class_model_score": 0.3238,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0119,
+        "gradual": 0.3177,
+        "normal": 0.3238,
+        "rapid": 0.2239,
+        "sensor_fault": 0.1225
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3939,
+        "NODE_02": 0.4845,
+        "NODE_03": 0.3688,
+        "NODE_04": 0.4267
+      },
+      "piezo_rms": {
+        "network_mean": 0.00577,
+        "NODE_01": 0.00625,
+        "NODE_02": 0.00478,
+        "NODE_03": 0.00646,
+        "NODE_04": 0.00559
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0013,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.854,
+      "dir_convergence_weighted_cos": -0.4995,
+      "anomaly_score": 7.3606,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 45,
+      "t_start": 112.5,
+      "t_end": 117.5,
+      "t_mid": 115.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3285,
+      "predicted_class_model_score": 0.3285,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.021,
+        "gradual": 0.2968,
+        "normal": 0.3285,
+        "rapid": 0.208,
+        "sensor_fault": 0.1455
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3671,
+        "NODE_02": 0.3155,
+        "NODE_03": 0.2408,
+        "NODE_04": 0.4313
+      },
+      "piezo_rms": {
+        "network_mean": 0.00586,
+        "NODE_01": 0.00967,
+        "NODE_02": 0.00457,
+        "NODE_03": 0.00456,
+        "NODE_04": 0.00465
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0013,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.0,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.229,
+      "dir_convergence_weighted_cos": -0.5343,
+      "anomaly_score": 5.9619,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 46,
+      "t_start": 115.0,
+      "t_end": 120.0,
+      "t_mid": 117.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3205,
+      "predicted_class_model_score": 0.3205,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0189,
+        "gradual": 0.3163,
+        "normal": 0.3205,
+        "rapid": 0.1829,
+        "sensor_fault": 0.1612
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3899,
+        "NODE_02": 0.3826,
+        "NODE_03": 0.4674,
+        "NODE_04": 0.4036
+      },
+      "piezo_rms": {
+        "network_mean": 0.00591,
+        "NODE_01": 0.00905,
+        "NODE_02": 0.00454,
+        "NODE_03": 0.00592,
+        "NODE_04": 0.00415
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0238,
+        "NODE_01": 0.02,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 8.3,
+      "dir_convergence_weighted_cos": 0.1618,
+      "anomaly_score": 7.9304,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 47,
+      "t_start": 117.5,
+      "t_end": 122.5,
+      "t_mid": 120.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3805,
+      "predicted_class_model_score": 0.3805,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0049,
+        "gradual": 0.3805,
+        "normal": 0.3286,
+        "rapid": 0.1982,
+        "sensor_fault": 0.0878
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3168,
+        "NODE_02": 0.3613,
+        "NODE_03": 0.4572,
+        "NODE_04": 0.4445
+      },
+      "piezo_rms": {
+        "network_mean": 0.00717,
+        "NODE_01": 0.00466,
+        "NODE_02": 0.00465,
+        "NODE_03": 0.01457,
+        "NODE_04": 0.00482
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0238,
+        "NODE_01": 0.02,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 6.35,
+      "dir_convergence_weighted_cos": 0.8919,
+      "anomaly_score": 9.1273,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 48,
+      "t_start": 120.0,
+      "t_end": 125.0,
+      "t_mid": 122.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3427,
+      "predicted_class_model_score": 0.3427,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0142,
+        "gradual": 0.3037,
+        "normal": 0.3427,
+        "rapid": 0.2085,
+        "sensor_fault": 0.1306
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3717,
+        "NODE_02": 0.2329,
+        "NODE_03": 0.2896,
+        "NODE_04": 0.4823
+      },
+      "piezo_rms": {
+        "network_mean": 0.00821,
+        "NODE_01": 0.00374,
+        "NODE_02": 0.00425,
+        "NODE_03": 0.01877,
+        "NODE_04": 0.00608
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.893,
+      "dir_convergence_weighted_cos": 0.8411,
+      "anomaly_score": 6.4458,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 49,
+      "t_start": 122.5,
+      "t_end": 127.5,
+      "t_mid": 125.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3387,
+      "predicted_class_model_score": 0.3312,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0112,
+        "gradual": 0.3387,
+        "normal": 0.3312,
+        "rapid": 0.2038,
+        "sensor_fault": 0.1147
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2964,
+        "NODE_02": 0.302,
+        "NODE_03": 0.3793,
+        "NODE_04": 0.4447
+      },
+      "piezo_rms": {
+        "network_mean": 0.00818,
+        "NODE_01": 0.00563,
+        "NODE_02": 0.00437,
+        "NODE_03": 0.01375,
+        "NODE_04": 0.00896
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0312,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.921,
+      "dir_convergence_weighted_cos": 0.8703,
+      "anomaly_score": 7.0225,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 50,
+      "t_start": 125.0,
+      "t_end": 130.0,
+      "t_mid": 127.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3849,
+      "predicted_class_model_score": 0.3849,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0097,
+        "gradual": 0.2895,
+        "normal": 0.3849,
+        "rapid": 0.1796,
+        "sensor_fault": 0.1362
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3164,
+        "NODE_02": 0.3943,
+        "NODE_03": 0.4121,
+        "NODE_04": 0.3519
+      },
+      "piezo_rms": {
+        "network_mean": 0.00706,
+        "NODE_01": 0.00578,
+        "NODE_02": 0.00464,
+        "NODE_03": 0.00864,
+        "NODE_04": 0.0092
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0363,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 11.823,
+      "dir_convergence_weighted_cos": 0.6731,
+      "anomaly_score": 6.1492,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 51,
+      "t_start": 127.5,
+      "t_end": 132.5,
+      "t_mid": 130.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3482,
+      "predicted_class_model_score": 0.3482,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0148,
+        "gradual": 0.2826,
+        "normal": 0.3482,
+        "rapid": 0.1841,
+        "sensor_fault": 0.1701
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4015,
+        "NODE_02": 0.3698,
+        "NODE_03": 0.2818,
+        "NODE_04": 0.4478
+      },
+      "piezo_rms": {
+        "network_mean": 0.00676,
+        "NODE_01": 0.00674,
+        "NODE_02": 0.00582,
+        "NODE_03": 0.00816,
+        "NODE_04": 0.00633
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0363,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.01,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 14.671,
+      "dir_convergence_weighted_cos": -0.2548,
+      "anomaly_score": 8.0091,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 52,
+      "t_start": 130.0,
+      "t_end": 135.0,
+      "t_mid": 132.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3492,
+      "predicted_class_model_score": 0.3492,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0162,
+        "gradual": 0.3049,
+        "normal": 0.3492,
+        "rapid": 0.1732,
+        "sensor_fault": 0.1562
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4049,
+        "NODE_02": 0.297,
+        "NODE_03": 0.3169,
+        "NODE_04": 0.5485
+      },
+      "piezo_rms": {
+        "network_mean": 0.0076,
+        "NODE_01": 0.0091,
+        "NODE_02": 0.00664,
+        "NODE_03": 0.01085,
+        "NODE_04": 0.00379
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0063,
+        "hub_residual_abs_max_m": 0.0537,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 21.983,
+      "dir_convergence_weighted_cos": 0.1606,
+      "anomaly_score": 9.4108,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 53,
+      "t_start": 132.5,
+      "t_end": 137.5,
+      "t_mid": 135.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.337,
+      "predicted_class_model_score": 0.337,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.015,
+        "gradual": 0.3149,
+        "normal": 0.337,
+        "rapid": 0.1787,
+        "sensor_fault": 0.1541
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4753,
+        "NODE_02": 0.3292,
+        "NODE_03": 0.3329,
+        "NODE_04": 0.4895
+      },
+      "piezo_rms": {
+        "network_mean": 0.00748,
+        "NODE_01": 0.00827,
+        "NODE_02": 0.00596,
+        "NODE_03": 0.01169,
+        "NODE_04": 0.00401
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0063,
+        "hub_residual_abs_max_m": 0.0537,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 17.105,
+      "dir_convergence_weighted_cos": 0.4814,
+      "anomaly_score": 8.2077,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 54,
+      "t_start": 135.0,
+      "t_end": 140.0,
+      "t_mid": 137.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3751,
+      "predicted_class_model_score": 0.3751,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0005,
+        "comm_fault": 0.0181,
+        "gradual": 0.2732,
+        "normal": 0.3751,
+        "rapid": 0.1836,
+        "sensor_fault": 0.1495
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3419,
+        "NODE_02": 0.2779,
+        "NODE_03": 0.2549,
+        "NODE_04": 0.4139
+      },
+      "piezo_rms": {
+        "network_mean": 0.00681,
+        "NODE_01": 0.00659,
+        "NODE_02": 0.00496,
+        "NODE_03": 0.01009,
+        "NODE_04": 0.0056
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0063,
+        "hub_residual_abs_max_m": 0.0537,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 11.756,
+      "dir_convergence_weighted_cos": 0.1636,
+      "anomaly_score": 7.1578,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 55,
+      "t_start": 137.5,
+      "t_end": 142.5,
+      "t_mid": 140.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.347,
+      "predicted_class_model_score": 0.347,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0007,
+        "comm_fault": 0.0147,
+        "gradual": 0.2866,
+        "normal": 0.347,
+        "rapid": 0.2321,
+        "sensor_fault": 0.1189
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3685,
+        "NODE_02": 0.1854,
+        "NODE_03": 0.4291,
+        "NODE_04": 0.2998
+      },
+      "piezo_rms": {
+        "network_mean": 0.00625,
+        "NODE_01": 0.00594,
+        "NODE_02": 0.00478,
+        "NODE_03": 0.00717,
+        "NODE_04": 0.00713
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0063,
+        "hub_residual_abs_max_m": 0.0537,
+        "NODE_01": 0.04,
+        "NODE_02": 0.025,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.459,
+      "dir_convergence_weighted_cos": 0.6239,
+      "anomaly_score": 5.7393,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 56,
+      "t_start": 140.0,
+      "t_end": 145.0,
+      "t_mid": 142.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3174,
+      "predicted_class_model_score": 0.3137,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0006,
+        "comm_fault": 0.0122,
+        "gradual": 0.3174,
+        "normal": 0.3137,
+        "rapid": 0.2196,
+        "sensor_fault": 0.1364
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5331,
+        "NODE_02": 0.2472,
+        "NODE_03": 0.4628,
+        "NODE_04": 0.2717
+      },
+      "piezo_rms": {
+        "network_mean": 0.00665,
+        "NODE_01": 0.00864,
+        "NODE_02": 0.00455,
+        "NODE_03": 0.00726,
+        "NODE_04": 0.00616
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0562,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.187,
+      "dir_convergence_weighted_cos": 0.7872,
+      "anomaly_score": 6.7841,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 57,
+      "t_start": 142.5,
+      "t_end": 147.5,
+      "t_mid": 145.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3555,
+      "predicted_class_model_score": 0.3555,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0005,
+        "comm_fault": 0.0135,
+        "gradual": 0.2998,
+        "normal": 0.3555,
+        "rapid": 0.1637,
+        "sensor_fault": 0.1669
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3958,
+        "NODE_02": 0.3033,
+        "NODE_03": 0.4052,
+        "NODE_04": 0.3275
+      },
+      "piezo_rms": {
+        "network_mean": 0.00701,
+        "NODE_01": 0.009,
+        "NODE_02": 0.00294,
+        "NODE_03": 0.01023,
+        "NODE_04": 0.00588
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0562,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.06,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 11.555,
+      "dir_convergence_weighted_cos": 0.0957,
+      "anomaly_score": 7.9762,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 58,
+      "t_start": 145.0,
+      "t_end": 150.0,
+      "t_mid": 147.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3517,
+      "predicted_class_model_score": 0.3517,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0163,
+        "gradual": 0.2984,
+        "normal": 0.3517,
+        "rapid": 0.1715,
+        "sensor_fault": 0.1616
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2567,
+        "NODE_02": 0.2786,
+        "NODE_03": 0.4131,
+        "NODE_04": 0.4303
+      },
+      "piezo_rms": {
+        "network_mean": 0.00674,
+        "NODE_01": 0.00732,
+        "NODE_02": 0.00326,
+        "NODE_03": 0.01022,
+        "NODE_04": 0.00616
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 13.001,
+      "dir_convergence_weighted_cos": -0.2681,
+      "anomaly_score": 6.7657,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 59,
+      "t_start": 147.5,
+      "t_end": 152.5,
+      "t_mid": 150.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3514,
+      "predicted_class_model_score": 0.3514,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0178,
+        "gradual": 0.297,
+        "normal": 0.3514,
+        "rapid": 0.1817,
+        "sensor_fault": 0.1517
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2323,
+        "NODE_02": 0.3783,
+        "NODE_03": 0.3402,
+        "NODE_04": 0.3237
+      },
+      "piezo_rms": {
+        "network_mean": 0.00636,
+        "NODE_01": 0.00692,
+        "NODE_02": 0.00442,
+        "NODE_03": 0.00733,
+        "NODE_04": 0.00677
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 15.098,
+      "dir_convergence_weighted_cos": -0.6116,
+      "anomaly_score": 7.7186,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 60,
+      "t_start": 150.0,
+      "t_end": 155.0,
+      "t_mid": 152.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3432,
+      "predicted_class_model_score": 0.3432,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0172,
+        "gradual": 0.3006,
+        "normal": 0.3432,
+        "rapid": 0.1839,
+        "sensor_fault": 0.1547
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.1979,
+        "NODE_02": 0.3359,
+        "NODE_03": 0.3487,
+        "NODE_04": 0.359
+      },
+      "piezo_rms": {
+        "network_mean": 0.00571,
+        "NODE_01": 0.00456,
+        "NODE_02": 0.00489,
+        "NODE_03": 0.00694,
+        "NODE_04": 0.00645
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 9.769,
+      "dir_convergence_weighted_cos": -0.4755,
+      "anomaly_score": 8.9392,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 61,
+      "t_start": 152.5,
+      "t_end": 157.5,
+      "t_mid": 155.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3576,
+      "predicted_class_model_score": 0.3576,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0175,
+        "gradual": 0.2938,
+        "normal": 0.3576,
+        "rapid": 0.1842,
+        "sensor_fault": 0.1466
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.1555,
+        "NODE_02": 0.2421,
+        "NODE_03": 0.3253,
+        "NODE_04": 0.4502
+      },
+      "piezo_rms": {
+        "network_mean": 0.00514,
+        "NODE_01": 0.00358,
+        "NODE_02": 0.00493,
+        "NODE_03": 0.00852,
+        "NODE_04": 0.00352
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.04,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.081,
+      "dir_convergence_weighted_cos": -0.5747,
+      "anomaly_score": 6.8212,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 62,
+      "t_start": 155.0,
+      "t_end": 160.0,
+      "t_mid": 157.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3677,
+      "predicted_class_model_score": 0.3677,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0232,
+        "gradual": 0.2749,
+        "normal": 0.3677,
+        "rapid": 0.18,
+        "sensor_fault": 0.1539
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2027,
+        "NODE_02": 0.3482,
+        "NODE_03": 0.2716,
+        "NODE_04": 0.4573
+      },
+      "piezo_rms": {
+        "network_mean": 0.00538,
+        "NODE_01": 0.00594,
+        "NODE_02": 0.00494,
+        "NODE_03": 0.00777,
+        "NODE_04": 0.00288
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0387,
+        "NODE_01": 0.0,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 10.002,
+      "dir_convergence_weighted_cos": -0.6241,
+      "anomaly_score": 6.348,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 63,
+      "t_start": 157.5,
+      "t_end": 162.5,
+      "t_mid": 160.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3246,
+      "predicted_class_model_score": 0.3246,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0172,
+        "gradual": 0.3163,
+        "normal": 0.3246,
+        "rapid": 0.1762,
+        "sensor_fault": 0.1654
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3466,
+        "NODE_02": 0.4045,
+        "NODE_03": 0.3948,
+        "NODE_04": 0.3823
+      },
+      "piezo_rms": {
+        "network_mean": 0.00597,
+        "NODE_01": 0.00721,
+        "NODE_02": 0.00455,
+        "NODE_03": 0.00815,
+        "NODE_04": 0.00398
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0387,
+        "NODE_01": 0.0,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 8.837,
+      "dir_convergence_weighted_cos": 0.3095,
+      "anomaly_score": 6.0212,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 64,
+      "t_start": 160.0,
+      "t_end": 165.0,
+      "t_mid": 162.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3356,
+      "predicted_class_model_score": 0.3356,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0005,
+        "comm_fault": 0.0144,
+        "gradual": 0.3237,
+        "normal": 0.3356,
+        "rapid": 0.1775,
+        "sensor_fault": 0.1484
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3842,
+        "NODE_02": 0.4288,
+        "NODE_03": 0.3736,
+        "NODE_04": 0.2922
+      },
+      "piezo_rms": {
+        "network_mean": 0.00535,
+        "NODE_01": 0.00593,
+        "NODE_02": 0.00398,
+        "NODE_03": 0.00809,
+        "NODE_04": 0.00339
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0412,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 12.53,
+      "dir_convergence_weighted_cos": -0.5281,
+      "anomaly_score": 6.1253,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 65,
+      "t_start": 162.5,
+      "t_end": 167.5,
+      "t_mid": 165.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3334,
+      "predicted_class_model_score": 0.3334,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0214,
+        "gradual": 0.3088,
+        "normal": 0.3334,
+        "rapid": 0.184,
+        "sensor_fault": 0.1521
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4176,
+        "NODE_02": 0.5723,
+        "NODE_03": 0.2187,
+        "NODE_04": 0.3279
+      },
+      "piezo_rms": {
+        "network_mean": 0.0056,
+        "NODE_01": 0.00708,
+        "NODE_02": 0.00541,
+        "NODE_03": 0.00771,
+        "NODE_04": 0.00218
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0412,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.02
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 13.487,
+      "dir_convergence_weighted_cos": -0.3261,
+      "anomaly_score": 7.1136,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 66,
+      "t_start": 165.0,
+      "t_end": 170.0,
+      "t_mid": 167.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3921,
+      "predicted_class_model_score": 0.3921,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0172,
+        "gradual": 0.2947,
+        "normal": 0.3921,
+        "rapid": 0.1522,
+        "sensor_fault": 0.1435
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5822,
+        "NODE_02": 0.5549,
+        "NODE_03": 0.2544,
+        "NODE_04": 0.232
+      },
+      "piezo_rms": {
+        "network_mean": 0.00608,
+        "NODE_01": 0.00607,
+        "NODE_02": 0.00664,
+        "NODE_03": 0.00956,
+        "NODE_04": 0.00205
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0437,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 13.488,
+      "dir_convergence_weighted_cos": -0.2316,
+      "anomaly_score": 9.2047,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 67,
+      "t_start": 167.5,
+      "t_end": 172.5,
+      "t_mid": 170.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3685,
+      "predicted_class_model_score": 0.3685,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0191,
+        "gradual": 0.2297,
+        "normal": 0.3685,
+        "rapid": 0.1632,
+        "sensor_fault": 0.2192
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4656,
+        "NODE_02": 0.264,
+        "NODE_03": 0.2939,
+        "NODE_04": 0.198
+      },
+      "piezo_rms": {
+        "network_mean": 0.00594,
+        "NODE_01": 0.00302,
+        "NODE_02": 0.00609,
+        "NODE_03": 0.01164,
+        "NODE_04": 0.00302
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0437,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": -0.03,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 13.538,
+      "dir_convergence_weighted_cos": -0.4877,
+      "anomaly_score": 7.9894,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 68,
+      "t_start": 170.0,
+      "t_end": 175.0,
+      "t_mid": 172.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3904,
+      "predicted_class_model_score": 0.3904,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0197,
+        "gradual": 0.2962,
+        "normal": 0.3904,
+        "rapid": 0.15,
+        "sensor_fault": 0.1435
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2874,
+        "NODE_02": 0.2739,
+        "NODE_03": 0.3524,
+        "NODE_04": 0.5224
+      },
+      "piezo_rms": {
+        "network_mean": 0.00601,
+        "NODE_01": 0.00351,
+        "NODE_02": 0.00566,
+        "NODE_03": 0.00968,
+        "NODE_04": 0.00521
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0187,
+        "hub_residual_abs_max_m": 0.0488,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 13.605,
+      "dir_convergence_weighted_cos": -0.3216,
+      "anomaly_score": 9.1991,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 69,
+      "t_start": 172.5,
+      "t_end": 177.5,
+      "t_mid": 175.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3371,
+      "predicted_class_model_score": 0.3308,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0097,
+        "gradual": 0.3371,
+        "normal": 0.3308,
+        "rapid": 0.2261,
+        "sensor_fault": 0.0963
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4705,
+        "NODE_02": 0.5785,
+        "NODE_03": 0.2333,
+        "NODE_04": 0.6592
+      },
+      "piezo_rms": {
+        "network_mean": 0.00592,
+        "NODE_01": 0.00375,
+        "NODE_02": 0.00528,
+        "NODE_03": 0.00753,
+        "NODE_04": 0.00713
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0187,
+        "hub_residual_abs_max_m": 0.0488,
+        "NODE_01": 0.05,
+        "NODE_02": 0.035,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 10.31,
+      "dir_convergence_weighted_cos": 0.5653,
+      "anomaly_score": 8.9816,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 70,
+      "t_start": 175.0,
+      "t_end": 180.0,
+      "t_mid": 177.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3749,
+      "predicted_class_model_score": 0.3749,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0054,
+        "gradual": 0.3749,
+        "normal": 0.312,
+        "rapid": 0.2035,
+        "sensor_fault": 0.1042
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5028,
+        "NODE_02": 0.5227,
+        "NODE_03": 0.1549,
+        "NODE_04": 0.5201
+      },
+      "piezo_rms": {
+        "network_mean": 0.00571,
+        "NODE_01": 0.00381,
+        "NODE_02": 0.0055,
+        "NODE_03": 0.00777,
+        "NODE_04": 0.00577
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0413,
+        "NODE_01": 0.05,
+        "NODE_02": 0.005,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.517,
+      "dir_convergence_weighted_cos": 0.7567,
+      "anomaly_score": 8.8868,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 71,
+      "t_start": 177.5,
+      "t_end": 182.5,
+      "t_mid": 180.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.5138,
+      "predicted_class_model_score": 0.5138,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.001,
+        "gradual": 0.5138,
+        "normal": 0.1358,
+        "rapid": 0.3249,
+        "sensor_fault": 0.0244
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5035,
+        "NODE_02": 0.3623,
+        "NODE_03": 0.2229,
+        "NODE_04": 0.4373
+      },
+      "piezo_rms": {
+        "network_mean": 0.00636,
+        "NODE_01": 0.00621,
+        "NODE_02": 0.00668,
+        "NODE_03": 0.00813,
+        "NODE_04": 0.00444
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0413,
+        "NODE_01": 0.05,
+        "NODE_02": 0.005,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 3.84,
+      "dir_convergence_weighted_cos": 0.9459,
+      "anomaly_score": 6.9259,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 72,
+      "t_start": 180.0,
+      "t_end": 185.0,
+      "t_mid": 182.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4603,
+      "predicted_class_model_score": 0.4603,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0053,
+        "gradual": 0.4603,
+        "normal": 0.0779,
+        "rapid": 0.4042,
+        "sensor_fault": 0.0523
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5414,
+        "NODE_02": 0.4414,
+        "NODE_03": 0.3308,
+        "NODE_04": 0.2765
+      },
+      "piezo_rms": {
+        "network_mean": 0.00713,
+        "NODE_01": 0.00817,
+        "NODE_02": 0.00775,
+        "NODE_03": 0.00746,
+        "NODE_04": 0.00515
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0437,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 0.629,
+      "dir_convergence_weighted_cos": 0.9994,
+      "anomaly_score": 6.5783,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 73,
+      "t_start": 182.5,
+      "t_end": 187.5,
+      "t_mid": 185.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4261,
+      "predicted_class_model_score": 0.4261,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0058,
+        "gradual": 0.3879,
+        "normal": 0.1409,
+        "rapid": 0.4261,
+        "sensor_fault": 0.0392
+      },
+      "predicted_class": "rapid",
+      "predicted_class_raw": "rapid",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3577,
+        "NODE_02": 0.3978,
+        "NODE_03": 0.4402,
+        "NODE_04": 0.3866
+      },
+      "piezo_rms": {
+        "network_mean": 0.00727,
+        "NODE_01": 0.00714,
+        "NODE_02": 0.00781,
+        "NODE_03": 0.008,
+        "NODE_04": 0.00614
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0437,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.02,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 1.003,
+      "dir_convergence_weighted_cos": 0.9934,
+      "anomaly_score": 7.7904,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 74,
+      "t_start": 185.0,
+      "t_end": 190.0,
+      "t_mid": 187.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4028,
+      "predicted_class_model_score": 0.4028,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.002,
+        "gradual": 0.4028,
+        "normal": 0.2854,
+        "rapid": 0.2628,
+        "sensor_fault": 0.0469
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3557,
+        "NODE_02": 0.3695,
+        "NODE_03": 0.4499,
+        "NODE_04": 0.4868
+      },
+      "piezo_rms": {
+        "network_mean": 0.0069,
+        "NODE_01": 0.00511,
+        "NODE_02": 0.0062,
+        "NODE_03": 0.00906,
+        "NODE_04": 0.00722
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0462,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 1.963,
+      "dir_convergence_weighted_cos": 0.9507,
+      "anomaly_score": 7.2286,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 75,
+      "t_start": 187.5,
+      "t_end": 192.5,
+      "t_mid": 190.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3883,
+      "predicted_class_model_score": 0.3883,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0041,
+        "gradual": 0.3883,
+        "normal": 0.2678,
+        "rapid": 0.2923,
+        "sensor_fault": 0.0474
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5924,
+        "NODE_02": 0.4458,
+        "NODE_03": 0.5474,
+        "NODE_04": 0.4904
+      },
+      "piezo_rms": {
+        "network_mean": 0.00644,
+        "NODE_01": 0.00417,
+        "NODE_02": 0.00491,
+        "NODE_03": 0.00834,
+        "NODE_04": 0.00836
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0462,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": -0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 1.651,
+      "dir_convergence_weighted_cos": 0.9663,
+      "anomaly_score": 6.5197,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 76,
+      "t_start": 190.0,
+      "t_end": 195.0,
+      "t_mid": 192.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.579,
+      "predicted_class_model_score": 0.579,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0049,
+        "gradual": 0.579,
+        "normal": 0.1307,
+        "rapid": 0.2695,
+        "sensor_fault": 0.016
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5969,
+        "NODE_02": 0.5002,
+        "NODE_03": 0.4381,
+        "NODE_04": 0.4235
+      },
+      "piezo_rms": {
+        "network_mean": 0.00627,
+        "NODE_01": 0.00495,
+        "NODE_02": 0.00414,
+        "NODE_03": 0.00764,
+        "NODE_04": 0.00836
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0387,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 2.962,
+      "dir_convergence_weighted_cos": 0.9537,
+      "anomaly_score": 6.6347,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 77,
+      "t_start": 192.5,
+      "t_end": 197.5,
+      "t_mid": 195.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.366,
+      "predicted_class_model_score": 0.366,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0042,
+        "gradual": 0.366,
+        "normal": 0.3485,
+        "rapid": 0.2304,
+        "sensor_fault": 0.0509
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.474,
+        "NODE_02": 0.5121,
+        "NODE_03": 0.4202,
+        "NODE_04": 0.4054
+      },
+      "piezo_rms": {
+        "network_mean": 0.00547,
+        "NODE_01": 0.00499,
+        "NODE_02": 0.00247,
+        "NODE_03": 0.00697,
+        "NODE_04": 0.00743
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0112,
+        "hub_residual_abs_max_m": 0.0387,
+        "NODE_01": 0.05,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 3.013,
+      "dir_convergence_weighted_cos": 0.9719,
+      "anomaly_score": 8.3212,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 78,
+      "t_start": 195.0,
+      "t_end": 200.0,
+      "t_mid": 197.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4037,
+      "predicted_class_model_score": 0.4037,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0016,
+        "gradual": 0.4037,
+        "normal": 0.3089,
+        "rapid": 0.2391,
+        "sensor_fault": 0.0465
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3661,
+        "NODE_02": 0.3818,
+        "NODE_03": 0.4373,
+        "NODE_04": 0.4318
+      },
+      "piezo_rms": {
+        "network_mean": 0.00536,
+        "NODE_01": 0.00546,
+        "NODE_02": 0.0017,
+        "NODE_03": 0.00655,
+        "NODE_04": 0.00774
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0188,
+        "NODE_01": 0.02,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 3.377,
+      "dir_convergence_weighted_cos": 0.9749,
+      "anomaly_score": 8.4432,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 79,
+      "t_start": 197.5,
+      "t_end": 202.5,
+      "t_mid": 200.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4427,
+      "predicted_class_model_score": 0.4427,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0016,
+        "gradual": 0.2835,
+        "normal": 0.4427,
+        "rapid": 0.2359,
+        "sensor_fault": 0.0362
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4696,
+        "NODE_02": 0.2784,
+        "NODE_03": 0.3004,
+        "NODE_04": 0.4031
+      },
+      "piezo_rms": {
+        "network_mean": 0.0067,
+        "NODE_01": 0.00928,
+        "NODE_02": 0.0015,
+        "NODE_03": 0.00622,
+        "NODE_04": 0.0098
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0037,
+        "hub_residual_abs_max_m": 0.0188,
+        "NODE_01": 0.02,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 4.3,
+      "dir_convergence_weighted_cos": 0.957,
+      "anomaly_score": 7.2497,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 80,
+      "t_start": 200.0,
+      "t_end": 205.0,
+      "t_mid": 202.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4202,
+      "predicted_class_model_score": 0.4202,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0,
+        "comm_fault": 0.0023,
+        "gradual": 0.2307,
+        "normal": 0.4202,
+        "rapid": 0.2786,
+        "sensor_fault": 0.0682
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.6109,
+        "NODE_02": 0.3214,
+        "NODE_03": 0.2855,
+        "NODE_04": 0.3556
+      },
+      "piezo_rms": {
+        "network_mean": 0.00795,
+        "NODE_01": 0.01185,
+        "NODE_02": 0.0017,
+        "NODE_03": 0.00908,
+        "NODE_04": 0.00917
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0237,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.854,
+      "dir_convergence_weighted_cos": 0.9105,
+      "anomaly_score": 7.7314,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 81,
+      "t_start": 202.5,
+      "t_end": 207.5,
+      "t_mid": 205.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3407,
+      "predicted_class_model_score": 0.2938,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0026,
+        "gradual": 0.3407,
+        "normal": 0.2938,
+        "rapid": 0.3169,
+        "sensor_fault": 0.0458
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5748,
+        "NODE_02": 0.2996,
+        "NODE_03": 0.3519,
+        "NODE_04": 0.3521
+      },
+      "piezo_rms": {
+        "network_mean": 0.00849,
+        "NODE_01": 0.01179,
+        "NODE_02": 0.00414,
+        "NODE_03": 0.00925,
+        "NODE_04": 0.00876
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0237,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.0
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.567,
+      "dir_convergence_weighted_cos": 0.9408,
+      "anomaly_score": 8.3732,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 82,
+      "t_start": 205.0,
+      "t_end": 210.0,
+      "t_mid": 207.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3641,
+      "predicted_class_model_score": 0.3641,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.0132,
+        "gradual": 0.3641,
+        "normal": 0.2824,
+        "rapid": 0.2551,
+        "sensor_fault": 0.0851
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4916,
+        "NODE_02": 0.3266,
+        "NODE_03": 0.3492,
+        "NODE_04": 0.5157
+      },
+      "piezo_rms": {
+        "network_mean": 0.00838,
+        "NODE_01": 0.01063,
+        "NODE_02": 0.00534,
+        "NODE_03": 0.00861,
+        "NODE_04": 0.00893
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0137,
+        "hub_residual_abs_max_m": 0.0288,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 4.801,
+      "dir_convergence_weighted_cos": 0.9512,
+      "anomaly_score": 7.7329,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 83,
+      "t_start": 207.5,
+      "t_end": 212.5,
+      "t_mid": 210.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.338,
+      "predicted_class_model_score": 0.338,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0139,
+        "gradual": 0.32,
+        "normal": 0.338,
+        "rapid": 0.1854,
+        "sensor_fault": 0.1424
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3045,
+        "NODE_02": 0.3589,
+        "NODE_03": 0.3537,
+        "NODE_04": 0.4163
+      },
+      "piezo_rms": {
+        "network_mean": 0.00831,
+        "NODE_01": 0.00954,
+        "NODE_02": 0.00619,
+        "NODE_03": 0.01114,
+        "NODE_04": 0.00637
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0137,
+        "hub_residual_abs_max_m": 0.0288,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 12.274,
+      "dir_convergence_weighted_cos": -0.6994,
+      "anomaly_score": 6.4422,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 84,
+      "t_start": 210.0,
+      "t_end": 215.0,
+      "t_mid": 212.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3377,
+      "predicted_class_model_score": 0.3377,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0132,
+        "gradual": 0.2861,
+        "normal": 0.3377,
+        "rapid": 0.2089,
+        "sensor_fault": 0.1538
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.2346,
+        "NODE_02": 0.3449,
+        "NODE_03": 0.3232,
+        "NODE_04": 0.4827
+      },
+      "piezo_rms": {
+        "network_mean": 0.00833,
+        "NODE_01": 0.00857,
+        "NODE_02": 0.00806,
+        "NODE_03": 0.0116,
+        "NODE_04": 0.00509
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.622,
+      "dir_convergence_weighted_cos": 0.618,
+      "anomaly_score": 7.539,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 85,
+      "t_start": 212.5,
+      "t_end": 217.5,
+      "t_mid": 215.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3193,
+      "predicted_class_model_score": 0.3193,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0036,
+        "comm_fault": 0.013,
+        "gradual": 0.3007,
+        "normal": 0.3193,
+        "rapid": 0.2248,
+        "sensor_fault": 0.1386
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3132,
+        "NODE_02": 0.3757,
+        "NODE_03": 0.3594,
+        "NODE_04": 0.5667
+      },
+      "piezo_rms": {
+        "network_mean": 0.00873,
+        "NODE_01": 0.00698,
+        "NODE_02": 0.00713,
+        "NODE_03": 0.01272,
+        "NODE_04": 0.00811
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.691,
+      "dir_convergence_weighted_cos": 0.6679,
+      "anomaly_score": 8.1096,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 86,
+      "t_start": 215.0,
+      "t_end": 220.0,
+      "t_mid": 217.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3246,
+      "predicted_class_model_score": 0.3246,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0111,
+        "gradual": 0.3149,
+        "normal": 0.3246,
+        "rapid": 0.2343,
+        "sensor_fault": 0.115
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.464,
+        "NODE_02": 0.2704,
+        "NODE_03": 0.4098,
+        "NODE_04": 0.4957
+      },
+      "piezo_rms": {
+        "network_mean": 0.00853,
+        "NODE_01": 0.00481,
+        "NODE_02": 0.00615,
+        "NODE_03": 0.01258,
+        "NODE_04": 0.01058
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0162,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.03,
+        "NODE_02": 0.025,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.19,
+      "dir_convergence_weighted_cos": 0.6466,
+      "anomaly_score": 7.0326,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 87,
+      "t_start": 217.5,
+      "t_end": 222.5,
+      "t_mid": 220.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3361,
+      "predicted_class_model_score": 0.3361,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0126,
+        "gradual": 0.2755,
+        "normal": 0.3361,
+        "rapid": 0.2692,
+        "sensor_fault": 0.1062
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3734,
+        "NODE_02": 0.2845,
+        "NODE_03": 0.2796,
+        "NODE_04": 0.5621
+      },
+      "piezo_rms": {
+        "network_mean": 0.00734,
+        "NODE_01": 0.00275,
+        "NODE_02": 0.00799,
+        "NODE_03": 0.01149,
+        "NODE_04": 0.00712
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0162,
+        "hub_residual_abs_max_m": 0.0362,
+        "NODE_01": 0.03,
+        "NODE_02": 0.025,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.029,
+      "dir_convergence_weighted_cos": 0.7303,
+      "anomaly_score": 7.4079,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 88,
+      "t_start": 220.0,
+      "t_end": 225.0,
+      "t_mid": 222.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4285,
+      "predicted_class_model_score": 0.4285,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0065,
+        "gradual": 0.4285,
+        "normal": 0.2066,
+        "rapid": 0.2806,
+        "sensor_fault": 0.0776
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4258,
+        "NODE_02": 0.32,
+        "NODE_03": 0.4126,
+        "NODE_04": 0.5056
+      },
+      "piezo_rms": {
+        "network_mean": 0.00618,
+        "NODE_01": 0.00298,
+        "NODE_02": 0.00745,
+        "NODE_03": 0.0097,
+        "NODE_04": 0.00457
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 4.397,
+      "dir_convergence_weighted_cos": 0.8525,
+      "anomaly_score": 7.795,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 89,
+      "t_start": 222.5,
+      "t_end": 227.5,
+      "t_mid": 225.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.4351,
+      "predicted_class_model_score": 0.4351,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0003,
+        "comm_fault": 0.0104,
+        "gradual": 0.4351,
+        "normal": 0.2104,
+        "rapid": 0.2634,
+        "sensor_fault": 0.0804
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.574,
+        "NODE_02": 0.3063,
+        "NODE_03": 0.5939,
+        "NODE_04": 0.4086
+      },
+      "piezo_rms": {
+        "network_mean": 0.00624,
+        "NODE_01": 0.00497,
+        "NODE_02": 0.00602,
+        "NODE_03": 0.00613,
+        "NODE_04": 0.00784
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0062,
+        "hub_residual_abs_max_m": 0.0262,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": -0.02,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.021,
+      "dir_convergence_weighted_cos": 0.8265,
+      "anomaly_score": 6.6552,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 90,
+      "t_start": 225.0,
+      "t_end": 230.0,
+      "t_mid": 227.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3874,
+      "predicted_class_model_score": 0.3874,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0092,
+        "gradual": 0.3874,
+        "normal": 0.2927,
+        "rapid": 0.1935,
+        "sensor_fault": 0.117
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.5277,
+        "NODE_02": 0.4422,
+        "NODE_03": 0.5276,
+        "NODE_04": 0.4593
+      },
+      "piezo_rms": {
+        "network_mean": 0.00719,
+        "NODE_01": 0.00449,
+        "NODE_02": 0.00675,
+        "NODE_03": 0.00583,
+        "NODE_04": 0.0117
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0137,
+        "hub_residual_abs_max_m": 0.0288,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 7.021,
+      "dir_convergence_weighted_cos": 0.6095,
+      "anomaly_score": 7.8169,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 91,
+      "t_start": 227.5,
+      "t_end": 232.5,
+      "t_mid": 230.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3579,
+      "predicted_class_model_score": 0.3579,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0001,
+        "comm_fault": 0.014,
+        "gradual": 0.3579,
+        "normal": 0.2842,
+        "rapid": 0.2142,
+        "sensor_fault": 0.1296
+      },
+      "predicted_class": "gradual",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.48,
+        "NODE_02": 0.5562,
+        "NODE_03": 0.3332,
+        "NODE_04": 0.4173
+      },
+      "piezo_rms": {
+        "network_mean": 0.00664,
+        "NODE_01": 0.00327,
+        "NODE_02": 0.00921,
+        "NODE_03": 0.00609,
+        "NODE_04": 0.008
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0137,
+        "hub_residual_abs_max_m": 0.0288,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.03
+      },
+      "comm_missing_fraction": {
+        "network": 0.0,
+        "max_burst_len": 0,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 6.2,
+      "dir_convergence_weighted_cos": 0.6548,
+      "anomaly_score": 8.5209,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 92,
+      "t_start": 230.0,
+      "t_end": 235.0,
+      "t_mid": 232.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3196,
+      "predicted_class_model_score": 0.3196,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0004,
+        "comm_fault": 0.0082,
+        "gradual": 0.3177,
+        "normal": 0.3196,
+        "rapid": 0.2695,
+        "sensor_fault": 0.0845
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3284,
+        "NODE_02": 0.5237,
+        "NODE_03": 0.2701,
+        "NODE_04": 0.3966
+      },
+      "piezo_rms": {
+        "network_mean": 0.00636,
+        "NODE_01": 0.00341,
+        "NODE_02": 0.0132,
+        "NODE_03": 0.00536,
+        "NODE_04": 0.00345
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0238,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.01
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.256,
+      "dir_convergence_weighted_cos": 0.6994,
+      "anomaly_score": 8.432,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 93,
+      "t_start": 232.5,
+      "t_end": 237.5,
+      "t_mid": 235.0,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3333,
+      "predicted_class_model_score": 0.3221,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0005,
+        "comm_fault": 0.0155,
+        "gradual": 0.3333,
+        "normal": 0.3221,
+        "rapid": 0.2166,
+        "sensor_fault": 0.112
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "gradual",
+      "alarm_state": "gradual",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.3758,
+        "NODE_02": 0.4617,
+        "NODE_03": 0.482,
+        "NODE_04": 0.462
+      },
+      "piezo_rms": {
+        "network_mean": 0.0076,
+        "NODE_01": 0.00447,
+        "NODE_02": 0.01315,
+        "NODE_03": 0.0068,
+        "NODE_04": 0.00596
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": 0.0087,
+        "hub_residual_abs_max_m": 0.0238,
+        "NODE_01": 0.03,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.01
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.2,
+        "NODE_04": 0.0
+      },
+      "dir_convergence_residual_m": 5.915,
+      "dir_convergence_weighted_cos": 0.6343,
+      "anomaly_score": 8.1421,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    },
+    {
+      "window_idx": 94,
+      "t_start": 235.0,
+      "t_end": 240.0,
+      "t_mid": 237.5,
+      "t_rel_event_start_s": null,
+      "true_label": "normal",
+      "label_set": "",
+      "model_score": 0.3722,
+      "predicted_class_model_score": 0.3722,
+      "model_scores_by_class": {
+        "abnormal_vibration": 0.0002,
+        "comm_fault": 0.0142,
+        "gradual": 0.3306,
+        "normal": 0.3722,
+        "rapid": 0.1852,
+        "sensor_fault": 0.0976
+      },
+      "predicted_class": "normal",
+      "predicted_class_raw": "normal",
+      "alarm_state": "normal",
+      "node_mean_tilt_deg": {
+        "NODE_01": 0.4927,
+        "NODE_02": 0.33,
+        "NODE_03": 0.5277,
+        "NODE_04": 0.3334
+      },
+      "piezo_rms": {
+        "network_mean": 0.0086,
+        "NODE_01": 0.00774,
+        "NODE_02": 0.01096,
+        "NODE_03": 0.00763,
+        "NODE_04": 0.00808
+      },
+      "lidar_range_change_m": {
+        "hub_common_mode_m": -0.0038,
+        "hub_residual_abs_max_m": 0.0163,
+        "NODE_01": -0.02,
+        "NODE_02": -0.015,
+        "NODE_03": 0.01,
+        "NODE_04": 0.01
+      },
+      "comm_missing_fraction": {
+        "network": 0.05,
+        "max_burst_len": 1,
+        "NODE_01": 0.0,
+        "NODE_02": 0.0,
+        "NODE_03": 0.0,
+        "NODE_04": 0.2
+      },
+      "dir_convergence_residual_m": 7.429,
+      "dir_convergence_weighted_cos": 0.455,
+      "anomaly_score": 8.7553,
+      "unknown_anomaly_raw": false,
+      "unknown_anomaly": false
+    }
+  ]
+}

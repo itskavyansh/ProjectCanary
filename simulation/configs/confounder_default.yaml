@@ -1,0 +1,28 @@
+# Benign hard negatives for class 0 (SYNTHETIC / SIMULATION). ALL VALUES ARE [PLACEHOLDER].
+# Rule: every benign amplitude and duration must be at least `margin_factor` times SMALLER than the
+# minimum the future abnormal-vibration class will use; multi-node spread must be strictly smaller.
+# `abnormal_reference` is a stand-in for that future class; update it when the class is defined.
+margin_factor: 3.0
+
+benign:
+  temperature_drift:
+    max_tilt_deg: 0.05           # peak slow drift per node (common-mode by nature: every node feels temperature,
+                                 # so the node-spread margin does NOT apply; amplitude margin does)
+  vibration_burst:               # wind or passing vehicle
+    rms_add_max: 0.02            # added piezo_rms at burst peak (real piezo_rms p99 ~ 0.031)
+    crest: 3.0                   # peak amplitude = crest * rms_add
+    duration_s: [2.0, 8.0]
+    max_nodes: 2                 # wind may touch 2 nodes (2nd at 0.6x); vehicle 1 node
+    tilt_jitter_sd_deg: 0.05     # extra IMU jitter at burst peak
+  harmless_spike:
+    peak_max: 0.06               # piezo_peak spike (real piezo_peak p99 ~ 0.068)
+    tilt_max_deg: 0.2
+    max_count: 3
+    max_nodes: 1
+
+abnormal_reference:              # [PLACEHOLDER] lower bounds for the FUTURE abnormal-vibration class
+  rms_add_min: 0.08
+  duration_s_min: 30.0
+  min_nodes: 3
+  tilt_jitter_sd_deg_min: 0.15
+  peak_min: 0.2

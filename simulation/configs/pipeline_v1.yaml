@@ -1,0 +1,52 @@
+# Pipeline configuration v1 (SYNTHETIC / SIMULATION).
+# Wraps the EXISTING modules and frozen settings. No algorithm, feature, threshold or seed is changed here.
+# Paths are relative to the repository root.
+
+seed: 20261117                       # = dataset_default.yaml master_seed = all evaluation/bootstrap seeds (frozen)
+
+configs:                             # the frozen config files that define the data
+  scenario: configs/scenario_default.yaml
+  sensor: configs/sensor_default.yaml
+  confounder: configs/confounder_default.yaml
+  dataset: configs/dataset_default.yaml
+  noise_profile: configs/noise_profile.json
+
+models:                              # FROZEN val-tuned settings (copied from outputs/eval_v3/eval_v3_configs.json)
+  random_forest: {n_estimators: 200, max_depth: 20, min_samples_leaf: 3}   # chosen on val grid, class_weight=balanced
+  logistic_regression: {C: 5.0}                                            # chosen on val grid, class_weight=balanced
+  threshold_rule: {fit: "train_and_val"}                                   # deterministic val-tuned grid, as before
+
+operating_points:                    # FROZEN k, m and false-alarm target (tuned on val only by existing code)
+  fa_target_per_normal_run: 1.0
+  episode_fa_le_1: {k: 3, m: 3, fa_metric: fa_episodes_per_normal_run}
+  strict_window_fa_le_1: {k: 3, m: 2, fa_metric: fa_windows_per_normal_run}
+  threshold_rule_persistence:        # (k, m) used for the threshold rule per regime
+    raw: {k: 1, m: 1}
+    episode_fa_le_1: {k: 3, m: 3}
+    strict_window_fa_le_1: {k: 5, m: 2}
+
+evaluation:
+  n_boot: 300                        # run-level bootstrap replicates
+  splits: [val, test, shifted_test, stress, broad_basin]
+
+reference_run:                       # single run used to compare state timeline + telemetry byte-for-byte
+  demo_script: scripts/run_faults_demo.py
+  run_one_script: scripts/run_one.py
+  seed: 20260001
+
+frozen:                              # read-only comparison targets (never written to)
+  datasets_v3: outputs/datasets_v3
+  datasets: outputs/datasets
+  eval_v3: outputs/eval_v3
+  faults_demo: outputs/faults_demo/sim_gradual_20260001
+  run_one: outputs/sim_gradual_20260001
+
+numeric_tolerance: {rtol: 1.0e-9, atol: 1.0e-12}   # only used when SHA-256 differs
+
+quick:                               # SMOKE-TEST ONLY: small run counts, NOT comparable to frozen results
+  splits: {train: 3, val: 3, test: 3}
+  shifted_test_runs_per_class: 2
+  broad_basin_runs_per_class: 2
+  stress_n_runs: 7
+  n_boot: 20
+  rf_n_estimators: 30

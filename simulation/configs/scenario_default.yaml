@@ -1,0 +1,36 @@
+# Scenario config. ALL RANGES BELOW ARE PLACEHOLDERS (not calibrated to any real site/event).
+seed: 20260001
+mode: gradual            # gradual | rapid
+
+run:
+  duration_s: 240.0      # simulated seconds (~4 min)
+  sample_rate_hz: 10.0
+  min_hold_fraction: 0.10   # event must finish by (1 - this) of run, so an aftermath exists
+
+# PLACEHOLDER: physical duration the simulated run stands for.
+# compression_factor = physical_duration_s / run.duration_s (stored in metadata)
+time_compression:
+  gradual: {physical_duration_s: 86400.0}   # PLACEHOLDER: 24 h
+  rapid:   {physical_duration_s: 240.0}     # PLACEHOLDER: real time (factor 1)
+
+ranges:                  # PLACEHOLDER ranges
+  centre_radii: 1.5            # x0,y0 uniform in network centre +/- this many network radii (per axis)
+  sigma_radii: [0.4, 1.5]      # sx, uniform, in network radii. MAIN range: hi is CAPPED at 1.5 (engine rejects >1.5)
+  broad_basin_subset: false    # OFF by default. If true, sx upper bound becomes sigma_radii_broad_max (separate subset)
+  sigma_radii_broad_max: 2.5   # only used when broad_basin_subset is true
+  aspect_sy_over_sx: [1.0, 2.0]
+  theta_deg: [0.0, 180.0]      # rotation of the anisotropy axes
+  peak_tilt_deg: [0.05, 3.0]   # log-uniform; max surface slope of the final field, anywhere
+  t_on_frac: [0.20, 0.50]      # fraction of run
+  tau_frac:
+    gradual: [0.40, 0.80]      # fraction of run
+    rapid:   [0.02, 0.08]
+  max_resample: 1000           # (t_on, tau) pair rejected if event would overrun the hold window
+
+mounting:                # PLACEHOLDER magnitudes
+  yaw_error_sd_deg: 1.0
+  level_offset_sd_deg: 0.02
+
+telemetry_placeholder:   # PLACEHOLDER: not a sensor model
+  tilt_noise_sd_deg: 0.02
+  seed_offset: 7919

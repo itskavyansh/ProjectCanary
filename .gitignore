@@ -26,6 +26,8 @@ dist-ssr/
 __pycache__/
 *.pyc
 .pytest_cache/
+simulation/outputs/
+simulation/**/__pycache__
 
 # OS
 .DS_Store

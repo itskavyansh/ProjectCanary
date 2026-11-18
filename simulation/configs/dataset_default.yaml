@@ -1,0 +1,52 @@
+# Dataset and windowing configuration (SYNTHETIC / SIMULATION).
+# All splits are strictly AT THE RUN LEVEL (never by window).
+# [USER-SPEC] = required by brief; [PLACEHOLDER] = synthetic design parameter.
+
+master_seed: 20261117
+
+windowing:
+  window_s: 5.0                  # [USER-SPEC] 5 s simulated window
+  overlap: 0.5                   # [USER-SPEC] 50% overlap (step = 2.5 s)
+  min_label_overlap: 0.5         # [USER-SPEC] >=50% overlap gets event/fault class; (0, 0.5) -> "transition"
+  long_horizon_windows: 12       # [USER-SPEC] slope of window mean tilt magnitude over last N windows
+  lead_in_baseline_s: 30.0       # [PLACEHOLDER] observable lead-in window for feature baseline subtraction
+  impulse_peak_thresh: 0.035     # [PLACEHOLDER] piezo_peak threshold to count a sample as an impulse
+
+splits:                          # [USER-SPEC] runs per class in the headline splits
+  train: 60
+  val: 20
+  test: 20
+
+shifted_test:                    # [USER-SPEC] shifted-noise test set (new seeds, never used in train/val)
+  runs_per_class: 15             # [PLACEHOLDER] 15 runs x 6 classes = 90 runs
+  noise_multiplier_range: [1.5, 2.0]   # [USER-SPEC]
+  node_bias_sd_deg: 0.12         # [PLACEHOLDER] shifted per-node static bias sd (vs 0.05 nominal)
+  confounder_scale: 0.85         # [PLACEHOLDER] different confounder amplitude scale (<=1.0 preserves margin)
+  confounder_n_bursts: 2         # [PLACEHOLDER] fixed 2 bursts per run
+
+stress_set:                      # [USER-SPEC] combined conditions (~100 runs), reported separately
+  n_runs: 100
+  combos:
+    - [gradual, sensor_fault]
+    - [gradual, comm_fault]
+    - [rapid, sensor_fault]
+    - [rapid, comm_fault]
+    - [abnormal_vibration, comm_fault]
+    - [abnormal_vibration, sensor_fault]
+    - [sensor_fault, comm_fault]
+
+broad_basin_subset:              # [USER-SPEC] gradual & rapid with broad_basin_subset: true, reported separately
+  runs_per_class: 20             # 20 gradual + 20 rapid = 40 runs
+
+stratification:                  # [USER-SPEC] stratify gradual & rapid peak_tilt_deg across [0.05, 3.0]
+  enabled: true                  # log-spaced strata within each split so weak events (SNR < 1) are guaranteed
+
+abnormal_vibration:              # [PLACEHOLDER] strictly above confounder_default.yaml abnormal_reference
+  rms_add_range: [0.09, 0.22]          # >= 0.08 min (confounder max 0.02 * 3 = 0.06)
+  duration_s_range: [35.0, 90.0]       # >= 30.0 s min (confounder max 8.0 * 3 = 24.0)
+  min_nodes: 3                         # >= 3 nodes (confounder max 2)
+  tilt_jitter_sd_deg_range: [0.16, 0.35]  # >= 0.15 deg min (confounder max 0.05 * 3 = 0.15)
+  impulse_peak_range: [0.22, 0.55]     # >= 0.20 min (confounder max 0.06 * 3 = 0.18)
+  impulse_rate_per_s: 0.35
+  crest: 3.2
+  start_frac_range: [0.20, 0.45]

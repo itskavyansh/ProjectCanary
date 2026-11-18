@@ -1,0 +1,159 @@
+{
+  "synthetic": true,
+  "banner": "SYNTHETIC / SIMULATION - NOT VALIDATED ON REAL DATA",
+  "compression_factor": {
+    "gradual": 360,
+    "normal": 360,
+    "abnormal_vibration": 360,
+    "sensor_fault": 360,
+    "comm_fault": 360,
+    "rapid": 1,
+    "sensor_duration_s": 240,
+    "slow_process_hours_per_run": 24.0,
+    "sensor_hours_per_run": 0.066667,
+    "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
+  },
+  "git_commit": "8e3cdde347ca577531abfae4791809f2f229906d",
+  "seed": 20261117,
+  "file_id": "parameters",
+  "source_file": "docs/provenance_note.md",
+  "literature_table": [
+    {
+      "parameter_or_topic": "Peak tilt",
+      "simulator_setting_and_status": "PLACEHOLDER: 0.05 to 3 deg (about 1 to 52 mm/m).",
+      "literature_basis_and_sources": "Ashton Underground longwall end-of-panel reports (Yancoal, SCT Operations, 2008-2012): measured maximum tilts of about 13 to 103 mm/m (about 0.7 to 5.9 deg; 1 mm/m = 0.0573 deg), with some predictions higher.",
+      "assessment_or_scope_note": "The main range covers the lower half of real longwall maximum tilts; treat it as an early-warning range.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Peak tilt**",
+        "simulator_setting_and_status": "**PLACEHOLDER:** `0.05` to `3` deg (about `1` to `52` mm/m).",
+        "literature_basis_and_sources": "Ashton Underground longwall end-of-panel reports (Yancoal, SCT Operations, `2008-2012`): measured maximum tilts of about `13` to `103` mm/m (about `0.7` to `5.9` deg; `1` mm/m = `0.0573` deg), with some predictions higher.",
+        "assessment_or_scope_note": "The main range covers the lower half of real longwall maximum tilts; treat it as an early-warning range."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Max settlement",
+      "simulator_setting_and_status": "Derived from peak tilt and spread (PLACEHOLDER range).",
+      "literature_basis_and_sources": "Ashton reports (Yancoal, SCT Operations, 2008-2012): maximum subsidence of 51 to 59% of seam thickness measured; Ashton and a NSW appendix: 62 to 68% predicted; one US case reports a subsidence factor of 0.75.",
+      "assessment_or_scope_note": "Subsidence factor relates maximum vertical settlement to extracted seam thickness.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Max settlement**",
+        "simulator_setting_and_status": "Derived from peak tilt and spread (**PLACEHOLDER** range).",
+        "literature_basis_and_sources": "Ashton reports (Yancoal, SCT Operations, `2008-2012`): maximum subsidence of `51` to `59%` of seam thickness measured; Ashton and a NSW appendix: `62` to `68%` predicted; one US case reports a subsidence factor of `0.75`.",
+        "assessment_or_scope_note": "Subsidence factor relates maximum vertical settlement to extracted seam thickness."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Time profile",
+      "simulator_setting_and_status": "Smoothstep S-curve (PLACEHOLDER simplification).",
+      "literature_basis_and_sources": "Jeran and Trevits, US Bureau of Mines RI 9552: most movement within about 30 days of undermining in one study, total duration about a year in the northern Appalachian basin. Colorado DRMS rule document: about 15% of $S_{\\max}$ at the face, 5 to 9% residual afterwards. Sustainability 2020, 12(4), 1528: active period defined as above 1.7 mm/day. Standard form is the Knothe time function with coefficient $c$ (Zhang et al., Scientific Reports 12:18433, 2022; Hejmanowski 2015, Int J Coal Sci Technol).",
+      "assessment_or_scope_note": "The smoothstep S-curve is a simplification.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Time profile**",
+        "simulator_setting_and_status": "Smoothstep S-curve (**PLACEHOLDER** simplification).",
+        "literature_basis_and_sources": "Jeran and Trevits, US Bureau of Mines RI `9552`: most movement within about `30` days of undermining in one study, total duration about a year in the northern Appalachian basin. Colorado DRMS rule document: about `15%` of $S_{\\max}$ at the face, `5` to `9%` residual afterwards. *Sustainability* `2020`, `12(4)`, `1528`: active period defined as above `1.7` mm/day. Standard form is the Knothe time function with coefficient $c$ (Zhang et al., *Scientific Reports* `12:18433`, `2022`; Hejmanowski `2015`, *Int J Coal Sci Technol*).",
+        "assessment_or_scope_note": "The smoothstep S-curve is a simplification."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Spread",
+      "simulator_setting_and_status": "Gaussian spread $\\sigma$ (PLACEHOLDER cap in configs/scenario_default.yaml).",
+      "literature_basis_and_sources": "Knothe influence function $\\exp(-\\pi r^2 / R^2)$ with $R = H / \\tan(\\beta)$ is a Gaussian with $\\sigma = H / (\\tan(\\beta)\\sqrt{2\\pi})$. Angle of draw 12 deg at one Ashton panel (Ashton Underground longwall reports, 2008-2012).",
+      "assessment_or_scope_note": "$\\tan(\\beta)$ is not set here; it must be taken from a cited source.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Spread**",
+        "simulator_setting_and_status": "Gaussian spread $\\sigma$ (**PLACEHOLDER** cap in `configs/scenario_default.yaml`).",
+        "literature_basis_and_sources": "Knothe influence function $\\exp(-\\pi r^2 / R^2)$ with $R = H / \\tan(\\beta)$ is a Gaussian with $\\sigma = H / (\\tan(\\beta)\\sqrt{2\\pi})$. Angle of draw `12` deg at one Ashton panel (Ashton Underground longwall reports, `2008-2012`).",
+        "assessment_or_scope_note": "$\\tan(\\beta)$ is not set here; it must be taken from a cited source."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Rapid events (collapse type)",
+      "simulator_setting_and_status": "PLACEHOLDER",
+      "literature_basis_and_sources": "No source found; PLACEHOLDER.",
+      "assessment_or_scope_note": "Uncalibrated synthetic collapse regime (PLACEHOLDER).",
+      "raw_markdown": {
+        "parameter_or_topic": "**Rapid events (collapse type)**",
+        "simulator_setting_and_status": "**PLACEHOLDER**",
+        "literature_basis_and_sources": "No source found; **PLACEHOLDER**.",
+        "assessment_or_scope_note": "Uncalibrated synthetic collapse regime (**PLACEHOLDER**)."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Vibration",
+      "simulator_setting_and_status": "PLACEHOLDER relative scaling in piezo model.",
+      "literature_basis_and_sources": "Surface geophone peak particle velocities of about 0.2 to 30 mm/s near blasts (OSMRE 2007 acoustic response report); example site limit of 13 mm/s (Agnico Meadowbank 2019 blast monitoring report).",
+      "assessment_or_scope_note": "Relative scaling only; the piezo model is not calibrated to these.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Vibration**",
+        "simulator_setting_and_status": "**PLACEHOLDER** relative scaling in piezo model.",
+        "literature_basis_and_sources": "Surface geophone peak particle velocities of about `0.2` to `30` mm/s near blasts (OSMRE `2007` acoustic response report); example site limit of `13` mm/s (Agnico Meadowbank `2019` blast monitoring report).",
+        "assessment_or_scope_note": "Relative scaling only; the piezo model is not calibrated to these."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    },
+    {
+      "parameter_or_topic": "Not sourced",
+      "simulator_setting_and_status": "PLACEHOLDER",
+      "literature_basis_and_sources": "Unsourced items and literature leads: $\\tan(\\beta)$ and Knothe $c$ for Indian coalfields (leads: Singh and Yadav 1995, Raniganj; Sadhana 2021 Adriyala longwall paper), any rapid-event rate, any downloadable raw vibration dataset.",
+      "assessment_or_scope_note": "Must be sourced before claiming site-specific physical calibration.",
+      "raw_markdown": {
+        "parameter_or_topic": "**Not sourced**",
+        "simulator_setting_and_status": "**PLACEHOLDER**",
+        "literature_basis_and_sources": "Unsourced items and literature leads: $\\tan(\\beta)$ and Knothe $c$ for Indian coalfields (leads: Singh and Yadav `1995`, Raniganj; *Sadhana* `2021` Adriyala longwall paper), any rapid-event rate, any downloadable raw vibration dataset.",
+        "assessment_or_scope_note": "Must be sourced before claiming site-specific physical calibration."
+      },
+      "is_placeholder": true,
+      "status_tag": "PLACEHOLDER"
+    }
+  ],
+  "unsourced_items": [
+    {
+      "item": "Angle of draw / influence tangent tan(beta) for target Indian coalfields",
+      "status": "PLACEHOLDER (unsourced)",
+      "literature_leads": "Singh & Yadav (1995) Raniganj coalfield; Sadhana (2021) Adriyala longwall panel study",
+      "impact": "Required to convert overburden depth H into physical Gaussian spread sigma = H / (tan(beta) * sqrt(2*pi))."
+    },
+    {
+      "item": "Knothe time-function coefficient c (1/year or 1/day) for target Indian coalfields",
+      "status": "PLACEHOLDER (unsourced)",
+      "literature_leads": "Zhang et al. Scientific Reports 12:18433 (2022); Hejmanowski (2015) Int J Coal Sci Technol",
+      "impact": "Required to calibrate physical ramp duration and replace the smoothstep S-curve / 360x compression placeholder."
+    },
+    {
+      "item": "Rapid trough/sinkhole collapse onset rate and duration distribution",
+      "status": "PLACEHOLDER (no source found)",
+      "literature_leads": "No calibrated public time-series source found for sudden crown-hole/pillar collapse rates",
+      "impact": "Rapid events (3-8 s / 5-19 s ramp) must be treated as an uncalibrated synthetic stress test."
+    },
+    {
+      "item": "Downloadable raw field vibration dataset & ADS1115 piezo-to-mm/s transfer calibration",
+      "status": "PLACEHOLDER (unsourced)",
+      "literature_leads": "OSMRE (2007) acoustic/ground-vibration report (0.2-30 mm/s); Agnico Meadowbank (2019) blast report (13 mm/s limit)",
+      "impact": "Simulator piezo voltages use relative synthetic scaling and are not calibrated to physical peak particle velocity (mm/s)."
+    },
+    {
+      "item": "LiDAR hub range noise (sigma_range) and quantization step (q_step)",
+      "status": "PLACEHOLDER",
+      "literature_leads": "configs/sensor_default.yaml bench/datasheet placeholder values",
+      "impact": "Must be measured on physical rotating-mount Benewake TFmini-i bench tests."
+    },
+    {
+      "item": "Hardware fault injection rates and LoRa packet-loss burst distributions",
+      "status": "PLACEHOLDER",
+      "literature_leads": "Synthetically configured in configs/sensor_default.yaml and configs/scenario_default.yaml",
+      "impact": "Not mined from multi-year field deployment telemetry logs."
+    }
+  ],
+  "timescale_note": "In the frozen simulator configuration, a gradual or normal run is 240 s of sensor time standing for 24 h of the slow ground process (PLACEHOLDER compression factor 360), whereas cited gradual longwall subsidence develops over weeks to months (most movement within about 30 days of undermining in Jeran and Trevits, USBM RI 9552). Using a rough real-world order-of-magnitude reference (DERIVED, ORDER OF MAGNITUDE, not a cited value): about 60 mm/m (3.4 deg) developing over about 30 days gives an average tilt rate of about 0.1 deg/day, whereas compressing the full rise into a fraction of a single 24 h (1-day) run produces much higher implied deg/day rates (audited across all frozen gradual runs in docs/report_literature_checks.md). Replacing the 360x compression label (\"24 h per run\") with a 30-day compression factor (for example 10,000x to 30,000x) changes only the labelled physical duration and the Definition A (slow-process time) false-alarm-per-hour figure; it does not change the simulated sensor data, window features, or any model score."
+}

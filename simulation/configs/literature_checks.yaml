@@ -1,0 +1,36 @@
+# Literature-basis sensitivity checks config (SYNTHETIC / SIMULATION).
+# All grids and ranges without a specific site calibration are marked PLACEHOLDER.
+seed_base: 4000000001   # disjoint from outputs/datasets_v3 (~2.026e9) and outputs/eval_shape_mismatch (~3.0e9)
+
+# Part B1: High-tilt sensitivity arms (PLACEHOLDER early-warning vs full longwall tilt ranges)
+high_tilt_arms:
+  high_tilt_3_6:
+    peak_tilt_deg: [3.0, 6.0]     # upper half of Ashton measured longwall tilts (0.7 to 5.9 deg)
+    gradual_runs: 30
+    rapid_runs: 30
+    seed_offset_gradual: 0
+    seed_offset_rapid: 100
+  high_tilt_6_12:
+    peak_tilt_deg: [6.0, 12.0]    # extreme / post-failure tilt regime above measured longwall range
+    gradual_runs: 30
+    rapid_runs: 30
+    seed_offset_gradual: 200
+    seed_offset_rapid: 300
+
+# Part B2: Realistic-depth Knothe sigma grid (PLACEHOLDER grid until cited Indian coalfield tan(beta) is filled in)
+# sigma = H / (tan_beta * sqrt(2 * pi)), converted to network radii (1 radius = 10 * sqrt(2) = 14.1421356 m)
+realistic_depth_grid:
+  depths_m: [50.0, 100.0, 200.0, 300.0]         # PLACEHOLDER depth H (m)
+  tan_beta_values: [1.5, 2.0, 2.5]              # PLACEHOLDER Knothe influence tangent tan(beta)
+  main_sigma_cap_radii: 1.5
+  gradual_runs_per_cell: 10
+  rapid_runs_per_cell: 10
+  peak_tilt_deg: [0.05, 3.0]                    # same log-stratified peak tilt range as control
+  seed_offset_base: 1000                        # cell k gets seed_base + 1000 + k * 100
+
+# Part C: Timescale audit reference (DERIVED, ORDER OF MAGNITUDE - NOT A CITED VALUE)
+timescale_audit:
+  derived_reference_tilt_mm_per_m: 60.0         # DERIVED, ORDER OF MAGNITUDE (~3.4 deg)
+  derived_reference_duration_days: 30.0         # ~30 days active movement (Jeran & Trevits USBM RI 9552)
+  derived_reference_rate_deg_per_day: 0.1       # DERIVED, ORDER OF MAGNITUDE (~3.4 deg / 30 days ~ 0.1 deg/day)
+  alternative_compression_factors: [360.0, 10000.0, 10800.0, 30000.0]  # 10800x = 30 days per 240 s run
