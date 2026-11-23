@@ -1,0 +1,208 @@
+{
+  "synthetic": true,
+  "banner": "SYNTHETIC / SIMULATION - NOT VALIDATED ON REAL DATA",
+  "compression_factor": {
+    "gradual": 360,
+    "normal": 360,
+    "abnormal_vibration": 360,
+    "sensor_fault": 360,
+    "comm_fault": 360,
+    "rapid": 1,
+    "sensor_duration_s": 240,
+    "slow_process_hours_per_run": 24.0,
+    "sensor_hours_per_run": 0.066667,
+    "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
+  },
+  "git_commit": "8e3cdde347ca577531abfae4791809f2f229906d",
+  "seed": 20261117,
+  "file_id": "summary",
+  "study_title": "ProjectCanary-Sim v3 Synthetic Benchmarking & Sensitivity Study",
+  "study_description": "Controlled synthetic benchmarking of a 4-corner-node (MPU6050 IMU + ADS1115 piezo) + central scanning LiDAR hub chunk across 6 classes (normal, gradual, rapid, abnormal_vibration, sensor_fault, comm_fault), evaluating a hand-built Threshold Rule, Logistic Regression, and Random Forest across in-domain, noise-shifted, multi-fault stress, broad-basin, yaw-error, shape-mismatch, and literature-range regimes.",
+  "headline_claims": [
+    {
+      "id": "v3_vs_threshold_rule",
+      "title": "v3 Random Forest is comparable to the Threshold Rule on test, with gains on broad basins and stress",
+      "number": {
+        "test_alarm_macro_f1_rf_v3": 0.6215,
+        "test_alarm_macro_f1_rf_ci95": [
+          0.5694,
+          0.6721
+        ],
+        "test_alarm_macro_f1_threshold_v3": 0.6298,
+        "test_alarm_macro_f1_threshold_ci95": [
+          0.5805,
+          0.6685
+        ],
+        "test_alarm_macro_f1_logistic_v3": 0.5589,
+        "broad_basin_run_detect_rf_v3": 0.725,
+        "stress_alarm_macro_f1_rf_v3": 0.5013
+      },
+      "display_value": "Test Alarm Macro-F1: RF 0.6215 vs Threshold 0.6298 (Broad-Basin Detect: 0.725)",
+      "source_file": "outputs/eval_v3/v2_vs_v3_all_snr_comparison.csv",
+      "secondary_source_file": "outputs/eval/rf_vs_threshold_comparison.csv",
+      "caveat": "Random Forest does not beat the hand-built threshold rule on overall in-domain test Macro-F1 or normal-window specificity; its advantage appears on broad basins and multi-condition stress runs."
+    },
+    {
+      "id": "detection_limit_5x_noise",
+      "title": "Reliable detection requires peak tilt of about 5x IMU noise (SNR > 5)",
+      "number": {
+        "snr_threshold_multiple": 5.0,
+        "approx_min_peak_tilt_deg": 0.95,
+        "imu_noise_floor_deg": 0.19,
+        "pooled_snr_gt_5_gradual_run_detect_rf": 0.769231,
+        "pooled_snr_gt_5_gradual_run_detect_threshold": 0.923077,
+        "pooled_snr_gt_5_rapid_run_detect_rf": 0.9,
+        "pooled_snr_gt_5_gradual_window_recall_rf": 0.27713
+      },
+      "display_value": "SNR > 5 (~0.95 deg tilt): Run detect 0.77 (RF) / 0.92 (Threshold); Window recall 0.28",
+      "source_file": "outputs/eval_extras_v2/gradual_rapid_recall_by_snr.csv",
+      "secondary_source_file": "outputs/eval/recall_vs_snr.csv",
+      "caveat": "Below SNR 2, single-window tilts are buried in MPU6050 white noise and mounting offsets; even above SNR 5, gradual window recall stays at 0.18-0.34."
+    },
+    {
+      "id": "direction_features_needed",
+      "title": "World-frame radial convergence direction features cut gradual <-> sensor_fault confusions by nearly 3x",
+      "number": {
+        "full_v3_rf_grad_sf_confusions_snr_gt_2": 39,
+        "no_direction_rf_grad_sf_confusions_snr_gt_2": 111,
+        "confusion_increase_when_removed": 72,
+        "direction_perm_importance_drop": 0.07202,
+        "magnitude_perm_importance_drop": 0.05225
+      },
+      "display_value": "Gradual <-> Sensor Fault confusions (SNR>2): 39 (Full v3) vs 111 (-direction)",
+      "source_file": "outputs/eval_v3/rf_ablations_v3.csv",
+      "secondary_source_file": "outputs/eval_extras/permutation_importance_groups.csv",
+      "caveat": "Radial convergence separates inward-tilting basins from single-node drift, but fails when all four nodes tilt in parallel on a uniform planar slope."
+    },
+    {
+      "id": "yaw_tolerance_10_deg",
+      "title": "Installation compass yaw tolerance is <= 10 deg SD (with no single-node >= 45 deg blunder)",
+      "number": {
+        "recommended_yaw_sd_tolerance_deg": 10.0,
+        "ci_containment_yaw_sd_deg": 20.0,
+        "test_snr2_alarm_f1_0deg": 0.6703,
+        "test_snr2_alarm_f1_10deg": 0.6659,
+        "test_snr2_alarm_f1_20deg": 0.649,
+        "test_snr2_run_detect_0deg": 0.8228,
+        "test_snr2_run_detect_10deg": 0.8101,
+        "test_snr2_run_detect_20deg": 0.7595,
+        "raw_grad_sf_confusions_0deg": 30,
+        "raw_grad_sf_confusions_10deg": 25,
+        "raw_grad_sf_confusions_single_45deg": 74
+      },
+      "display_value": "<= 10 deg SD keeps Test SNR>2 Detect at 0.810 (drops to 0.759 at 20 deg SD; 45 deg blunder -> 74 confusions)",
+      "source_file": "outputs/eval_v3_yaw/yaw_sensitivity_snr_gt_2.csv",
+      "secondary_source_file": "outputs/eval_v3_yaw/yaw_sensitivity_all_snr.csv",
+      "caveat": "Nodes must be aligned within <= 10 deg compass SD at installation and checked against any single-node >= 45 deg orientation blunder."
+    },
+    {
+      "id": "false_alarms_both_time_definitions",
+      "title": "False alarms per hour must be shown in sensor time (1x) alongside slow-process time (360x)",
+      "number": {
+        "rf_episode_fa_per_run": 0.65,
+        "rf_B_sensor_fa_per_hour": 9.75,
+        "rf_B_sensor_every_minutes": 6.15,
+        "rf_A_slow_fa_per_hour": 0.02708,
+        "rf_A_slow_every_hours": 36.923077,
+        "threshold_B_sensor_fa_per_hour": 9.0,
+        "threshold_A_slow_fa_per_hour": 0.025,
+        "logistic_B_sensor_fa_per_hour": 1.5,
+        "logistic_A_slow_fa_per_hour": 0.00417
+      },
+      "display_value": "Test RF (k=3,m=3): 9.75 FA/h in sensor time (1 every 6.2 min) vs 0.0271 FA/h in 360x slow time (1 every 36.9 h)",
+      "source_file": "outputs/eval_extras_v2/false_alarms_per_hour_both_definitions.csv",
+      "caveat": "IMU noise and benign vibrations are not time-compressed, so Definition B (sensor time) is 360x higher and is the stricter figure for noise-driven false alarms; neither is a validated field rate."
+    },
+    {
+      "id": "gradual_window_recall_low",
+      "title": "Window-level recall on gradual subsidence at the matched false-alarm operating points is low",
+      "number": {
+        "test_episode_gradual_window_recall_threshold": 0.15829,
+        "test_episode_gradual_window_recall_logistic": 0.084771,
+        "test_episode_gradual_window_recall_rf": 0.15829,
+        "test_episode_rapid_window_recall_rf": 0.283633
+      },
+      "display_value": "Test Gradual Window Recall (episode k3m3): Threshold 0.158, LR 0.085, RF 0.158",
+      "source_file": "outputs/eval_extras_v2/gradual_rapid_recall_and_detection.csv",
+      "caveat": "Most 5 s windows during the early and low-SNR stages of a gradual ramp remain below the operating-point threshold and are classified as normal."
+    },
+    {
+      "id": "run_level_detection_counts_any_alarm",
+      "title": "Run-level detection counts any correct persisted alarm in a run and must be paired with window recall",
+      "number": {
+        "test_episode_gradual_run_detect_threshold": 0.45,
+        "test_episode_gradual_run_detect_logistic": 0.3,
+        "test_episode_gradual_run_detect_rf": 0.4,
+        "test_episode_rapid_run_detect_rf": 0.4
+      },
+      "display_value": "Test Gradual Run Detect vs Window Recall (RF k3m3): 0.400 run detect vs 0.158 window recall",
+      "source_file": "outputs/eval_extras_v2/gradual_rapid_recall_and_detection.csv",
+      "caveat": "A run is counted as detected if even a single persisted 3-window episode fires late in the ramp, so run-level detection is much higher than per-window recall and must never be quoted alone."
+    }
+  ],
+  "limitations": [
+    {
+      "id": "not_continuum_solver",
+      "title": "Kinematic Geometric Surface, Not a Geomechanical Solver",
+      "detail": "Ground displacements come from analytic Gaussian, elliptical, trough, or planar mathematical surfaces rather than finite-element stress-strain or constitutive rock/soil mechanics (e.g. FLAC/PLAXIS)."
+    },
+    {
+      "id": "homogeneous_idealization",
+      "title": "Homogeneous Idealization Without Site Geology",
+      "detail": "Does not model overburden stratigraphy, rock jointing, groundwater pore pressure, rainfall infiltration, or surface topography."
+    },
+    {
+      "id": "synthetic_faults_and_confounders",
+      "title": "Synthetic Sensor Fault and Confounder Distributions",
+      "detail": "Hardware fault modes (stuck-at, drift, bias step, motor stall) and packet-loss bursts are synthetically injected; NODE_04 has no bench recording; as for every node, IMU white-noise sd is the pooled mean over NODE_01..NODE_03 of continuous_step_noise (sensors.py load_noise_profile), and piezo baseline uses the pooled overall statistics."
+    },
+    {
+      "id": "timescale_compression_placeholder",
+      "title": "360x Time-Compression Label Is a Placeholder",
+      "detail": "In frozen gradual runs, 240 s stands for 24 h (360x), which implies a median tilt rate of 0.763 deg/day (~7.6x faster than a rough 0.1 deg/day 30-day longwall order of magnitude). Meanwhile, sensor noise runs at 1x real time."
+    },
+    {
+      "id": "shape_and_range_boundaries",
+      "title": "Closed-World Supervision and Geometry Sensitivity",
+      "detail": "Models trained on 0.05-3.0 deg single basins degrade on uniform planar slopes (parallel tilts break radial convergence), narrow trough rims (single-node rim tilt resembles sensor fault), and >3.5 deg tilts (where the Threshold Rule's hard-coded implausible-tilt cutoff misfires)."
+    },
+    {
+      "id": "unsourced_site_parameters",
+      "title": "Unsourced Target Coalfield Parameters",
+      "detail": "Angle-of-draw tangent tan(beta), Knothe time coefficient c for Indian coalfields, rapid collapse rates, and calibrated piezo particle-velocity scaling are unsourced placeholders."
+    }
+  ],
+  "dataset_overview": {
+    "splits": {
+      "train": {
+        "runs": 360,
+        "description": "60 runs per class; used for model fitting"
+      },
+      "val": {
+        "runs": 120,
+        "description": "20 runs per class; used for hyperparameter and operating-point tuning"
+      },
+      "test": {
+        "runs": 120,
+        "description": "20 runs per class; held-out in-domain evaluation"
+      },
+      "shifted_test": {
+        "runs": 90,
+        "description": "15 runs per class; 1.5-2x IMU noise and elevated 0.12 deg node bias"
+      },
+      "stress": {
+        "runs": 100,
+        "description": "Combined multi-condition runs (simultaneous basin + fault/vibration)"
+      },
+      "broad_basin": {
+        "runs": 40,
+        "description": "20 gradual + 20 rapid runs with wider spatial spread (up to 2.5 R_net)"
+      }
+    },
+    "window_length_s": 5.0,
+    "window_step_s": 2.5,
+    "run_duration_s": 240.0,
+    "windows_per_run": 95,
+    "n_observable_features_v3": 81
+  }
+}

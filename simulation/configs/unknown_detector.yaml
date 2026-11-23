@@ -1,0 +1,27 @@
+# Unsupervised "unknown_anomaly" detector configuration (SYNTHETIC / SIMULATION).
+# Fitted strictly on TRAIN normal windows (81 model features only, never diag_ columns).
+# Threshold tuned strictly on VAL normal windows under (k=3, m=3) persistence to achieve
+# at most 1.0 false-alarm episode per normal run.
+seed: 20261117
+
+persistence:
+  k: 3
+  m: 3
+  fa_target_episodes_per_normal_run: 1.0
+
+threshold_search:
+  quantile_start: 0.50
+  quantile_stop: 0.999
+  num_points: 500
+
+isolation_forest:
+  n_estimators: 200
+  max_samples: "auto"
+  contamination: "auto"
+  clip_scaled: 10000.0
+
+robust_mahalanobis:
+  trim_quantile: 0.98
+  shrinkage: 0.10
+  min_scale: 0.0001
+  z_clip: 50.0

@@ -1,0 +1,36 @@
+# Model-mismatch stress test (SYNTHETIC / SIMULATION). ALL RANGES ARE PLACEHOLDERS, not calibrated to any site.
+# The frozen v3 models were trained on Gaussian / elliptical basins only. These shapes are plausible-looking
+# alternatives, NOT field data and NOT a validation.
+seed_base: 3000000001        # new seeds, disjoint from every seed in outputs/datasets* (existing seeds ~2.026e9); asserted in code
+seed_offsets: {gradual: 0, rapid: 100, normal: 200}   # seeds: base+offset+i
+
+runs:
+  gradual_per_shape: 30
+  rapid_per_shape: 30
+  normal_runs: 40            # shared by all shapes (null field, identical pipeline)
+
+shapes: [gaussian_control, trough_panel, asymmetric, two_basin, planar_slope]
+
+# Peak tilt (max surface slope anywhere) follows the SAME log-stratified draw for every shape (same seeds), range taken
+# from configs/scenario_default.yaml ranges.peak_tilt_deg. Centre, theta, t_on, tau, mounting and sensor noise come from
+# the same seed and are therefore identical across shapes (paired design); only the shape of w(x,y) differs.
+
+trough_panel:                # PLACEHOLDER: Gaussian influence function integrated over a rectangular panel
+  panel_width_radii: [0.8, 2.4]       # full width along x' (network radii; 1 radius = 14.14 m)
+  panel_length_radii: [0.8, 2.4]      # full length along y'
+  influence_sigma_radii: [0.15, 0.5]  # sigma of the influence function (edge softness)
+
+asymmetric:                  # PLACEHOLDER: different spread on the two sides of the centre along x'
+  skew_ratio: [1.5, 3.0]              # sigma(+x') / sigma(-x'); sigma(-x') = the base sx; sigma(+x') capped at 1.5 radii
+
+two_basin:                   # PLACEHOLDER: two isotropic Gaussians (aspect ratio of the base basin is ignored)
+  separation_sigma: [1.0, 3.0]        # centre separation in units of sigma1
+  magnitude_ratio: [0.3, 1.0]         # basin 2 amplitude / basin 1 amplitude (basin 1 is the larger or equal)
+  sigma2_over_sigma1: [0.6, 1.4]
+
+planar_slope:                # PLACEHOLDER: uniform tilt plane, one direction, no convergence point
+  direction_deg: [0.0, 360.0]         # downslope direction in the world frame
+
+peak_search:                 # numerical search for max |grad h| (non-Gaussian shapes)
+  step_fraction: 6.0                  # grid step = smallest length scale / this
+  refine_halfwidth_steps: 2.0

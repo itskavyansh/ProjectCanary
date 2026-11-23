@@ -1,0 +1,37 @@
+# Sensor / network model config (SYNTHETIC / SIMULATION).
+# Legend:  [PROFILE]     = value is derived from configs/noise_profile.json (real MPU6050/ADS1115 recording)
+#          [USER-SPEC]   = value fixed by the project brief
+#          [PLACEHOLDER] = invented, NOT calibrated to anything. Replace when real data exists.
+# All times are SIMULATED seconds. Sensor timing is NOT rescaled by the time-compression factor.
+
+window_s: 1.0                    # telemetry window / IMU sample period. [PROFILE] real sampling_interval_sec = 1.013, rounded
+
+imu:                             # MPU6050
+  noise_multiplier_range: [0.5, 2.0]   # [USER-SPEC] per-run log-uniform multiplier on white noise and drift step
+  white_sd_from_profile: true          # [PROFILE] white sd = mean over NODE_01..03 of continuous_step_noise / sqrt(2*(1-autocorr_lag1)), per field; same value for all 4 nodes
+  node_bias_sd_deg: 0.05               # [PLACEHOLDER] static per-node bias sd, per axis
+  drift_sd_deg_per_sqrt_s: 0.002       # [PLACEHOLDER] random-walk bias drift, sd per sqrt(sim second)
+
+piezo:                           # ADS1115 piezo channel
+  baseline_from_profile: true          # [PROFILE] rms median, lognormal sigma from mean/std, AR(1) phi = lag-1 autocorr, peak/rms and p2p/peak medians
+  node_gain_sd_ln: 0.15                # [PLACEHOLDER] per-node lognormal gain spread
+  crest_scatter_ln: 0.15               # [PLACEHOLDER] window-to-window scatter of peak/rms
+  p2p_scatter_ln: 0.10                 # [PLACEHOLDER] scatter of p2p/peak
+  impulse_rate_per_s: 0.01             # [PLACEHOLDER] background impulse events per node per second
+  impulse_amp_median: 0.03             # [PLACEHOLDER] impulse peak amplitude (same unit as piezo_peak)
+  impulse_amp_sigma_ln: 0.5            # [PLACEHOLDER]
+  impulse_rms_fraction: 0.35           # [PLACEHOLDER] rms contribution of an impulse = fraction * peak amplitude
+  adc_full_scale: 4.096                # ADS1115 +/-4.096 V range (datasheet, gain 1); used only to define "implausible" readings
+
+lidar:                           # hub scanning range sensor. ALL FIVE BELOW ARE PLACEHOLDERS
+  sweep_period_s: 20.0                 # [PLACEHOLDER] duration of ONE directional pass (CW, then CCW, alternating); one reading per node per pass
+  range_noise_sd_m: 0.03               # [PLACEHOLDER] Gaussian range noise sd
+  quantisation_m: 0.01                 # [PLACEHOLDER] range quantisation step
+  max_range_m: 40.0                    # [PLACEHOLDER] readings beyond this are "no return" (NaN)
+  dwell_s: 1.5                         # [PLACEHOLDER] dwell per node; must be <= sweep_period_s / 4
+
+comms:                           # LoRa as a packet / loss / latency process ONLY (no RF propagation)
+  node_loss_prob: 0.01                 # [PLACEHOLDER] background per-packet loss, node links
+  hub_loss_prob: 0.005                 # [PLACEHOLDER] background per-packet loss, hub (LiDAR) link
+  latency_median_s: 0.4                # [PLACEHOLDER] lognormal base latency median
+  latency_sigma_ln: 0.4                # [PLACEHOLDER]

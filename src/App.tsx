@@ -7,6 +7,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Home";
 import { NodeDetail } from "./pages/NodeDetail";
 import { RiskScore } from "./pages/RiskScore";
+import { SimulationStudy } from "./pages/SimulationStudy";
 import { StructuralHealth } from "./pages/StructuralHealth";
 import { TrendAnalysis } from "./pages/TrendAnalysis";
 
@@ -24,6 +25,8 @@ export function App() {
             <Route path="/node/:nodeId"       element={<NodeDetail />} />
             <Route path="/trend-analysis"     element={<TrendAnalysis />} />
             <Route path="/alerts"             element={<Alerts />} />
+            <Route path="/simulation"         element={<SimulationStudy />} />
+            <Route path="/simulation/:tab"    element={<SimulationStudy />} />
           </Routes>
         </div>
         <Footer />

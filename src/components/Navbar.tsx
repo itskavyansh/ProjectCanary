@@ -4,6 +4,7 @@ import {
   BarChart3,
   Bell,
   ChevronDown,
+  FlaskConical,
   LayoutDashboard,
   LineChart,
   Menu,
@@ -51,6 +52,12 @@ const ANALYSIS_LINKS = [
     icon: LineChart,
     label: "Trend Analysis",
     desc: "Historical patterns & prediction",
+  },
+  {
+    to: "/simulation",
+    icon: FlaskConical,
+    label: "Simulation Study",
+    desc: "Synthetic benchmark & robustness",
   },
   {
     to: "/risk-score",
@@ -293,6 +300,14 @@ export function Navbar() {
                   />
                 )}
               </div>
+
+              <Link
+                to="/simulation"
+                role="menuitem"
+                className={navItemClass(location.pathname.startsWith("/simulation"))}
+              >
+                Simulation
+              </Link>
             </div>
 
             {/* Right controls */}
@@ -368,6 +383,7 @@ export function Navbar() {
                     { label: "Alert History", to: "/alerts" },
                     { label: "Risk Score", to: "/risk-score" },
                     { label: "Trend Analysis", to: "/trend-analysis" },
+                    { label: "Simulation Study", to: "/simulation" },
                     { label: "Structural Health", to: "/structural-health" },
                   ].map((link) => (
                     <Link
@@ -438,9 +454,12 @@ export function Navbar() {
             Analysis
           </div>
           <div className="grid gap-0.5">
-            {ANALYSIS_LINKS.slice(0, 1).map((link) => {
+            {ANALYSIS_LINKS.slice(0, 2).map((link) => {
               const Icon = link.icon;
-              const active = location.pathname === link.to;
+              const active =
+                link.to === "/simulation"
+                  ? location.pathname.startsWith("/simulation")
+                  : location.pathname === link.to;
               return (
                 <Link
                   key={link.to + link.label}
@@ -453,7 +472,7 @@ export function Navbar() {
                   }`}
                 >
                   <Icon className="h-4 w-4 shrink-0 text-[var(--nav-active)]" aria-hidden="true" />
-                  Trend Analysis
+                  {link.label}
                 </Link>
               );
             })}
