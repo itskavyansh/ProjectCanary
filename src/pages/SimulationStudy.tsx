@@ -43,6 +43,7 @@ import {
   type SimBundle,
   type SimParametersData,
   type SimReplayData,
+  type SimReplayExplanationsData,
   type SimResultsBySplitData,
   type SimResultsFalseAlarmsData,
   type SimResultsModelComparisonData,
@@ -488,6 +489,12 @@ export function SimulationStudy() {
         repVib,
         repSensor,
         repComm,
+        expNormal,
+        expGradual,
+        expRapid,
+        expVib,
+        expSensor,
+        expComm,
       ] = await Promise.all([
         fetchAndValidateSimJson<SimSummaryData>("summary.json", [
           "headline_claims",
@@ -561,6 +568,30 @@ export function SimulationStudy() {
           "run_metadata",
           "selection_rule",
         ]),
+        fetchAndValidateSimJson<SimReplayExplanationsData>("explanations_normal.json", [
+          "explanations",
+          "run_class",
+        ]),
+        fetchAndValidateSimJson<SimReplayExplanationsData>("explanations_gradual.json", [
+          "explanations",
+          "run_class",
+        ]),
+        fetchAndValidateSimJson<SimReplayExplanationsData>("explanations_rapid.json", [
+          "explanations",
+          "run_class",
+        ]),
+        fetchAndValidateSimJson<SimReplayExplanationsData>(
+          "explanations_abnormal_vibration.json",
+          ["explanations", "run_class"]
+        ),
+        fetchAndValidateSimJson<SimReplayExplanationsData>("explanations_sensor_fault.json", [
+          "explanations",
+          "run_class",
+        ]),
+        fetchAndValidateSimJson<SimReplayExplanationsData>("explanations_comm_fault.json", [
+          "explanations",
+          "run_class",
+        ]),
       ]);
 
       setBundle({
@@ -578,6 +609,14 @@ export function SimulationStudy() {
           abnormal_vibration: repVib,
           sensor_fault: repSensor,
           comm_fault: repComm,
+        },
+        explanations: {
+          normal: expNormal,
+          gradual: expGradual,
+          rapid: expRapid,
+          abnormal_vibration: expVib,
+          sensor_fault: expSensor,
+          comm_fault: expComm,
         },
       });
     } catch (err) {
@@ -752,11 +791,14 @@ export function SimulationStudy() {
           {activeTab === "replay" && currentReplay && (
             <ReplaySection
               replay={currentReplay}
+              explanationsData={bundle.explanations[selectedReplayClass]}
               selectedClass={selectedReplayClass}
               onSelectClass={(cls) => {
                 setIsPlaying(false);
                 setSelectedReplayClass(cls);
-                setPlaybackIdx(45);
+                const firstExpWin =
+                  bundle.explanations[cls]?.explanations[0]?.window_idx ?? 45;
+                setPlaybackIdx(firstExpWin);
               }}
               playbackIdx={playbackIdx}
               onChangePlaybackIdx={(idx) => {
@@ -2524,6 +2566,7 @@ function RobustnessSection({
 /* ══════════════════════════════════════════════════════════════════════════ */
 function ReplaySection({
   replay,
+  explanationsData,
   selectedClass,
   onSelectClass,
   playbackIdx,
@@ -2537,6 +2580,7 @@ function ReplaySection({
   trendChartHistory,
 }: {
   replay: SimReplayData;
+  explanationsData?: SimReplayExplanationsData;
   selectedClass: ReplayClassKey;
   onSelectClass: (cls: ReplayClassKey) => void;
   playbackIdx: number;
@@ -2554,6 +2598,18 @@ function ReplaySection({
     replay.windows.length - 1
   );
   const currentWin = replay.windows[safeIdx];
+
+  const explanationByIdx = useMemo(() => {
+    const map = new Map<number, SimReplayExplanationsData["explanations"][number]>();
+    if (explanationsData?.explanations) {
+      for (const exp of explanationsData.explanations) {
+        map.set(exp.window_idx, exp);
+      }
+    }
+    return map;
+  }, [explanationsData]);
+
+  const currentExplanation = explanationByIdx.get(currentWin.window_idx);
 
   const chartSeries = useMemo(
     () =>
@@ -2891,6 +2947,179 @@ function ReplaySection({
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Advisory AI / Template Explanation Panel for Current Window (when one exists) */}
+      <section className="panel-surface rounded-2xl p-4 sm:p-5 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 text-[var(--brand-teal)]" />
+            <h3 className="subsection-title">
+              Explanation (advisory)
+            </h3>
+          </div>
+          {explanationsData && explanationsData.explanations.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+              <span className="text-[var(--text-muted)]">
+                Explained windows ({explanationsData.explanations.length}):
+              </span>
+              {explanationsData.explanations.map((exp) => {
+                const isCur = exp.window_idx === currentWin.window_idx;
+                return (
+                  <button
+                    key={exp.window_idx}
+                    type="button"
+                    onClick={() => onChangePlaybackIdx(exp.window_idx)}
+                    className={`rounded px-2 py-0.5 font-mono text-xs font-bold transition ${
+                      isCur
+                        ? "bg-[var(--brand-green)] text-white"
+                        : "border border-[var(--border)] bg-[var(--surface-alt)] text-[var(--text-secondary)] hover:border-[var(--brand-teal)]"
+                    }`}
+                  >
+                    #{exp.window_idx}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {currentExplanation ? (
+          <div
+            role="region"
+            aria-label="Explanation (advisory)"
+            className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4 space-y-3"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-xs font-bold ${
+                    currentExplanation.source === "ai"
+                      ? "bg-[var(--status-success-bg)] text-[var(--status-success)] border border-[var(--status-success-border)]"
+                      : "bg-[var(--status-warning-bg)] text-[var(--status-warning)] border border-[var(--status-warning-border)]"
+                  }`}
+                >
+                  {currentExplanation.source === "ai"
+                    ? "AI-generated"
+                    : "Template (offline fallback)"}
+                </span>
+                <span className="font-mono text-xs text-[var(--text-muted)]">
+                  Model: {currentExplanation.model_id} · Guard:{" "}
+                  {currentExplanation.guard_result.passed ? "PASSED" : "FALLBACK"}
+                </span>
+              </div>
+              <span className="rounded border border-[var(--border)] bg-[var(--surface)] px-2.5 py-0.5 font-mono text-xs font-semibold text-[var(--text-secondary)]">
+                Advisory text only. It does not change the alarm.
+              </span>
+            </div>
+
+            <p className="text-sm leading-relaxed text-[var(--text-primary)]">
+              {currentExplanation.summary}
+            </p>
+
+            <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-xs text-[var(--text-secondary)]">
+              <strong className="text-[var(--text-primary)]">
+                Suggested Check:
+              </strong>{" "}
+              {currentExplanation.suggested_check}
+            </div>
+
+            {currentWin.true_label !== currentWin.predicted_class && (
+              <p
+                data-testid="replay-explainer-mismatch-note"
+                className="font-mono text-xs font-semibold text-[var(--status-warning)]"
+              >
+                Explains the classifier&apos;s output only; it does not know the true state.
+              </p>
+            )}
+
+            <details className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-xs">
+              <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+                Packet values used to build this explanation (Window #
+                {currentExplanation.window_idx} · {currentExplanation.window_id})
+              </summary>
+              <div className="mt-3 grid grid-cols-1 gap-2 font-mono text-[0.72rem] text-[var(--text-secondary)] sm:grid-cols-2 lg:grid-cols-3">
+                <div>
+                  <strong>Window / Run:</strong> {currentExplanation.packet.window_id} (
+                  {currentExplanation.packet.run_id})
+                </div>
+                <div>
+                  <strong>Simulated Time:</strong>{" "}
+                  {currentExplanation.packet.time_s.t_start}s –{" "}
+                  {currentExplanation.packet.time_s.t_end}s (mid{" "}
+                  {currentExplanation.packet.time_s.t_mid}s)
+                </div>
+                <div>
+                  <strong>RF Predicted Class:</strong>{" "}
+                  {currentExplanation.packet.predicted_class} (model_score{" "}
+                  {currentExplanation.packet.model_score})
+                </div>
+                <div>
+                  <strong>Persisted Alarm (k=3,m=3):</strong>{" "}
+                  {currentExplanation.packet.alarm_state}
+                </div>
+                <div>
+                  <strong>Threshold-Rule Class:</strong>{" "}
+                  {currentExplanation.packet.threshold_rule_class}
+                </div>
+                <div>
+                  <strong>Unknown Anomaly:</strong>{" "}
+                  {String(currentExplanation.packet.unknown_anomaly)} (anomaly_score{" "}
+                  {currentExplanation.packet.anomaly_score})
+                </div>
+                <div>
+                  <strong>Node Mean Tilt (deg):</strong> N1{" "}
+                  {currentExplanation.packet.node_mean_tilt_deg.NODE_01}, N2{" "}
+                  {currentExplanation.packet.node_mean_tilt_deg.NODE_02}, N3{" "}
+                  {currentExplanation.packet.node_mean_tilt_deg.NODE_03}, N4{" "}
+                  {currentExplanation.packet.node_mean_tilt_deg.NODE_04}
+                </div>
+                <div>
+                  <strong>Piezo RMS (V):</strong> net{" "}
+                  {currentExplanation.packet.piezo_rms.network_mean} (N1{" "}
+                  {currentExplanation.packet.piezo_rms.NODE_01}, N2{" "}
+                  {currentExplanation.packet.piezo_rms.NODE_02}, N3{" "}
+                  {currentExplanation.packet.piezo_rms.NODE_03}, N4{" "}
+                  {currentExplanation.packet.piezo_rms.NODE_04})
+                </div>
+                <div>
+                  <strong>LiDAR Range Change (m):</strong> hub{" "}
+                  {currentExplanation.packet.lidar_range_change_m.hub_common_mode_m}{" "}
+                  (N1 {currentExplanation.packet.lidar_range_change_m.NODE_01}, N2{" "}
+                  {currentExplanation.packet.lidar_range_change_m.NODE_02}, N3{" "}
+                  {currentExplanation.packet.lidar_range_change_m.NODE_03}, N4{" "}
+                  {currentExplanation.packet.lidar_range_change_m.NODE_04})
+                </div>
+                <div>
+                  <strong>Comm Missing Fraction:</strong> net{" "}
+                  {currentExplanation.packet.comm.missing_fraction_network} (N1{" "}
+                  {currentExplanation.packet.comm.NODE_01_missing_fraction}, N2{" "}
+                  {currentExplanation.packet.comm.NODE_02_missing_fraction}, N3{" "}
+                  {currentExplanation.packet.comm.NODE_03_missing_fraction}, N4{" "}
+                  {currentExplanation.packet.comm.NODE_04_missing_fraction})
+                </div>
+                <div>
+                  <strong>Comm Latency (s):</strong> mean{" "}
+                  {currentExplanation.packet.comm.latency_mean_s}s, max{" "}
+                  {currentExplanation.packet.comm.latency_max_s}s
+                </div>
+                <div>
+                  <strong>Radial Convergence & SNR Bin:</strong> residual{" "}
+                  {currentExplanation.packet.radial_convergence_residual_m}m, cos{" "}
+                  {currentExplanation.packet.radial_convergence_weighted_cos}, SNR bin{" "}
+                  {currentExplanation.packet.snr_vs_imu_noise_bin}
+                </div>
+              </div>
+            </details>
+          </div>
+        ) : (
+          <p className="text-xs text-[var(--text-muted)]">
+            No advisory explanation generated for Window #{currentWin.window_idx} (explanations are
+            pre-computed only for windows where the alarm state changes, the unknown_anomaly flag turns
+            on, or the classifier&apos;s first correct or missed detection occurs; click one of the
+            explained window badges above to view).
+          </p>
+        )}
       </section>
 
       {/* Current Window Sensor MetricTiles (Reusing existing MetricTile component) */}

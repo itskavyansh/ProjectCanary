@@ -1,0 +1,623 @@
+{
+  "synthetic": true,
+  "banner": "SYNTHETIC / SIMULATION - NOT VALIDATED ON REAL DATA",
+  "compression_factor": {
+    "gradual": 360,
+    "normal": 360,
+    "abnormal_vibration": 360,
+    "sensor_fault": 360,
+    "comm_fault": 360,
+    "rapid": 1,
+    "sensor_duration_s": 240,
+    "slow_process_hours_per_run": 24.0,
+    "sensor_hours_per_run": 0.066667,
+    "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
+  },
+  "git_commit": "f824adf8cb9ac4d8026943caf15cbad8c721bf88",
+  "seed": 20261117,
+  "file_id": "explanations_comm_fault",
+  "run_class": "comm_fault",
+  "simulation_id": "sim_test_comm_fault_2026112291",
+  "advisory_notice": "Advisory text only. It does not change the alarm.",
+  "selection_criteria": "At most 12 windows per replay run where the persisted alarm_state changes, the unknown_anomaly flag turns on, or the classifier's first correct or missed detection occurs.",
+  "n_explanations": 8,
+  "explanations": [
+    {
+      "window_idx": 26,
+      "window_id": "run_replay_2026112291_w26",
+      "trigger_reasons": [
+        "first_missed_event_window (comm_fault predicted as normal)"
+      ],
+      "summary": "This simulated window run_replay_2026112291_w26 with model_score 0.4285 is consistent with predicted_class normal. It reports t_mid 67.5, anomaly_score 10.0933, and alarm_state normal.",
+      "suggested_check": "Verify piezo_rms network_mean 0.01223 against NODE_02 0.02266 in the next simulated telemetry check.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.4285,
+          67.5,
+          10.0933,
+          0.01223,
+          0.02266
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 285
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w26",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 65.0,
+          "t_end": 70.0,
+          "t_mid": 67.5
+        },
+        "predicted_class": "normal",
+        "model_score": 0.4285,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": false,
+        "anomaly_score": 10.0933,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.1904,
+          "NODE_02": 0.2492,
+          "NODE_03": 0.1546,
+          "NODE_04": 0.1834
+        },
+        "piezo_rms": {
+          "network_mean": 0.01223,
+          "NODE_01": 0.00592,
+          "NODE_02": 0.02266,
+          "NODE_03": 0.01141,
+          "NODE_04": 0.00892
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0312,
+          "NODE_01": -0.08,
+          "NODE_02": 0.015,
+          "NODE_03": -0.01,
+          "NODE_04": -0.05
+        },
+        "comm": {
+          "missing_fraction_network": 0.05,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.4211,
+          "latency_max_s": 0.8469
+        },
+        "radial_convergence_residual_m": 9.488,
+        "radial_convergence_weighted_cos": 0.6038,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 27,
+      "window_id": "run_replay_2026112291_w27",
+      "trigger_reasons": [
+        "first_correct_detection (comm_fault)"
+      ],
+      "summary": "This simulated window from 67.5 to 72.5 shows predicted_class comm_fault with model_score 0.8888, consistent with threshold_rule_class comm_fault. Telemetry lists 0.6 for NODE_02_missing_fraction, 0.15 for missing_fraction_network, and 0.8469 for latency_max_s.",
+      "suggested_check": "Verify NODE_02 communication telemetry against 0.5168 for latency_mean_s and 0.6 for missing fraction.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          67.5,
+          72.5,
+          0.8888,
+          0.6,
+          0.15,
+          0.8469,
+          0.5168,
+          0.6
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 364
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w27",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 67.5,
+          "t_end": 72.5,
+          "t_mid": 70.0
+        },
+        "predicted_class": "comm_fault",
+        "model_score": 0.8888,
+        "alarm_state": "normal",
+        "threshold_rule_class": "comm_fault",
+        "unknown_anomaly": false,
+        "anomaly_score": 16.1092,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.1871,
+          "NODE_02": 0.1593,
+          "NODE_03": 0.1508,
+          "NODE_04": 0.2325
+        },
+        "piezo_rms": {
+          "network_mean": 0.01151,
+          "NODE_01": 0.00894,
+          "NODE_02": 0.02036,
+          "NODE_03": 0.00889,
+          "NODE_04": 0.00784
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0312,
+          "NODE_01": -0.08,
+          "NODE_02": 0.015,
+          "NODE_03": -0.01,
+          "NODE_04": -0.05
+        },
+        "comm": {
+          "missing_fraction_network": 0.15,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.6,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.5168,
+          "latency_max_s": 0.8469
+        },
+        "radial_convergence_residual_m": 9.188,
+        "radial_convergence_weighted_cos": 0.7725,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 28,
+      "window_id": "run_replay_2026112291_w28",
+      "trigger_reasons": [
+        "unknown_anomaly_flag_turned_on"
+      ],
+      "summary": "This simulated packet reports predicted_class comm_fault with model_score 0.9254, consistent with observed telemetry. The packet lists 0.6 for NODE_02_missing_fraction, 0.15 for missing_fraction_network, and 0.4937 for latency_mean_s.",
+      "suggested_check": "Consider verifying NODE_02_missing_fraction telemetry showing 0.6.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.9254,
+          0.6,
+          0.15,
+          0.4937,
+          0.6
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 301
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w28",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 70.0,
+          "t_end": 75.0,
+          "t_mid": 72.5
+        },
+        "predicted_class": "comm_fault",
+        "model_score": 0.9254,
+        "alarm_state": "normal",
+        "threshold_rule_class": "comm_fault",
+        "unknown_anomaly": true,
+        "anomaly_score": 16.2661,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.2381,
+          "NODE_02": 0.1194,
+          "NODE_03": 0.173,
+          "NODE_04": 0.227
+        },
+        "piezo_rms": {
+          "network_mean": 0.01137,
+          "NODE_01": 0.01005,
+          "NODE_02": 0.01386,
+          "NODE_03": 0.01178,
+          "NODE_04": 0.00979
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0288,
+          "NODE_01": -0.08,
+          "NODE_02": 0.015,
+          "NODE_03": -0.01,
+          "NODE_04": -0.04
+        },
+        "comm": {
+          "missing_fraction_network": 0.15,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.6,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.4937,
+          "latency_max_s": 0.7823
+        },
+        "radial_convergence_residual_m": 12.255,
+        "radial_convergence_weighted_cos": 0.4802,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 29,
+      "window_id": "run_replay_2026112291_w29",
+      "trigger_reasons": [
+        "alarm_state_changed (normal -> comm_fault)"
+      ],
+      "summary": "This simulated packet for run_replay_2026112291_w29 shows predicted_class comm_fault with model_score 0.9815 consistent with comm_fault indicators. Telemetry lists NODE_02_missing_fraction 0.8 and missing_fraction_network 0.2 with latency_max_s 0.6478.",
+      "suggested_check": "Verify NODE_02 communication link and latency_mean_s 0.4099 reporting.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.9815,
+          0.8,
+          0.2,
+          0.6478,
+          0.4099
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 323
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w29",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 72.5,
+          "t_end": 77.5,
+          "t_mid": 75.0
+        },
+        "predicted_class": "comm_fault",
+        "model_score": 0.9815,
+        "alarm_state": "comm_fault",
+        "threshold_rule_class": "comm_fault",
+        "unknown_anomaly": true,
+        "anomaly_score": 19.6894,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.2545,
+          "NODE_02": 0.1156,
+          "NODE_03": 0.1444,
+          "NODE_04": 0.1356
+        },
+        "piezo_rms": {
+          "network_mean": 0.00911,
+          "NODE_01": 0.01019,
+          "NODE_02": 0.00829,
+          "NODE_03": 0.00849,
+          "NODE_04": 0.00949
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0288,
+          "NODE_01": -0.08,
+          "NODE_02": 0.015,
+          "NODE_03": -0.01,
+          "NODE_04": -0.04
+        },
+        "comm": {
+          "missing_fraction_network": 0.2,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.8,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.4099,
+          "latency_max_s": 0.6478
+        },
+        "radial_convergence_residual_m": 14.231,
+        "radial_convergence_weighted_cos": -0.1454,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 59,
+      "window_id": "run_replay_2026112291_w59",
+      "trigger_reasons": [
+        "alarm_state_changed (comm_fault -> normal)"
+      ],
+      "summary": "This simulated packet from 147.5 to 152.5 shows predicted_class normal with model_score 0.4471 consistent with normal. It lists anomaly_score 9.0141 and hub_common_mode_m -0.0313 with latency_mean_s 0.3777. Alarm_state normal and threshold_rule_class normal are reported at t_mid 150.0.",
+      "suggested_check": "Consider verifying latency_max_s 0.4995 against latency_mean_s 0.3777 in the simulated packet.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          147.5,
+          152.5,
+          0.4471,
+          9.0141,
+          -0.0313,
+          0.3777,
+          150.0,
+          0.4995,
+          0.3777
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 3,
+        "sentence_count_check": 1,
+        "char_count": 381
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w59",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 147.5,
+          "t_end": 152.5,
+          "t_mid": 150.0
+        },
+        "predicted_class": "normal",
+        "model_score": 0.4471,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": false,
+        "anomaly_score": 9.0141,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.2029,
+          "NODE_02": 0.1122,
+          "NODE_03": 0.1839,
+          "NODE_04": 0.2291
+        },
+        "piezo_rms": {
+          "network_mean": 0.00799,
+          "NODE_01": 0.00524,
+          "NODE_02": 0.01866,
+          "NODE_03": 0.00328,
+          "NODE_04": 0.00477
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0313,
+          "NODE_01": -0.11,
+          "NODE_02": -0.025,
+          "NODE_03": 0.05,
+          "NODE_04": -0.04
+        },
+        "comm": {
+          "missing_fraction_network": 0.05,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.3777,
+          "latency_max_s": 0.4995
+        },
+        "radial_convergence_residual_m": 12.672,
+        "radial_convergence_weighted_cos": -0.2737,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 67,
+      "window_id": "run_replay_2026112291_w67",
+      "trigger_reasons": [
+        "unknown_anomaly_flag_turned_on"
+      ],
+      "summary": "This simulated packet shows predicted_class normal with model_score 0.4572 and alarm_state normal. Values including 0.05, 0.2 and 10.23 are consistent with normal. The window from 167.5 to 172.5 remains consistent with normal.",
+      "suggested_check": "Consider checking NODE_02_missing_fraction of 0.2 for verification.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.4572,
+          0.05,
+          0.2,
+          10.23,
+          167.5,
+          172.5,
+          0.2
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 3,
+        "sentence_count_check": 1,
+        "char_count": 294
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w67",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 167.5,
+          "t_end": 172.5,
+          "t_mid": 170.0
+        },
+        "predicted_class": "normal",
+        "model_score": 0.4572,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": true,
+        "anomaly_score": 9.844,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.1695,
+          "NODE_02": 0.0905,
+          "NODE_03": 0.1839,
+          "NODE_04": 0.1842
+        },
+        "piezo_rms": {
+          "network_mean": 0.01348,
+          "NODE_01": 0.00989,
+          "NODE_02": 0.02705,
+          "NODE_03": 0.01232,
+          "NODE_04": 0.00467
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": 0.0087,
+          "NODE_01": 0.01,
+          "NODE_02": -0.025,
+          "NODE_03": 0.05,
+          "NODE_04": 0.0
+        },
+        "comm": {
+          "missing_fraction_network": 0.05,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.4353,
+          "latency_max_s": 1.0666
+        },
+        "radial_convergence_residual_m": 10.23,
+        "radial_convergence_weighted_cos": 0.5588,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 71,
+      "window_id": "run_replay_2026112291_w71",
+      "trigger_reasons": [
+        "alarm_state_changed (normal -> rapid)"
+      ],
+      "summary": "This simulated packet at t_mid 180.0 shows predicted_class rapid with model_score 0.6345 and anomaly_score 7.7921. The pattern is consistent with rapid, including radial_convergence_residual_m 4.969 and lidar_range_change_m NODE_02 -0.025. Comm telemetry shows latency_max_s 0.6781 and NODE_04_missing_fraction 0.2.",
+      "suggested_check": "Consider rechecking lidar_range_change_m for NODE_02 reported as -0.025.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          180.0,
+          0.6345,
+          7.7921,
+          4.969,
+          -0.025,
+          0.6781,
+          0.2,
+          -0.025
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 3,
+        "sentence_count_check": 1,
+        "char_count": 388
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w71",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 177.5,
+          "t_end": 182.5,
+          "t_mid": 180.0
+        },
+        "predicted_class": "rapid",
+        "model_score": 0.6345,
+        "alarm_state": "rapid",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": false,
+        "anomaly_score": 7.7921,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.1678,
+          "NODE_02": 0.137,
+          "NODE_03": 0.2151,
+          "NODE_04": 0.1476
+        },
+        "piezo_rms": {
+          "network_mean": 0.01188,
+          "NODE_01": 0.01138,
+          "NODE_02": 0.01107,
+          "NODE_03": 0.01402,
+          "NODE_04": 0.01106
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0013,
+          "NODE_01": 0.01,
+          "NODE_02": -0.025,
+          "NODE_03": 0.01,
+          "NODE_04": 0.0
+        },
+        "comm": {
+          "missing_fraction_network": 0.05,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.0,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.2,
+          "latency_mean_s": 0.4087,
+          "latency_max_s": 0.6781
+        },
+        "radial_convergence_residual_m": 4.969,
+        "radial_convergence_weighted_cos": 0.9638,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 77,
+      "window_id": "run_replay_2026112291_w77",
+      "trigger_reasons": [
+        "alarm_state_changed (rapid -> normal)"
+      ],
+      "summary": "This simulated packet from 192.5 to 197.5 is consistent with predicted_class normal with model_score 0.4808. Anomaly_score 8.093 and missing_fraction_network 0.0 were reported with alarm_state normal.",
+      "suggested_check": "Verify piezo_rms network_mean 0.00952 against node readings.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          192.5,
+          197.5,
+          0.4808,
+          8.093,
+          0.0,
+          0.00952
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 261
+      },
+      "packet": {
+        "window_id": "run_replay_2026112291_w77",
+        "run_id": "run_replay_2026112291",
+        "time_s": {
+          "t_start": 192.5,
+          "t_end": 197.5,
+          "t_mid": 195.0
+        },
+        "predicted_class": "normal",
+        "model_score": 0.4808,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": false,
+        "anomaly_score": 8.093,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.174,
+          "NODE_02": 0.1176,
+          "NODE_03": 0.1941,
+          "NODE_04": 0.0926
+        },
+        "piezo_rms": {
+          "network_mean": 0.00952,
+          "NODE_01": 0.00914,
+          "NODE_02": 0.00758,
+          "NODE_03": 0.01431,
+          "NODE_04": 0.00704
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0313,
+          "NODE_01": 0.01,
+          "NODE_02": -0.045,
+          "NODE_03": -0.06,
+          "NODE_04": -0.03
+        },
+        "comm": {
+          "missing_fraction_network": 0.0,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.0,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.456,
+          "latency_max_s": 0.8635
+        },
+        "radial_convergence_residual_m": 9.207,
+        "radial_convergence_weighted_cos": -0.6288,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    }
+  ]
+}

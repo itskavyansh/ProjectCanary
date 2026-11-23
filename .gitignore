@@ -6,6 +6,10 @@
 .env
 .env.local
 .env.*.local
+**/.env
+**/.env.*
+!/.env.example
+!**/.env.example
 
 # Supabase CLI local cache
 supabase/.temp/
@@ -26,7 +30,10 @@ dist-ssr/
 __pycache__/
 *.pyc
 .pytest_cache/
-simulation/outputs/
+simulation/outputs/*
+!simulation/outputs/eval_explainer/
+simulation/outputs/eval_explainer/cache/
+simulation/outputs/eval_explainer/*.jsonl
 simulation/**/__pycache__
 
 # OS
