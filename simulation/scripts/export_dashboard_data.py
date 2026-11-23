@@ -481,7 +481,7 @@ def build_summary_json(root: Path, git_commit: str, seed: int) -> dict[str, Any]
             "title": "Synthetic Sensor Fault and Confounder Distributions",
             "detail": (
                 "Hardware fault modes (stuck-at, drift, bias step, motor stall) and packet-loss bursts are "
-                "synthetically injected; NODE_04 bench noise is proxied from NODE_02."
+                "synthetically injected; NODE_04 has no bench recording; as for every node, IMU white-noise sd is the pooled mean over NODE_01..NODE_03 of continuous_step_noise (sensors.py load_noise_profile), and piezo baseline uses the pooled overall statistics."
             ),
         },
         {
@@ -722,7 +722,7 @@ def build_robustness_json(root: Path, git_commit: str, seed: int) -> dict[str, A
                 "Evaluated across 5 compass perturbation conditions (sd_0deg, sd_5deg, sd_10deg, sd_20deg, "
                 "single_node_45deg) plus the yaw-free v2 baseline. v3 RF preserves its advantage up to 10 deg SD; "
                 "at 20 deg SD its test detection advantage disappears, and a single-node 45 deg blunder spikes "
-                "gradual <-> sensor_fault confusions from 39 to 84."
+                "gradual <-> sensor_fault confusions (all SNR, RF test) from 37 at 0 deg SD to 84."
             ),
             "all_snr": df_to_records(yaw_all_op, ndigits=4),
             "snr_gt_2": df_to_records(yaw_s2_op, ndigits=4),

@@ -36,7 +36,7 @@
   "outputs/eval_unknown/detector_thresholds.json"
  ],
  "yaw_sensitivity": {
-  "summary_note": "Evaluated across 5 compass perturbation conditions (sd_0deg, sd_5deg, sd_10deg, sd_20deg, single_node_45deg) plus the yaw-free v2 baseline. v3 RF preserves its advantage up to 10 deg SD; at 20 deg SD its test detection advantage disappears, and a single-node 45 deg blunder spikes gradual <-> sensor_fault confusions from 39 to 84.",
+  "summary_note": "Evaluated across 5 compass perturbation conditions (sd_0deg, sd_5deg, sd_10deg, sd_20deg, single_node_45deg) plus the yaw-free v2 baseline. v3 RF preserves its advantage up to 10 deg SD; at 20 deg SD its test detection advantage disappears, and a single-node 45 deg blunder spikes gradual <-> sensor_fault confusions (all SNR, RF test) from 37 at 0 deg SD to 84.",
   "all_snr": [
    {
     "split": "test",

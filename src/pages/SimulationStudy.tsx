@@ -18,6 +18,8 @@ import {
   Sliders,
 } from "lucide-react";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -31,10 +33,9 @@ import {
   YAxis,
 } from "recharts";
 import { DataStatus } from "../components/DataStatus";
-import { MetricTile } from "../components/MetricTile";
 import { StatusBadge } from "../components/StatusBadge";
-import { TrendChart } from "../components/TrendChart";
-import type { SensorReading, TimePoint } from "../types/sensor";
+import type { SensorReading } from "../types/sensor";
+import { deepSanitizeSim } from "./simulationText";
 import {
   EXPECTED_SIM_BANNER,
   validateSimEnvelope,
@@ -50,6 +51,141 @@ import {
   type SimSummaryData,
   type SimTabId,
 } from "../types/simulation";
+
+/* Simulation-local metric tile: no live-dashboard thresholds or severity colours. */
+function MetricTile({
+  label,
+  value,
+  unit,
+  size = "md",
+  decimals = 2,
+}: {
+  label: string;
+  value?: number | null;
+  unit: string;
+  size?: "md" | "lg";
+  decimals?: number;
+}) {
+  return (
+    <div
+      className={`flex h-full min-w-0 flex-col rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] ${
+        size === "lg" ? "px-4 py-3.5 sm:px-5 sm:py-4" : "px-3 py-2 sm:py-2.5"
+      }`}
+    >
+      <p className="min-w-0 truncate text-[0.64rem] font-semibold uppercase leading-tight tracking-[0.035em] text-[var(--text-muted)]">
+        {label}
+      </p>
+      <div className="mt-1 flex min-w-0 flex-wrap items-baseline gap-x-1 font-mono text-xl font-bold tracking-tight text-[var(--text-primary)] sm:text-2xl">
+        {value != null ? (
+          <span>{value.toFixed(decimals)}</span>
+        ) : (
+          <span className="text-[var(--text-disabled)]">N/A</span>
+        )}
+        <span className="font-sans text-xs font-semibold text-[var(--text-muted)] sm:text-sm">
+          {unit}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+interface SimTrendPoint {
+  t: number;
+  value: number;
+}
+
+/* Simulation-local single-node chart: x-axis is simulated seconds (0-240 s),
+   only simulation reference lines are drawn. The shared TrendChart is untouched. */
+function SimTrendChart({
+  data,
+  label,
+  unit,
+  color,
+  reference,
+}: {
+  data: SimTrendPoint[];
+  label: string;
+  unit: string;
+  color: string;
+  reference?: { y: number; label: string };
+}) {
+  const gid = `sim-gradient-${label.replace(/[^A-Za-z0-9]/g, "")}`;
+  return (
+    <div className="min-w-0 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] p-4 shadow-xs sm:p-5">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h3 className="truncate text-sm font-bold tracking-tight text-[var(--text-primary)]">
+          {label}
+        </h3>
+        <span
+          className="h-2.5 w-2.5 shrink-0 rounded-full ring-2 ring-[var(--card-border)]"
+          style={{ backgroundColor: color }}
+        />
+      </div>
+      <div className="h-64 min-w-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data} margin={{ top: 10, right: 28, left: 4, bottom: 0 }}>
+            <defs>
+              <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={color} stopOpacity={0.25} />
+                <stop offset="95%" stopColor={color} stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+            <XAxis
+              dataKey="t"
+              type="number"
+              domain={[0, 240]}
+              ticks={[0, 60, 120, 180, 240]}
+              tickFormatter={(v) => `${v} s`}
+              tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
+            />
+            <YAxis
+              domain={["auto", "auto"]}
+              tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
+              label={{
+                value: unit,
+                angle: -90,
+                position: "insideLeft",
+                style: { fill: "var(--chart-labels)", fontSize: 11, textAnchor: "middle" },
+              }}
+            />
+            {reference && (
+              <ReferenceLine
+                y={reference.y}
+                stroke="var(--status-warning)"
+                strokeDasharray="3 3"
+                label={{
+                  position: "insideTopLeft",
+                  value: reference.label,
+                  fill: "var(--status-warning)",
+                  fontSize: 10,
+                }}
+              />
+            )}
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--chart-tooltip-bg)",
+                borderColor: "var(--chart-tooltip-border)",
+                color: "var(--chart-tooltip-text)",
+              }}
+              labelFormatter={(v) => `t = ${v} s`}
+              formatter={(v) => [`${v} ${unit}`, label]}
+            />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke={color}
+              strokeWidth={2}
+              fill={`url(#${gid})`}
+              dot={false}
+              isAnimationActive={false}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
 
 const SIM_TABS: {
   id: SimTabId;
@@ -434,7 +570,7 @@ export function SimulationStudy() {
         resultsRecallVsSnr,
         resultsModelComparison,
         robustness,
-        parameters,
+        parameters: deepSanitizeSim(parameters),
         replays: {
           normal: repNormal,
           gradual: repGradual,
@@ -481,30 +617,17 @@ export function SimulationStudy() {
     return () => window.clearInterval(timer);
   }, [isPlaying, currentReplay, playbackSpeed]);
 
-  // Convert current replay node data into TimePoint[] for existing TrendChart component
-  const trendChartHistory: TimePoint[] = useMemo(() => {
+  // Per-node series in simulated seconds for the simulation-local trend charts
+  const trendChartHistory = useMemo(() => {
     if (!currentReplay) return [];
-    const baseEpoch = Date.UTC(2026, 0, 1, 0, 0, 0);
-    return currentReplay.windows.slice(0, playbackIdx + 1).map((w) => {
-      const iso = new Date(baseEpoch + w.t_mid * 1000).toISOString();
-      const tiltVal = w.node_mean_tilt_deg[selectedTrendNode] ?? 0;
-      const piezoRms = w.piezo_rms[selectedTrendNode] ?? 0;
-      const lidarCm = Number(
+    return currentReplay.windows.slice(0, playbackIdx + 1).map((w) => ({
+      t: w.t_mid,
+      tilt: w.node_mean_tilt_deg[selectedTrendNode] ?? 0,
+      piezo: w.piezo_rms[selectedTrendNode] ?? 0,
+      lidarCm: Number(
         (Math.abs(w.lidar_range_change_m[selectedTrendNode] ?? 0) * 100).toFixed(3)
-      );
-      return {
-        timestamp: iso,
-        tilt_x: tiltVal,
-        tilt_y: 0,
-        vibration: piezoRms,
-        distance: Number((1414.2 - lidarCm).toFixed(2)),
-        displacement: lidarCm,
-        risk_score: Math.round(w.model_score * 100),
-        piezo_rms: piezoRms,
-        piezo_peak: piezoRms * 1.8,
-        piezo_peak_to_peak: piezoRms * 3.2,
-      };
-    });
+      ),
+    }));
   }, [currentReplay, playbackIdx, selectedTrendNode]);
 
   return (
@@ -533,7 +656,9 @@ export function SimulationStudy() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <StatusBadge status="NORMAL" />
+            <span className="rounded-full border border-[var(--border)] bg-[var(--surface-alt)] px-3 py-1 font-mono text-xs font-bold tracking-wide text-[var(--text-secondary)]">
+              STATIC ARCHIVE
+            </span>
             <span className="font-mono text-xs text-[var(--text-muted)]">
               Static JSON · Zero Live Network Calls
             </span>
@@ -1952,6 +2077,7 @@ function RobustnessSection({
                 <th className="px-3 py-2">
                   SNR&gt;2 Convergence Residual p50 (m)
                 </th>
+                <th className="px-3 py-2">SNR&gt;2 Weighted Cos p50</th>
                 <th className="px-3 py-2">SNR&gt;2 Pairwise Cos p50</th>
               </tr>
             </thead>
@@ -1993,7 +2119,7 @@ function RobustnessSection({
                   );
                 const conv =
                   robustness.shape_mismatch.convergence_distributions.find(
-                    (r) => r.shape === sh && r.subset === "SNR > 2"
+                    (r) => r.shape === sh && r.subset === "active_windows_snr_gt_2"
                   );
                 return (
                   <tr
@@ -2023,12 +2149,17 @@ function RobustnessSection({
                         : "N/A"}
                     </td>
                     <td className="px-3 py-2">
-                      {conv
+                      {conv?.dir_convergence_residual_m_p50 != null
                         ? `${conv.dir_convergence_residual_m_p50.toFixed(2)} m`
                         : "N/A"}
                     </td>
                     <td className="px-3 py-2">
-                      {conv
+                      {conv?.dir_convergence_weighted_cos_p50 != null
+                        ? conv.dir_convergence_weighted_cos_p50.toFixed(3)
+                        : "N/A"}
+                    </td>
+                    <td className="px-3 py-2">
+                      {conv?.dir_pairwise_cos_mean_p50 != null
                         ? conv.dir_pairwise_cos_mean_p50.toFixed(3)
                         : "N/A"}
                     </td>
@@ -2416,7 +2547,7 @@ function ReplaySection({
   onChangeSpeed: (s: number) => void;
   selectedTrendNode: "NODE_01" | "NODE_02" | "NODE_03" | "NODE_04";
   onSelectTrendNode: (n: "NODE_01" | "NODE_02" | "NODE_03" | "NODE_04") => void;
-  trendChartHistory: TimePoint[];
+  trendChartHistory: { t: number; tilt: number; piezo: number; lidarCm: number }[];
 }) {
   const safeIdx = Math.min(
     Math.max(0, playbackIdx),
@@ -2838,7 +2969,10 @@ function ReplaySection({
                 <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                 <XAxis
                   dataKey="t_mid"
-                  unit="s"
+                  type="number"
+                  domain={[0, 240]}
+                  ticks={[0, 60, 120, 180, 240]}
+                  unit=" s"
                   tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
                 />
                 <YAxis
@@ -2917,7 +3051,10 @@ function ReplaySection({
                 <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                 <XAxis
                   dataKey="t_mid"
-                  unit="s"
+                  type="number"
+                  domain={[0, 240]}
+                  ticks={[0, 60, 120, 180, 240]}
+                  unit=" s"
                   tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
                 />
                 <YAxis tick={{ fontSize: 11, fill: "var(--chart-labels)" }} />
@@ -2987,7 +3124,10 @@ function ReplaySection({
                 <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                 <XAxis
                   dataKey="t_mid"
-                  unit="s"
+                  type="number"
+                  domain={[0, 240]}
+                  ticks={[0, 60, 120, 180, 240]}
+                  unit=" s"
                   tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
                 />
                 <YAxis
@@ -3064,7 +3204,10 @@ function ReplaySection({
                 <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                 <XAxis
                   dataKey="t_mid"
-                  unit="s"
+                  type="number"
+                  domain={[0, 240]}
+                  ticks={[0, 60, 120, 180, 240]}
+                  unit=" s"
                   tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
                 />
                 <YAxis
@@ -3120,8 +3263,7 @@ function ReplaySection({
           <div className="flex items-center gap-2">
             <Sliders className="h-4 w-4 text-[var(--brand-teal)]" />
             <h3 className="subsection-title">
-              Single-Node Inspection via Dashboard <code className="font-mono">TrendChart</code>{" "}
-              Component (Up to Current Playback Window)
+              Single-Node Inspection (Up to Current Playback Window, simulated seconds)
             </h3>
           </div>
           <div className="flex items-center gap-1.5">
@@ -3145,23 +3287,22 @@ function ReplaySection({
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <TrendChart
-            data={trendChartHistory}
-            dataKey="tilt_x"
+          <SimTrendChart
+            data={trendChartHistory.map((p) => ({ t: p.t, value: p.tilt }))}
             label={`${selectedTrendNode} Mean Tilt (°)`}
             unit="°"
             color="var(--chart-series-3)"
+            reference={{ y: 0.607, label: "Sim basin threshold 0.607°" }}
           />
-          <TrendChart
-            data={trendChartHistory}
-            dataKey="piezo_rms"
+          <SimTrendChart
+            data={trendChartHistory.map((p) => ({ t: p.t, value: p.piezo }))}
             label={`${selectedTrendNode} Piezo RMS (V)`}
             unit="V"
             color="var(--chart-series-5)"
+            reference={{ y: 0.028, label: "Sim piezo threshold 0.028 V" }}
           />
-          <TrendChart
-            data={trendChartHistory}
-            dataKey="displacement"
+          <SimTrendChart
+            data={trendChartHistory.map((p) => ({ t: p.t, value: p.lidarCm }))}
             label={`${selectedTrendNode} LiDAR Range Change (cm)`}
             unit="cm"
             color="var(--chart-series-1)"

@@ -154,7 +154,7 @@
     {
       "id": "synthetic_faults_and_confounders",
       "title": "Synthetic Sensor Fault and Confounder Distributions",
-      "detail": "Hardware fault modes (stuck-at, drift, bias step, motor stall) and packet-loss bursts are synthetically injected; NODE_04 bench noise is proxied from NODE_02."
+      "detail": "Hardware fault modes (stuck-at, drift, bias step, motor stall) and packet-loss bursts are synthetically injected; NODE_04 has no bench recording; as for every node, IMU white-noise sd is the pooled mean over NODE_01..NODE_03 of continuous_step_noise (sensors.py load_noise_profile), and piezo baseline uses the pooled overall statistics."
     },
     {
       "id": "timescale_compression_placeholder",
