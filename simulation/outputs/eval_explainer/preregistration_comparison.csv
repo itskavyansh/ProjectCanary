@@ -1,0 +1,9 @@
+id,predicted_range,observed,confirmed,note
+H1_first_try_guard_pass_rate,0.70 to 0.92,1.0,False,Observed 1.0000 exceeded the upper bound of 0.92 (higher first-try pass rate than predicted).
+H2_retry_rate,0.08 to 0.30,0.0,False,Observed retry rate 0.0000 was lower than 0.08 because first-try pass rate was >0.92.
+H3_fallback_rate,0.00 to 0.12,0.0,True,Confirmed within pre-registered 0% to 12% range.
+H4_unfaithful_numbers_pre_and_post_guard,Pre: 0.04 to 0.22; Post: 0.00,Pre: 0.0000; Post: 0.0000,False,Post-guard unfaithful number rate is strictly 0.0000 (confirmed); pre-guard rate was 0.0000. Unmatched pre-guard number breakdown: {}.
+H6_class_contradiction_pre_and_post_guard,Pre: 0.02 to 0.18; Post: 0.00,Pre: 0.0000; Post: 0.0000,False,Post-guard class contradiction rate is strictly 0.0000; pre-guard rate was 0.0000.
+H7_classifier_mistakes_faithfulness_and_no_extra_confidence,1.0000 reflects wrong predicted_class; 0.0000 forbidden confidence/prob claims,"reflects_predicted_class=1.0000, forbidden_confidence=0.0000",True,Confirmed: 100% of classifier-mistake explanations faithfully report the classifier's predicted class with hedged language and zero confidence claims.
+H8_total_spend_under_cap,< $0.50 USD (cap $5.00 USD),$1.1002 USD,False,"Hard cap ($5.00 USD) held ($1.1002 USD <= $5.00 USD), though spend exceeded the <$0.50 pre-registered point estimate because muse-spark-1.3 billed ~1,100 reasoning tokens per call."
+H9_judge_agreement_rate,>= 0.90 rating >= 4 and >= 0.90 agreement with guard,"rating>=4: 1.0000, agreement: 1.0000",True,Confirmed on 40-packet random sample (subject to same-model judge limitation).

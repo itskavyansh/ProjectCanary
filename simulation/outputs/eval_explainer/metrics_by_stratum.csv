@@ -1,0 +1,8 @@
+stratum,n_packets,first_try_pass_rate,first_try_pass_ci95_lo,first_try_pass_ci95_hi,retry_rate,retry_ci95_lo,retry_ci95_hi,fallback_rate,fallback_ci95_lo,fallback_ci95_hi,unfaithful_num_pre_guard,unfaithful_num_pre_ci95_lo,unfaithful_num_pre_ci95_hi,unfaithful_num_post_guard,class_contradiction_pre_guard,class_contradiction_pre_ci95_lo,class_contradiction_pre_ci95_hi,class_contradiction_post_guard,forbidden_claim_pre_guard,forbidden_claim_post_guard,mean_char_count,max_char_count,mean_tokens,mean_latency_s
+correct_alarm,30,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,332.2,429,2431.3,8.819
+missed_event,24,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,301.5,419,2430.5,8.642
+false_alarm,20,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,310.2,385,2472.0,8.671
+classifier_mistake,26,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,304.7,406,2414.2,8.798
+unknown_flag_normal,15,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,329.8,474,2424.5,8.645
+unknown_flag_event,15,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,347.2,441,2455.5,8.708
+fault_window,20,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,318.5,411,2404.9,8.258

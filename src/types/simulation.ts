@@ -686,6 +686,83 @@ export interface SimReplayData extends SimCommonEnvelope {
   windows: ReplayWindowRecord[];
 }
 
+export interface ReplayExplanationPacket {
+  window_id: string;
+  run_id: string;
+  time_s: {
+    t_start: number;
+    t_end: number;
+    t_mid: number;
+  };
+  predicted_class: ReplayClassKey;
+  model_score: number;
+  alarm_state: ReplayClassKey;
+  threshold_rule_class: ReplayClassKey;
+  unknown_anomaly: boolean;
+  anomaly_score: number;
+  node_mean_tilt_deg: {
+    NODE_01: number;
+    NODE_02: number;
+    NODE_03: number;
+    NODE_04: number;
+  };
+  piezo_rms: {
+    network_mean: number;
+    NODE_01: number;
+    NODE_02: number;
+    NODE_03: number;
+    NODE_04: number;
+  };
+  lidar_range_change_m: {
+    hub_common_mode_m: number;
+    NODE_01: number;
+    NODE_02: number;
+    NODE_03: number;
+    NODE_04: number;
+  };
+  comm: {
+    missing_fraction_network: number;
+    NODE_01_missing_fraction: number;
+    NODE_02_missing_fraction: number;
+    NODE_03_missing_fraction: number;
+    NODE_04_missing_fraction: number;
+    latency_mean_s: number;
+    latency_max_s: number;
+  };
+  radial_convergence_residual_m: number;
+  radial_convergence_weighted_cos: number;
+  snr_vs_imu_noise_bin: string;
+}
+
+export interface ReplayExplanationRecord {
+  window_idx: number;
+  window_id: string;
+  trigger_reasons?: string[];
+  summary: string;
+  suggested_check: string;
+  source: "ai" | "template";
+  model_id: string;
+  guard_result: {
+    passed: boolean;
+    reasons: string[];
+    extracted_numbers?: number[];
+    unmatched_numbers?: number[];
+    sentence_count_summary?: number;
+    sentence_count_check?: number;
+    char_count?: number;
+  };
+  packet: ReplayExplanationPacket;
+}
+
+export interface SimReplayExplanationsData extends SimCommonEnvelope {
+  run_class: ReplayClassKey;
+  simulation_id: string;
+  advisory_notice: string;
+  selection_criteria: string;
+  n_explanations: number;
+  explanations: ReplayExplanationRecord[];
+}
+
 export interface SimBundle {
   summary: SimSummaryData;
   resultsBySplit: SimResultsBySplitData;
@@ -695,6 +772,7 @@ export interface SimBundle {
   robustness: SimRobustnessData;
   parameters: SimParametersData;
   replays: Record<ReplayClassKey, SimReplayData>;
+  explanations: Record<ReplayClassKey, SimReplayExplanationsData>;
 }
 
 export function validateSimEnvelope(

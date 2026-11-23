@@ -30,6 +30,15 @@ const EXPECTED_FILES = [
   "replay_comm_fault.json",
 ] as const;
 
+const EXPECTED_EXPLANATION_FILES = [
+  "explanations_normal.json",
+  "explanations_gradual.json",
+  "explanations_rapid.json",
+  "explanations_abnormal_vibration.json",
+  "explanations_sensor_fault.json",
+  "explanations_comm_fault.json",
+] as const;
+
 const REPLAY_CLASSES: ReplayClassKey[] = [
   "normal",
   "gradual",
@@ -45,6 +54,7 @@ const SECRET_PATTERNS: RegExp[] = [
   /sbp_[A-Za-z0-9]{20,}/,
   /SUPABASE_SERVICE_ROLE_KEY/i,
   /FAST2SMS_API_KEY/i,
+  /META_API_KEY/i,
   /PRIVATE_KEY/i,
 ];
 
@@ -212,7 +222,7 @@ test("Scenario 3: All 6 replay_<class>.json files contain valid 95-window timeli
 // SCENARIO 4: No secret-looking strings and no probability/confidence field names
 // -----------------------------------------------------------------------------
 test("Scenario 4: No exported JSON file contains secret-looking strings or probability/confidence fields", () => {
-  for (const fileName of EXPECTED_FILES) {
+  for (const fileName of [...EXPECTED_FILES, ...EXPECTED_EXPLANATION_FILES]) {
     const fullPath = path.join(SIM_DIR, fileName);
     const rawText = fs.readFileSync(fullPath, "utf-8");
     const lower = rawText.toLowerCase();
@@ -231,6 +241,65 @@ test("Scenario 4: No exported JSON file contains secret-looking strings or proba
         !pattern.test(rawText),
         `Secret-looking pattern ${pattern} matched in ${fileName}`
       );
+    }
+  }
+});
+
+// -----------------------------------------------------------------------------
+// SCENARIO 6: All 6 explanations_<class>.json files respect schema, <100 KB size, no secrets
+// -----------------------------------------------------------------------------
+test("Scenario 6: All 6 explanations_<class>.json files stay under 100 KB, match schema, and carry advisory notice", () => {
+  for (const cls of REPLAY_CLASSES) {
+    const fileName = `explanations_${cls}.json`;
+    const fullPath = path.join(SIM_DIR, fileName);
+    assert.ok(fs.existsSync(fullPath), `Missing file: public/sim/${fileName}`);
+
+    const stat = fs.statSync(fullPath);
+    assert.ok(stat.size > 0, `${fileName} must not be empty`);
+    assert.ok(
+      stat.size <= 100 * 1024,
+      `${fileName} (${stat.size} bytes) exceeds 100 KB limit`
+    );
+
+    const parsed = readSimJson(fileName);
+    validateSimEnvelope(parsed, fileName, [
+      "file_id",
+      "run_class",
+      "simulation_id",
+      "advisory_notice",
+      "explanations",
+    ]);
+    assert.equal(parsed.run_class, cls);
+    assert.equal(
+      parsed.advisory_notice,
+      "Advisory text only. It does not change the alarm."
+    );
+
+    const explanations = parsed.explanations as Record<string, unknown>[];
+    assert.ok(Array.isArray(explanations));
+    assert.ok(
+      explanations.length >= 1 && explanations.length <= 12,
+      `${fileName} must have 1..12 explanations, got ${explanations.length}`
+    );
+
+    for (const item of explanations) {
+      assert.equal(typeof item.window_idx, "number");
+      assert.ok(typeof item.summary === "string" && item.summary.length > 0);
+      assert.ok(
+        typeof item.suggested_check === "string" && item.suggested_check.length > 0
+      );
+      assert.ok(
+        item.source === "ai" || item.source === "template",
+        `Invalid source ${String(item.source)} in ${fileName}`
+      );
+      assert.ok(typeof item.model_id === "string" && item.model_id.length > 0);
+      const gr = item.guard_result as Record<string, unknown>;
+      assert.ok(gr && typeof gr === "object");
+      assert.equal(gr.passed, true);
+      const pkt = item.packet as Record<string, unknown>;
+      assert.ok(pkt && typeof pkt === "object");
+      assert.equal(typeof pkt.model_score, "number");
+      assert.ok(!("truth" in pkt) && !("true_label" in pkt));
     }
   }
 });

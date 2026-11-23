@@ -1,0 +1,327 @@
+{
+  "synthetic": true,
+  "banner": "SYNTHETIC / SIMULATION - NOT VALIDATED ON REAL DATA",
+  "compression_factor": {
+    "gradual": 360,
+    "normal": 360,
+    "abnormal_vibration": 360,
+    "sensor_fault": 360,
+    "comm_fault": 360,
+    "rapid": 1,
+    "sensor_duration_s": 240,
+    "slow_process_hours_per_run": 24.0,
+    "sensor_hours_per_run": 0.066667,
+    "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
+  },
+  "git_commit": "f824adf8cb9ac4d8026943caf15cbad8c721bf88",
+  "seed": 20261117,
+  "file_id": "explanations_abnormal_vibration",
+  "run_class": "abnormal_vibration",
+  "simulation_id": "sim_test_abnormal_vibration_2026112251",
+  "advisory_notice": "Advisory text only. It does not change the alarm.",
+  "selection_criteria": "At most 12 windows per replay run where the persisted alarm_state changes, the unknown_anomaly flag turns on, or the classifier's first correct or missed detection occurs.",
+  "n_explanations": 4,
+  "explanations": [
+    {
+      "window_idx": 21,
+      "window_id": "run_replay_2026112251_w21",
+      "trigger_reasons": [
+        "first_correct_detection (abnormal_vibration)"
+      ],
+      "summary": "This simulated packet is consistent with abnormal_vibration with model_score 0.9812. It shows t_mid 55.0 and piezo_rms for NODE_04 at 0.09404 with anomaly_score 84.454. The threshold_rule_class abnormal_vibration aligns with lidar_range_change_m for NODE_01 at -0.08.",
+      "suggested_check": "Consider verifying piezo_rms telemetry for NODE_04 at 0.09404.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.9812,
+          55.0,
+          0.09404,
+          84.454,
+          -0.08,
+          0.09404
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 3,
+        "sentence_count_check": 1,
+        "char_count": 330
+      },
+      "packet": {
+        "window_id": "run_replay_2026112251_w21",
+        "run_id": "run_replay_2026112251",
+        "time_s": {
+          "t_start": 52.5,
+          "t_end": 57.5,
+          "t_mid": 55.0
+        },
+        "predicted_class": "abnormal_vibration",
+        "model_score": 0.9812,
+        "alarm_state": "normal",
+        "threshold_rule_class": "abnormal_vibration",
+        "unknown_anomaly": false,
+        "anomaly_score": 84.454,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.363,
+          "NODE_02": 0.3835,
+          "NODE_03": 0.2846,
+          "NODE_04": 0.3413
+        },
+        "piezo_rms": {
+          "network_mean": 0.05917,
+          "NODE_01": 0.06967,
+          "NODE_02": 0.02259,
+          "NODE_03": 0.0504,
+          "NODE_04": 0.09404
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0187,
+          "NODE_01": -0.08,
+          "NODE_02": 0.0,
+          "NODE_03": -0.005,
+          "NODE_04": 0.01
+        },
+        "comm": {
+          "missing_fraction_network": 0.1,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.2,
+          "latency_mean_s": 0.4565,
+          "latency_max_s": 0.8686
+        },
+        "radial_convergence_residual_m": 26.573,
+        "radial_convergence_weighted_cos": -0.9193,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 22,
+      "window_id": "run_replay_2026112251_w22",
+      "trigger_reasons": [
+        "alarm_state_changed (normal -> abnormal_vibration)",
+        "unknown_anomaly_flag_turned_on"
+      ],
+      "summary": "This simulated packet for run_replay_2026112251_w22 shows predicted_class abnormal_vibration with model_score 0.9971, consistent with observed patterns. Telemetry includes piezo_rms network_mean 0.10072 and NODE_04 0.13838 with anomaly_score 97.2603. Time window 55.0 to 60.0 also shows lidar_range_change_m NODE_01 -0.08 and radial_convergence_residual_m 24.185.",
+      "suggested_check": "Verify piezo_rms for NODE_04 reported as 0.13838 against raw telemetry.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.9971,
+          0.10072,
+          0.13838,
+          97.2603,
+          55.0,
+          60.0,
+          -0.08,
+          24.185,
+          0.13838
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 3,
+        "sentence_count_check": 1,
+        "char_count": 435
+      },
+      "packet": {
+        "window_id": "run_replay_2026112251_w22",
+        "run_id": "run_replay_2026112251",
+        "time_s": {
+          "t_start": 55.0,
+          "t_end": 60.0,
+          "t_mid": 57.5
+        },
+        "predicted_class": "abnormal_vibration",
+        "model_score": 0.9971,
+        "alarm_state": "abnormal_vibration",
+        "threshold_rule_class": "abnormal_vibration",
+        "unknown_anomaly": true,
+        "anomaly_score": 97.2603,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.4053,
+          "NODE_02": 0.4423,
+          "NODE_03": 0.3606,
+          "NODE_04": 0.4575
+        },
+        "piezo_rms": {
+          "network_mean": 0.10072,
+          "NODE_01": 0.10833,
+          "NODE_02": 0.07982,
+          "NODE_03": 0.07635,
+          "NODE_04": 0.13838
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0237,
+          "NODE_01": -0.08,
+          "NODE_02": -0.02,
+          "NODE_03": -0.005,
+          "NODE_04": 0.01
+        },
+        "comm": {
+          "missing_fraction_network": 0.1,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.2,
+          "latency_mean_s": 0.3901,
+          "latency_max_s": 0.6441
+        },
+        "radial_convergence_residual_m": 24.185,
+        "radial_convergence_weighted_cos": -0.764,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 42,
+      "window_id": "run_replay_2026112251_w42",
+      "trigger_reasons": [
+        "alarm_state_changed (abnormal_vibration -> normal)"
+      ],
+      "summary": "This simulated window run_replay_2026112251_w42 shows model_score 0.3845 consistent with predicted_class normal. Reported values include 105.0 to 110.0 with anomaly_score 8.4592 and latency_mean_s 0.4336.",
+      "suggested_check": "Consider verifying piezo_rms network_mean 0.01509 against NODE_03 0.0227 in the next simulated sample.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          0.3845,
+          105.0,
+          110.0,
+          8.4592,
+          0.4336,
+          0.01509,
+          0.0227
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 307
+      },
+      "packet": {
+        "window_id": "run_replay_2026112251_w42",
+        "run_id": "run_replay_2026112251",
+        "time_s": {
+          "t_start": 105.0,
+          "t_end": 110.0,
+          "t_mid": 107.5
+        },
+        "predicted_class": "normal",
+        "model_score": 0.3845,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": false,
+        "anomaly_score": 8.4592,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.1933,
+          "NODE_02": 0.2539,
+          "NODE_03": 0.1501,
+          "NODE_04": 0.3066
+        },
+        "piezo_rms": {
+          "network_mean": 0.01509,
+          "NODE_01": 0.00924,
+          "NODE_02": 0.01398,
+          "NODE_03": 0.0227,
+          "NODE_04": 0.01446
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": -0.0312,
+          "NODE_01": -0.07,
+          "NODE_02": -0.01,
+          "NODE_03": -0.025,
+          "NODE_04": -0.02
+        },
+        "comm": {
+          "missing_fraction_network": 0.0,
+          "NODE_01_missing_fraction": 0.0,
+          "NODE_02_missing_fraction": 0.0,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.4336,
+          "latency_max_s": 1.0747
+        },
+        "radial_convergence_residual_m": 15.13,
+        "radial_convergence_weighted_cos": -0.055,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    },
+    {
+      "window_idx": 56,
+      "window_id": "run_replay_2026112251_w56",
+      "trigger_reasons": [
+        "unknown_anomaly_flag_turned_on"
+      ],
+      "summary": "This simulated packet from 140.0 to 145.0 is consistent with predicted_class normal with model_score 0.3757. It shows anomaly_score 9.8117 and radial_convergence_residual_m 22.521 with alarm_state normal.",
+      "suggested_check": "Consider checking piezo_rms network_mean 0.00908 for verification.",
+      "source": "ai",
+      "model_id": "muse-spark-1.3",
+      "guard_result": {
+        "passed": true,
+        "reasons": [],
+        "extracted_numbers": [
+          140.0,
+          145.0,
+          0.3757,
+          9.8117,
+          22.521,
+          0.00908
+        ],
+        "unmatched_numbers": [],
+        "sentence_count_summary": 2,
+        "sentence_count_check": 1,
+        "char_count": 271
+      },
+      "packet": {
+        "window_id": "run_replay_2026112251_w56",
+        "run_id": "run_replay_2026112251",
+        "time_s": {
+          "t_start": 140.0,
+          "t_end": 145.0,
+          "t_mid": 142.5
+        },
+        "predicted_class": "normal",
+        "model_score": 0.3757,
+        "alarm_state": "normal",
+        "threshold_rule_class": "normal",
+        "unknown_anomaly": true,
+        "anomaly_score": 9.8117,
+        "node_mean_tilt_deg": {
+          "NODE_01": 0.2315,
+          "NODE_02": 0.3794,
+          "NODE_03": 0.3742,
+          "NODE_04": 0.3181
+        },
+        "piezo_rms": {
+          "network_mean": 0.00908,
+          "NODE_01": 0.00286,
+          "NODE_02": 0.01211,
+          "NODE_03": 0.00546,
+          "NODE_04": 0.01588
+        },
+        "lidar_range_change_m": {
+          "hub_common_mode_m": 0.0038,
+          "NODE_01": -0.06,
+          "NODE_02": 0.03,
+          "NODE_03": -0.005,
+          "NODE_04": 0.05
+        },
+        "comm": {
+          "missing_fraction_network": 0.1,
+          "NODE_01_missing_fraction": 0.2,
+          "NODE_02_missing_fraction": 0.2,
+          "NODE_03_missing_fraction": 0.0,
+          "NODE_04_missing_fraction": 0.0,
+          "latency_mean_s": 0.422,
+          "latency_max_s": 0.963
+        },
+        "radial_convergence_residual_m": 22.521,
+        "radial_convergence_weighted_cos": -0.9755,
+        "snr_vs_imu_noise_bin": "<0.5"
+      }
+    }
+  ]
+}

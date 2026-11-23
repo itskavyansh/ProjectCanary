@@ -1,0 +1,15 @@
+metric,n_packets,estimate,ci95_lo,ci95_hi
+first_try_guard_pass_rate,150,1.0,1.0,1.0
+retry_rate,150,0.0,0.0,0.0
+fallback_rate,150,0.0,0.0,0.0
+unfaithful_number_rate_pre_guard,150,0.0,0.0,0.0
+unfaithful_number_rate_post_guard,150,0.0,0.0,0.0
+class_contradiction_rate_pre_guard,150,0.0,0.0,0.0
+class_contradiction_rate_post_guard,150,0.0,0.0,0.0
+forbidden_claim_rate_pre_guard,150,0.0,0.0,0.0
+forbidden_claim_rate_post_guard,150,0.0,0.0,0.0
+final_guard_pass_rate,150,1.0,1.0,1.0
+mean_char_length,150,319.0133,311.4388,327.0015
+mean_tokens_per_explanation,150,2431.8667,2392.7645,2472.57
+mean_cost_usd_per_explanation,150,0.0063,0.0061,0.0065
+mean_latency_s,150,8.664,8.3549,8.958
