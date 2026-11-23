@@ -13,7 +13,7 @@
     "sensor_hours_per_run": 0.066667,
     "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
   },
-  "git_commit": "8e3cdde347ca577531abfae4791809f2f229906d",
+  "git_commit": "f824adf8cb9ac4d8026943caf15cbad8c721bf88",
   "seed": 20261117,
   "file_id": "summary",
   "study_title": "ProjectCanary-Sim v3 Synthetic Benchmarking & Sensitivity Study",
@@ -86,11 +86,17 @@
         "test_snr2_run_detect_0deg": 0.8228,
         "test_snr2_run_detect_10deg": 0.8101,
         "test_snr2_run_detect_20deg": 0.7595,
-        "raw_grad_sf_confusions_0deg": 30,
-        "raw_grad_sf_confusions_10deg": 25,
-        "raw_grad_sf_confusions_single_45deg": 74
+        "episode_grad_sf_confusions_snr2_0deg": 30,
+        "episode_grad_sf_confusions_snr2_10deg": 25,
+        "episode_grad_sf_confusions_snr2_single_45deg": 74,
+        "raw_grad_sf_confusions_0deg": 39,
+        "raw_grad_sf_confusions_10deg": 35,
+        "raw_grad_sf_confusions_single_45deg": 84,
+        "all_snr_episode_grad_sf_confusions_0deg": 37,
+        "all_snr_episode_grad_sf_confusions_10deg": 32,
+        "all_snr_episode_grad_sf_confusions_single_45deg": 84
       },
-      "display_value": "<= 10 deg SD keeps Test SNR>2 Detect at 0.810 (drops to 0.759 at 20 deg SD; 45 deg blunder -> 74 confusions)",
+      "display_value": "<= 10 deg SD keeps Test SNR>2 Detect at 0.810 (drops to 0.759 at 20 deg SD; 45 deg blunder -> 74 episode / 84 raw confusions)",
       "source_file": "outputs/eval_v3_yaw/yaw_sensitivity_snr_gt_2.csv",
       "secondary_source_file": "outputs/eval_v3_yaw/yaw_sensitivity_all_snr.csv",
       "caveat": "Nodes must be aligned within <= 10 deg compass SD at installation and checked against any single-node >= 45 deg orientation blunder."

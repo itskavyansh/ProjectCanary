@@ -249,6 +249,42 @@ def build_summary_json(root: Path, git_commit: str, seed: int) -> dict[str, Any]
         & (yaw_s2["model"] == "random_forest")
         & (yaw_s2["regime"] == "episode_fa<=1 (k=3,m=3)")
     ].iloc[0]
+    yaw_rf_0_raw = yaw_s2[
+        (yaw_s2["split"] == "test")
+        & (yaw_s2["condition"] == "sd_0deg")
+        & (yaw_s2["model"] == "random_forest")
+        & (yaw_s2["regime"] == "raw (k=1)")
+    ].iloc[0]
+    yaw_rf_10_raw = yaw_s2[
+        (yaw_s2["split"] == "test")
+        & (yaw_s2["condition"] == "sd_10deg")
+        & (yaw_s2["model"] == "random_forest")
+        & (yaw_s2["regime"] == "raw (k=1)")
+    ].iloc[0]
+    yaw_rf_45_raw = yaw_s2[
+        (yaw_s2["split"] == "test")
+        & (yaw_s2["condition"] == "single_node_45deg")
+        & (yaw_s2["model"] == "random_forest")
+        & (yaw_s2["regime"] == "raw (k=1)")
+    ].iloc[0]
+    yaw_all_rf_0_ep = yaw_all[
+        (yaw_all["split"] == "test")
+        & (yaw_all["condition"] == "sd_0deg")
+        & (yaw_all["model"] == "random_forest")
+        & (yaw_all["regime"] == "episode_fa<=1 (k=3,m=3)")
+    ].iloc[0]
+    yaw_all_rf_10_ep = yaw_all[
+        (yaw_all["split"] == "test")
+        & (yaw_all["condition"] == "sd_10deg")
+        & (yaw_all["model"] == "random_forest")
+        & (yaw_all["regime"] == "episode_fa<=1 (k=3,m=3)")
+    ].iloc[0]
+    yaw_all_rf_45_ep = yaw_all[
+        (yaw_all["split"] == "test")
+        & (yaw_all["condition"] == "single_node_45deg")
+        & (yaw_all["model"] == "random_forest")
+        & (yaw_all["regime"] == "episode_fa<=1 (k=3,m=3)")
+    ].iloc[0]
 
     fa_test_rf = fa_both[
         (fa_both["split"] == "test")
@@ -379,13 +415,20 @@ def build_summary_json(root: Path, git_commit: str, seed: int) -> dict[str, Any]
                 "test_snr2_run_detect_0deg": _clean_val(yaw_rf_0["run_exact_detect_rate"]),
                 "test_snr2_run_detect_10deg": _clean_val(yaw_rf_10["run_exact_detect_rate"]),
                 "test_snr2_run_detect_20deg": _clean_val(yaw_rf_20["run_exact_detect_rate"]),
-                "raw_grad_sf_confusions_0deg": int(yaw_rf_0["gradual_sf_confusions"]),
-                "raw_grad_sf_confusions_10deg": int(yaw_rf_10["gradual_sf_confusions"]),
-                "raw_grad_sf_confusions_single_45deg": int(yaw_rf_45["gradual_sf_confusions"]),
+                "episode_grad_sf_confusions_snr2_0deg": int(yaw_rf_0["gradual_sf_confusions"]),
+                "episode_grad_sf_confusions_snr2_10deg": int(yaw_rf_10["gradual_sf_confusions"]),
+                "episode_grad_sf_confusions_snr2_single_45deg": int(yaw_rf_45["gradual_sf_confusions"]),
+                "raw_grad_sf_confusions_0deg": int(yaw_rf_0_raw["gradual_sf_confusions"]),
+                "raw_grad_sf_confusions_10deg": int(yaw_rf_10_raw["gradual_sf_confusions"]),
+                "raw_grad_sf_confusions_single_45deg": int(yaw_rf_45_raw["gradual_sf_confusions"]),
+                "all_snr_episode_grad_sf_confusions_0deg": int(yaw_all_rf_0_ep["gradual_sf_confusions"]),
+                "all_snr_episode_grad_sf_confusions_10deg": int(yaw_all_rf_10_ep["gradual_sf_confusions"]),
+                "all_snr_episode_grad_sf_confusions_single_45deg": int(yaw_all_rf_45_ep["gradual_sf_confusions"]),
             },
             "display_value": (
                 f"<= 10 deg SD keeps Test SNR>2 Detect at {yaw_rf_10['run_exact_detect_rate']:.3f} "
-                f"(drops to {yaw_rf_20['run_exact_detect_rate']:.3f} at 20 deg SD; 45 deg blunder -> {int(yaw_rf_45['gradual_sf_confusions'])} confusions)"
+                f"(drops to {yaw_rf_20['run_exact_detect_rate']:.3f} at 20 deg SD; 45 deg blunder -> "
+                f"{int(yaw_rf_45['gradual_sf_confusions'])} episode / {int(yaw_rf_45_raw['gradual_sf_confusions'])} raw confusions)"
             ),
             "source_file": "outputs/eval_v3_yaw/yaw_sensitivity_snr_gt_2.csv",
             "secondary_source_file": "outputs/eval_v3_yaw/yaw_sensitivity_all_snr.csv",
@@ -722,7 +765,8 @@ def build_robustness_json(root: Path, git_commit: str, seed: int) -> dict[str, A
                 "Evaluated across 5 compass perturbation conditions (sd_0deg, sd_5deg, sd_10deg, sd_20deg, "
                 "single_node_45deg) plus the yaw-free v2 baseline. v3 RF preserves its advantage up to 10 deg SD; "
                 "at 20 deg SD its test detection advantage disappears, and a single-node 45 deg blunder spikes "
-                "gradual <-> sensor_fault confusions (all SNR, RF test) from 37 at 0 deg SD to 84."
+                "gradual <-> sensor_fault confusions on RF test from 30 to 74 (SNR>2, episode k=3,m=3), "
+                "39 to 84 (SNR>2, raw k=1), and 37 to 84 (all SNR, episode k=3,m=3)."
             ),
             "all_snr": df_to_records(yaw_all_op, ndigits=4),
             "snr_gt_2": df_to_records(yaw_s2_op, ndigits=4),
@@ -770,7 +814,11 @@ def build_robustness_json(root: Path, git_commit: str, seed: int) -> dict[str, A
                         "dir_convergence_weighted_cos_p50",
                         "dir_convergence_weighted_cos_p90",
                         "dir_convergence_weighted_cos_mean",
+                        "dir_convergence_align_cos_p50",
+                        "dir_win_convergence_residual_m_p50",
+                        "dir_win_convergence_weighted_cos_p50",
                         "dir_pairwise_cos_mean_p50",
+                        "dir_circular_spread_p50",
                     ]
                 ],
                 ndigits=4,
@@ -894,7 +942,8 @@ def _strip_md(text: str) -> str:
 
 
 def build_parameters_json(root: Path, git_commit: str, seed: int) -> dict[str, Any]:
-    prov_path = root / "docs/provenance_note.md"
+    local_prov = ROOT / "docs/provenance_note.md"
+    prov_path = local_prov if local_prov.is_file() else (root / "docs/provenance_note.md")
     lines = prov_path.read_text(encoding="utf-8").splitlines()
 
     table_rows: list[dict[str, Any]] = []
@@ -1272,6 +1321,12 @@ def export_all(
 def main() -> None:
     ap = argparse.ArgumentParser(description="Export frozen ProjectCanary-Sim results for dashboard.")
     ap.add_argument(
+        "--root",
+        type=Path,
+        default=ROOT,
+        help="Source ProjectCanary-Sim root containing outputs/.",
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=ROOT / "outputs/dashboard_export",
@@ -1280,7 +1335,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=DEFAULT_SEED)
     args = ap.parse_args()
 
-    paths = export_all(out_dir=args.out, root=ROOT, seed=args.seed)
+    paths = export_all(out_dir=args.out, root=args.root, seed=args.seed)
     total_sz = sum(p.stat().st_size for p in paths.values())
     print(f"Exported {len(paths)} JSON files ({total_sz / 1024:.1f} KB total) to {args.out}:")
     for name, p in sorted(paths.items()):

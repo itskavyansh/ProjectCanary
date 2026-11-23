@@ -1,17 +1,17 @@
-metric,n_packets,estimate,ci95_lo,ci95_hi,after_cache_fill_estimate,after_cache_fill_ci95_lo,after_cache_fill_ci95_hi,note
-first_try_guard_pass_rate,150,0.9867,0.9667,1.0,1.0,1.0,1.0,"148/150 first-try pass on first run (2 API token cutoffs at 2048 limit, 0 guard rejections); 150/150 after cache fill"
-api_cutoff_rate,150,0.0133,0.0,0.0333,0.0,0.0,0.0,"2/150 hit 2048 completion_tokens limit on first run (run_test_005_w43, run_test_106_w29); 0/150 after cache fill & 4096 token limit fix"
-guard_rejection_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 guard rejections on complete JSON responses across both runs
-retry_rate,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 guard-triggered retries (API cutoffs fell back directly)
-fallback_rate,150,0.0133,0.0,0.0333,0.0,0.0,0.0,2/150 template fallbacks on first run due to 2048 token cutoff; 0/150 after cache fill
-unfaithful_number_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 unfaithful numbers before guard
-unfaithful_number_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 unfaithful numbers after guard
-class_contradiction_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 class contradictions before guard
-class_contradiction_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 class contradictions after guard
-forbidden_claim_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 forbidden claims before guard
-forbidden_claim_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0,0.0,0/150 forbidden claims after guard
-final_guard_pass_rate,150,1.0,1.0,1.0,1.0,1.0,1.0,150/150 final explanations pass deterministic guard
-mean_char_length,150,319.0133,310.8445,327.2405,319.0133,310.67,326.9895,Mean explanation character length (summary + suggested_check)
-mean_tokens_per_explanation,150,2431.8667,2389.8125,2478.764,2431.8667,2392.0177,2474.098,Mean total tokens per explanation (including reasoning tokens)
-mean_cost_usd_per_explanation,150,0.0063,0.0061,0.0065,0.0063,0.0061,0.0065,Mean API cost per explanation in USD
-mean_latency_s,150,8.664,8.3945,8.9564,8.664,8.3853,8.9808,Mean API wall latency per explanation in seconds
+metric,n_packets,estimate,ci95_lo,ci95_hi,exact_ci95_lo,exact_ci95_hi,rule_of_three_upper_bound,after_cache_fill_estimate,after_cache_fill_ci95_lo,after_cache_fill_ci95_hi,after_cache_fill_exact_ci95_lo,after_cache_fill_exact_ci95_hi,after_cache_fill_rule_of_three_upper_bound,note
+first_try_guard_pass_rate,150,0.9867,0.9667,1.0,0.9527,0.9984,,1.0,1.0,1.0,0.9757,1.0,,"148/150 first-try pass on first run (2 API token cutoffs at 2048 limit, 0 guard rejections); 150/150 after cache fill"
+api_cutoff_rate,150,0.0133,0.0,0.0333,0.0016,0.0473,,0.0,0.0,0.0,0.0,0.0243,0.02,"2/150 hit 2048 completion_tokens limit on first run (run_test_005_w43, run_test_106_w29); 0/150 after cache fill & 4096 token limit fix"
+guard_rejection_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 guard rejections on complete JSON responses across both runs
+retry_rate,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 guard-triggered retries (API cutoffs fell back directly)
+fallback_rate,150,0.0133,0.0,0.0333,0.0016,0.0473,,0.0,0.0,0.0,0.0,0.0243,0.02,2/150 template fallbacks on first run due to 2048 token cutoff; 0/150 after cache fill
+unfaithful_number_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 unfaithful numbers before guard
+unfaithful_number_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 unfaithful numbers after guard
+class_contradiction_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 class contradictions before guard
+class_contradiction_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 class contradictions after guard
+forbidden_claim_rate_pre_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 forbidden claims before guard
+forbidden_claim_rate_post_guard,150,0.0,0.0,0.0,0.0,0.0243,0.02,0.0,0.0,0.0,0.0,0.0243,0.02,0/150 forbidden claims after guard
+final_guard_pass_rate,150,1.0,1.0,1.0,0.9757,1.0,,1.0,1.0,1.0,0.9757,1.0,,150/150 final explanations pass deterministic guard
+mean_char_length,150,319.0133,310.8445,327.2405,,,,319.0133,310.67,326.9895,,,,Mean explanation character length (summary + suggested_check)
+mean_tokens_per_explanation,150,2431.8667,2389.8125,2478.764,,,,2431.8667,2392.0177,2474.098,,,,Mean total tokens per explanation (including reasoning tokens)
+mean_cost_usd_per_explanation,150,0.0063,0.0061,0.0065,,,,0.0063,0.0061,0.0065,,,,Mean API cost per explanation in USD
+mean_latency_s,150,8.664,8.3945,8.9564,,,,8.664,8.3853,8.9808,,,,Mean API wall latency per explanation in seconds

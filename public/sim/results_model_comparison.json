@@ -13,7 +13,7 @@
     "sensor_hours_per_run": 0.066667,
     "note": "Only the slow ground-settlement process is time-compressed (240 s stands for 24 h at 360x, a PLACEHOLDER label); IMU noise, piezo vibration, LiDAR sweeps, packet loss, and 5 s windows run in uncompressed 1x sensor time."
   },
-  "git_commit": "8e3cdde347ca577531abfae4791809f2f229906d",
+  "git_commit": "f824adf8cb9ac4d8026943caf15cbad8c721bf88",
   "seed": 20261117,
   "file_id": "results_model_comparison",
   "source_files": [

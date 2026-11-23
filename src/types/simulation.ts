@@ -391,7 +391,11 @@ export interface ShapeConvergenceRow {
   dir_convergence_weighted_cos_p50: number;
   dir_convergence_weighted_cos_p90: number;
   dir_convergence_weighted_cos_mean: number;
+  dir_convergence_align_cos_p50?: number;
+  dir_win_convergence_residual_m_p50?: number;
+  dir_win_convergence_weighted_cos_p50?: number;
   dir_pairwise_cos_mean_p50: number;
+  dir_circular_spread_p50?: number;
 }
 
 export interface LitDetectionRow {
