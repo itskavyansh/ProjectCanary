@@ -65,6 +65,7 @@ class ChatClient:
         self.api_url = api_url or str(cfg.get("api_endpoint", "https://api.meta.ai/v1/chat/completions"))
         self.timeout_s = float(timeout_s if timeout_s is not None else cfg.get("timeout_s", 45.0))
         self.max_retries = int(max_retries if max_retries is not None else cfg.get("max_http_retries", 1))
+        self.max_completion_tokens = int(cfg.get("max_completion_tokens", 4096))
         self.http_client = http_client
         self._explicit_api_key = api_key
         self._omit_temperature = False
@@ -85,9 +86,10 @@ class ChatClient:
         user_prompt: str,
         response_format: dict[str, Any] | None = None,
         temperature: float = 0.1,
-        max_completion_tokens: int = 2048,
+        max_completion_tokens: int | None = None,
     ) -> ChatClientResponse:
         t0 = time.time()
+        eff_max_tokens = int(max_completion_tokens if max_completion_tokens is not None else self.max_completion_tokens)
         key = self._get_api_key()
         if not key:
             return ChatClientResponse(
@@ -116,7 +118,7 @@ class ChatClient:
             payload: dict[str, Any] = {
                 "model": self.model,
                 "messages": messages,
-                "max_completion_tokens": max_completion_tokens,
+                "max_completion_tokens": eff_max_tokens,
             }
             if response_format is not None:
                 payload["response_format"] = response_format

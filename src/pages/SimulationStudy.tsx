@@ -3024,6 +3024,15 @@ function ReplaySection({
               {currentExplanation.suggested_check}
             </div>
 
+            {currentWin.true_label !== currentWin.predicted_class && (
+              <p
+                data-testid="replay-explainer-mismatch-note"
+                className="font-mono text-xs font-semibold text-[var(--status-warning)]"
+              >
+                Explains the classifier&apos;s output only; it does not know the true state.
+              </p>
+            )}
+
             <details className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-xs">
               <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
                 Packet values used to build this explanation (Window #

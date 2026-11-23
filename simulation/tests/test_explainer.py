@@ -356,3 +356,154 @@ def test_offline_template_and_replay_loaders_work_without_network() -> None:
         for pkt in sample_pkts[:10]:
             tmpl = generate_template_explanation(pkt)
             assert guard.check(tmpl, pkt).passed
+
+
+def test_negative_control_all_six_corruption_types_and_untouched() -> None:
+    """Verify each of the 6 negative-control corruption types (a..f) on a faithful explanation:
+    - Guard v1 catches (a), (c), (d), (e) and misses (b) and (f).
+    - Guard v2 catches all 6 corruption types (a)..(f) and passes the untouched explanation."""
+    import run_explainer_eval as REE  # noqa: E402
+
+    pkt = _sample_packet(predicted_class="gradual", unknown_anomaly=False)
+    faithful = {
+        "summary": (
+            "In this simulated window from 112.5 s to 117.5 s, the classifier output is consistent with "
+            "gradual movement at model_score 0.7421. Simulated NODE_01 mean tilt is 0.4123 deg and "
+            "NODE_02 LiDAR range change is -0.0132 m with anomaly_score 6.412."
+        ),
+        "suggested_check": "Inspect simulated NODE_01 tilt (0.4123 deg) and radial convergence residual (2.341 m).",
+    }
+
+    guard_v1 = ExplanationGuard(enable_label_binding=False, enable_trend_check=False)
+    guard_v2 = ExplanationGuard(enable_label_binding=True, enable_trend_check=True)
+
+    # Untouched passes both
+    assert guard_v1.check(faithful, pkt).passed
+    assert guard_v2.check(faithful, pkt).passed
+
+    # (a) Perturb one cited number by ~10%
+    corr_a, _ = REE.corrupt_a_number_10pct(faithful, pkt)
+    assert corr_a is not None
+    assert not guard_v1.check(corr_a, pkt).passed
+    res_a = guard_v2.check(corr_a, pkt)
+    assert not res_a.passed
+    assert any("unfaithful_numbers" in r for r in res_a.reasons)
+
+    # (b) Swap NODE_0X labels so a valid packet number is attributed to the wrong node
+    corr_b, _ = REE.corrupt_b_node_label_swap(faithful, pkt)
+    assert corr_b is not None
+    assert guard_v1.check(corr_b, pkt).passed, "Guard v1 (bag-of-numbers) is expected to miss node label swaps"
+    res_b = guard_v2.check(corr_b, pkt)
+    assert not res_b.passed
+    assert any("unfaithful_label_binding" in r for r in res_b.reasons)
+
+    # (c) Name a different class
+    corr_c, _ = REE.corrupt_c_wrong_class(faithful, pkt)
+    assert corr_c is not None
+    assert not guard_v1.check(corr_c, pkt).passed
+    res_c = guard_v2.check(corr_c, pkt)
+    assert not res_c.passed
+    assert any("missing_predicted_class" in r or "wrong_class_mentioned" in r for r in res_c.reasons)
+
+    # (d) Add forbidden claim ("the ground is collapsing")
+    corr_d, _ = REE.corrupt_d_forbidden_claim(faithful, pkt)
+    assert corr_d is not None
+    assert not guard_v1.check(corr_d, pkt).passed
+    res_d = guard_v2.check(corr_d, pkt)
+    assert not res_d.passed
+    assert any("forbidden_claim" in r for r in res_d.reasons)
+
+    # (e) Delete "simulated" / "synthetic"
+    corr_e, _ = REE.corrupt_e_delete_simulated(faithful, pkt)
+    assert corr_e is not None
+    assert not guard_v1.check(corr_e, pkt).passed
+    res_e = guard_v2.check(corr_e, pkt)
+    assert not res_e.passed
+    assert "missing_simulated_or_synthetic_keyword" in res_e.reasons
+
+    # (f) Add unsupported trend claim ("tilt has doubled", "rising steadily")
+    corr_f, _ = REE.corrupt_f_unsupported_trend(faithful, pkt)
+    assert corr_f is not None
+    assert guard_v1.check(corr_f, pkt).passed, "Guard v1 is expected to miss verbal trend claims without digits"
+    res_f = guard_v2.check(corr_f, pkt)
+    assert not res_f.passed
+    assert any("unsupported_trend_term" in r for r in res_f.reasons)
+
+
+def test_hand_built_label_value_binding_and_trend_rules() -> None:
+    """Hand-built cases testing label-value binding (node names and sensor names) and trend words."""
+    guard = ExplanationGuard(enable_label_binding=True, enable_trend_check=True)
+    pkt = _sample_packet(predicted_class="gradual", unknown_anomaly=False)
+
+    # 1. Swapped node numbers: NODE_01 attributed NODE_03's tilt (0.3512 is in packet, but belongs to NODE_03)
+    node_swap_case = {
+        "summary": (
+            "In this simulated window from 112.5 s to 117.5 s, the output is consistent with gradual "
+            "at model_score 0.7421. Simulated NODE_01 tilt is 0.3512 deg and NODE_03 tilt is 0.4123 deg."
+        ),
+        "suggested_check": "Inspect simulated NODE_02 tilt (0.3891 deg).",
+    }
+    res_node = guard.check(node_swap_case, pkt)
+    assert not res_node.passed
+    assert len(res_node.unmatched_numbers) == 0  # All numbers exist in the packet
+    assert any("unfaithful_label_binding" in r for r in res_node.reasons)
+
+    # 2. Sensor-value mismatch: model_score attributed anomaly_score's number (6.412)
+    sensor_swap_case = {
+        "summary": (
+            "In this simulated window from 112.5 s to 117.5 s, the output is consistent with gradual "
+            "at model_score 6.412 and anomaly_score 0.7421. Simulated NODE_01 tilt is 0.4123 deg."
+        ),
+        "suggested_check": "Inspect simulated NODE_01 tilt (0.4123 deg).",
+    }
+    res_sensor = guard.check(sensor_swap_case, pkt)
+    assert not res_sensor.passed
+    assert len(res_sensor.unmatched_numbers) == 0
+    assert any("unfaithful_label_binding: model_score" in r for r in res_sensor.reasons)
+
+    # 3. Every forbidden trend word is rejected when packet has no supporting trend field
+    for trend_word in (
+        "rising",
+        "falling",
+        "increasing",
+        "decreasing",
+        "doubled",
+        "spiking",
+        "worsening",
+        "accelerating",
+        "steady",
+        "steadily",
+    ):
+        trend_case = {
+            "summary": (
+                f"In this simulated window from 112.5 s to 117.5 s, the output is consistent with gradual "
+                f"at model_score 0.7421. Simulated NODE_01 tilt is 0.4123 deg and appears {trend_word}."
+            ),
+            "suggested_check": "Inspect simulated NODE_01 tilt (0.4123 deg).",
+        }
+        res_tr = guard.check(trend_case, pkt)
+        assert not res_tr.passed, f"Expected trend word '{trend_word}' to be rejected"
+        assert any("unsupported_trend_term" in r for r in res_tr.reasons)
+
+
+def test_primary_cache_not_mutated_by_spot_check_or_negative_control() -> None:
+    """Verify that all 150 primary cached explanations (`muse-spark-1.3_<hash>.json`) exist,
+    pass Guard v2 offline, and contain zero secret strings."""
+    sample_path = ROOT / "outputs" / "explainer_sample" / "packets.json"
+    cache_dir = ROOT / "outputs" / "eval_explainer" / "cache"
+    if not sample_path.is_file() or not cache_dir.is_dir():
+        pytest.skip("Sample or cache directory not present")
+
+    packets = load_packets_from_sample_json(sample_path)
+    assert len(packets) == 150
+    guard_v2 = ExplanationGuard(enable_label_binding=True, enable_trend_check=True)
+
+    for pkt in packets:
+        cfile = cache_dir / f"muse-spark-1.3_{pkt.packet_hash()}.json"
+        assert cfile.is_file(), f"Missing frozen cache file for {pkt.window_id}"
+        raw_text = cfile.read_text(encoding="utf-8")
+        assert "META_API_KEY" not in raw_text
+        data = json.loads(raw_text)
+        g_res = guard_v2.check({"summary": data["summary"], "suggested_check": data["suggested_check"]}, pkt)
+        assert g_res.passed, f"Cached explanation for {pkt.window_id} failed Guard v2: {g_res.reasons}"
+

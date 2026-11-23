@@ -3,6 +3,7 @@
   "api_endpoint": "https://api.meta.ai/v1/chat/completions",
   "timeout_s": 45.0,
   "max_http_retries": 1,
+  "max_completion_tokens": 4096,
   "budget": {
     "default_cap_usd": 5.0,
     "cost_per_m_input_usd": 1.25,
@@ -49,6 +50,26 @@
     "forbidden_alarm_change_regexes": [
       "\\b(chang(e|ed|ing)|overrid(e|den|ing)|upgrad(e|ed|ing)|downgrad(e|ed|ing)|clear(ed|ing)?|suppress(ed|ing)?|cancel(led|ling)?|escalat(e|ed|ing)|rais(e|ed|ing))\\s+(the\\s+)?alarm\\b",
       "\\balarm\\s+(state\\s+)?(is\\s+|has\\s+been\\s+|should\\s+be\\s+)?(changed|overridden|upgraded|downgraded|cleared|suppressed|cancelled|escalated)\\b"
+    ],
+    "forbidden_trend_regexes": [
+      "\\brising\\b",
+      "\\bfalling\\b",
+      "\\bincreasing\\b",
+      "\\bdecreasing\\b",
+      "\\bdoubled\\b",
+      "\\bspiking\\b",
+      "\\bworsening\\b",
+      "\\baccelerating\\b",
+      "\\bstead(y|ily)\\b"
+    ],
+    "trend_supporting_fields": [
+      "trend",
+      "rate_of_change",
+      "slope",
+      "derivative",
+      "tilt_rate",
+      "velocity",
+      "acceleration"
     ]
   }
 }

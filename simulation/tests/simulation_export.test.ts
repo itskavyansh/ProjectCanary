@@ -336,3 +336,20 @@ test("Scenario 5: validateSimEnvelope throws clear error on missing banner or mi
     /missing expected key "missing_key"/i
   );
 });
+
+// -----------------------------------------------------------------------------
+// SCENARIO 7: Replay view renders mismatch disclaimer note when true_label !== predicted_class
+// -----------------------------------------------------------------------------
+test("Scenario 7: SimulationStudy Replay view contains conditional note when true_label differs from predicted_class", () => {
+  const simStudyPath = path.resolve(__dirname, "..", "..", "src", "pages", "SimulationStudy.tsx");
+  const src = fs.readFileSync(simStudyPath, "utf-8");
+  assert.ok(
+    src.includes("currentWin.true_label !== currentWin.predicted_class"),
+    "Expected SimulationStudy.tsx to check currentWin.true_label !== currentWin.predicted_class"
+  );
+  assert.ok(
+    src.includes("Explains the classifier&apos;s output only; it does not know the true state."),
+    "Expected SimulationStudy.tsx to include the exact one-line mismatch disclaimer note"
+  );
+});
+
