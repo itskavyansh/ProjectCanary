@@ -838,96 +838,164 @@ function OverviewSection({ summary }: { summary: SimSummaryData }) {
   const ds = summary.dataset_overview;
   const totalRuns = Object.values(ds.splits).reduce((acc, s) => acc + s.runs, 0);
 
+  const findClaim = (id: string) =>
+    summary.headline_claims.find((c) => c.id === id);
+
+  const claimDet = findClaim("detection_limit_5x_noise");
+  const claimRf = findClaim("v3_vs_threshold_rule");
+  const claimFa = findClaim("false_alarms_both_time_definitions");
+  const claimGrad = findClaim("gradual_window_recall_low");
+  const claimRun = findClaim("run_level_detection_counts_any_alarm");
+  const claimYaw = findClaim("yaw_tolerance_10_deg");
+
+  const snrMult = Number(claimDet?.number.snr_threshold_multiple ?? 0);
+  const minTiltDeg = Number(claimDet?.number.approx_min_peak_tilt_deg ?? 0);
+  const imuNoiseDeg = Number(claimDet?.number.imu_noise_floor_deg ?? 0);
+
+  const rfTestAlarmF1 = Number(claimRf?.number.test_alarm_macro_f1_rf_v3 ?? 0);
+  const thTestAlarmF1 = Number(
+    claimRf?.number.test_alarm_macro_f1_threshold_v3 ?? 0
+  );
+
+  const rfSensorFaPerHour = Number(
+    claimFa?.number.rf_B_sensor_fa_per_hour ?? 0
+  );
+  const rfSensorEveryMin = Number(
+    claimFa?.number.rf_B_sensor_every_minutes ?? 0
+  );
+  const thSensorFaPerHour = Number(
+    claimFa?.number.threshold_B_sensor_fa_per_hour ?? 0
+  );
+
+  const gradWinRecallRf = Number(
+    claimGrad?.number.test_episode_gradual_window_recall_rf ?? 0
+  );
+  const gradWinRecallTh = Number(
+    claimGrad?.number.test_episode_gradual_window_recall_threshold ?? 0
+  );
+  const gradRunDetectRf = Number(
+    claimRun?.number.test_episode_gradual_run_detect_rf ?? 0
+  );
+  const yawTolDeg = Number(
+    claimYaw?.number.recommended_yaw_sd_tolerance_deg ?? 0
+  );
+
   return (
     <div className="space-y-8">
-      {/* Study Architecture & Summary KPIs using MetricTile */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+      {/* Start here guidance line */}
+      <p
+        data-testid="start-here-overview"
+        className="rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)]"
+      >
+        <strong className="font-bold text-[var(--brand-green)]">
+          Start here:
+        </strong>{" "}
+        Read the One-Screen Summary (3 headline numbers & 3 key limits) below,
+        then scan the 7 Headline Claim Cards before opening any collapsed
+        architecture or limitation details.
+      </p>
+
+      {/* One-Screen Summary: 3 Headline Numbers + 3 Key Limits (all taken from summary.json) */}
+      <section
+        aria-label="One-screen summary of simulation study"
+        data-testid="overview-one-screen-summary"
+        className="panel-surface rounded-2xl border-2 border-[var(--brand-teal)] p-5 sm:p-6 space-y-5"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <p className="eyebrow">Benchmark Architecture</p>
-            <h2 className="section-title mt-1">{summary.study_title}</h2>
+            <p className="eyebrow">One-Screen Summary (From summary.json)</p>
+            <h2 className="section-title mt-1">
+              3 Headline Numbers &amp; 3 Core Limits
+            </h2>
           </div>
           <span className="rounded-md border border-[var(--border)] bg-[var(--surface-alt)] px-3 py-1 font-mono text-xs font-semibold text-[var(--text-primary)]">
-            Seed: {summary.seed} · Commit: {summary.git_commit.slice(0, 8)}
+            {summary.banner}
           </span>
         </div>
-        <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-          {summary.study_description}
-        </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <MetricTile
-            label="Total Benchmark Runs"
-            value={totalRuns}
-            unit="runs"
-            decimals={0}
-          />
-          <MetricTile
-            label="Observable v3 Features"
-            value={ds.n_observable_features_v3}
-            unit="cols"
-            decimals={0}
-          />
-          <MetricTile
-            label="Window Length / Step"
-            value={ds.window_length_s}
-            unit="s (2.5s step)"
-            decimals={1}
-          />
-          <MetricTile
-            label="Windows per Run"
-            value={ds.windows_per_run}
-            unit="windows"
-            decimals={0}
-          />
-          <MetricTile
-            label="Detection SNR Limit"
-            value={5.0}
-            unit="× IMU noise"
-            decimals={1}
-          />
-          <MetricTile
-            label="Compass Yaw Tolerance"
-            value={10.0}
-            unit="° SD max"
-            decimals={0}
-          />
-        </div>
-      </section>
+        {/* Three Headline Numbers */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4 space-y-2">
+            <span className="font-mono text-xs font-bold uppercase text-[var(--brand-teal)]">
+              1. Detection Limit
+            </span>
+            <div className="font-mono text-2xl font-extrabold text-[var(--text-primary)]">
+              ~{snrMult.toFixed(0)}× noise (~{minTiltDeg.toFixed(2)}° tilt)
+            </div>
+            <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+              Reliable subsidence detection requires a peak surface tilt of
+              about {snrMult.toFixed(0)}× the {imuNoiseDeg.toFixed(2)}° IMU
+              noise floor (about {minTiltDeg.toFixed(2)}° tilt).
+            </p>
+          </div>
 
-      {/* Scale Difference Notice (Threshold Mismatch between Live Demo Engine and Sim Study) */}
-      <section className="rounded-xl border border-[var(--status-warning-border)] bg-[var(--status-warning-bg)] p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <AlertTriangle
-            className="mt-0.5 h-5 w-5 shrink-0 text-[var(--status-warning)]"
-            aria-hidden="true"
-          />
-          <div className="space-y-1.5 text-xs leading-relaxed text-[var(--text-primary)]">
-            <h3 className="text-sm font-bold text-[var(--text-primary)]">
-              Important Scale Difference: Live Demo Engine vs. Simulation Study
-              Thresholds
-            </h3>
-            <p>
-              The live dashboard demonstration engine (<code className="font-mono">engine/thresholds.py</code>{" "}
-              and <code className="font-mono">src/services/analysisAdapter.ts</code>) uses{" "}
-              <strong>bench-demo tilt thresholds of 15.0° (Warning) and 25.0° (Critical)</strong>{" "}
-              so tilting a sensor by hand on a desk visibly triggers alerts. In contrast,{" "}
-              <code className="font-mono">ProjectCanary-Sim</code> models early-warning ground
-              subsidence tilts in <strong>0.05° to 3.0°</strong> (about 1 to 52 mm/m; high-tilt
-              stress tests up to 12°), and the simulation&apos;s calibrated Threshold Rule triggers
-              at <strong>~0.607° max node tilt</strong> (<code className="font-mono">basin_tilt_max_deg_th = 0.60727°</code>).
-              The existing live engine thresholds are intentionally left unchanged.
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4 space-y-2">
+            <span className="font-mono text-xs font-bold uppercase text-[var(--brand-teal)]">
+              2. Test Alarm Macro-F1 (k=3, m=3)
+            </span>
+            <div className="font-mono text-2xl font-extrabold text-[var(--text-primary)]">
+              RF {rfTestAlarmF1.toFixed(4)} vs. Rule {thTestAlarmF1.toFixed(4)}
+            </div>
+            <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+              Random Forest ({rfTestAlarmF1.toFixed(4)} alarm macro-F1) is
+              comparable to the hand-built threshold rule (
+              {thTestAlarmF1.toFixed(4)} alarm macro-F1) on in-domain test runs,
+              with gains on broad basins and multi-fault stress runs.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4 space-y-2">
+            <span className="font-mono text-xs font-bold uppercase text-[var(--brand-teal)]">
+              3. False Alarms / Hour (Sensor Time, k=3, m=3)
+            </span>
+            <div className="font-mono text-2xl font-extrabold text-[var(--status-danger)]">
+              {rfSensorFaPerHour.toFixed(2)} FA/h (1 every{" "}
+              {rfSensorEveryMin.toFixed(1)} min)
+            </div>
+            <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+              At the primary k=3, m=3 operating point on test normal runs,
+              false alarms occur at {rfSensorFaPerHour.toFixed(2)} per hour in
+              1× sensor time for Random Forest ({thSensorFaPerHour.toFixed(2)}{" "}
+              per hour for the threshold rule).
             </p>
           </div>
         </div>
+
+        {/* Three Limits */}
+        <div className="rounded-xl border border-[var(--status-warning-border)] bg-[var(--status-warning-bg)] p-4 space-y-2.5">
+          <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--status-warning)]">
+            Three Mandatory Study Limits
+          </h3>
+          <ul className="grid grid-cols-1 gap-3 text-xs leading-relaxed text-[var(--text-primary)] lg:grid-cols-3">
+            <li className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+              <strong>1. All synthetic and not validated:</strong>{" "}
+              {summary.banner} — all ground surfaces, sensor readings, and fault
+              injections are synthetic mathematical simulations, not field data.
+            </li>
+            <li className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+              <strong>2. Gradual window recall is low:</strong> Per-window
+              gradual recall on test at k=3, m=3 is only{" "}
+              {gradWinRecallRf.toFixed(3)} (RF) and {gradWinRecallTh.toFixed(3)}{" "}
+              (threshold rule), whereas run-level detection (
+              {gradRunDetectRf.toFixed(3)} RF) counts any single correct
+              persisted alarm during the run.
+            </li>
+            <li className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+              <strong>3. Direction features need 4 nodes &amp; ≤{yawTolDeg.toFixed(0)}° yaw:</strong>{" "}
+              World-frame radial convergence requires all four corner nodes and
+              installation compass yaw alignment within{" "}
+              {yawTolDeg.toFixed(0)}° SD (with no single-node ≥45° blunder).
+            </li>
+          </ul>
+        </div>
       </section>
 
-      {/* Headline Claims with Source File Paths and One-Line Caveats */}
+      {/* Headline Claims with Source File Paths and One-Line Caveats (Always Visible) */}
       <section className="space-y-4">
         <div>
           <p className="eyebrow">Headline Findings (Frozen v3 Evaluation)</p>
           <h2 className="section-title mt-1">
-            7 Key Claims, Exact Numbers, Sources & Mandatory Caveats
+            7 Key Claims, Exact Numbers, Sources &amp; Mandatory Caveats
           </h2>
         </div>
 
@@ -984,48 +1052,147 @@ function OverviewSection({ summary }: { summary: SimSummaryData }) {
         </div>
       </section>
 
-      {/* Dataset Splits Overview */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6">
-        <p className="eyebrow">Frozen Dataset Splits</p>
-        <h2 className="subsection-title mt-1">
-          Evaluation Splits & Leakage Hygiene
-        </h2>
-        <p className="mt-1 text-xs text-[var(--text-secondary)]">
-          All models, imputers, scalers, and operating points were fit on{" "}
-          <code className="font-mono">train</code> and tuned on{" "}
-          <code className="font-mono">val</code> only (<code className="font-mono">guard_no_test_data</code>{" "}
-          enforced). No run or window crosses split boundaries.
-        </p>
-        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {Object.entries(ds.splits).map(([splitName, info]) => (
-            <div
-              key={splitName}
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-3.5"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-sm font-bold text-[var(--text-primary)]">
-                  {splitName}
-                </span>
-                <span className="rounded bg-[var(--surface)] px-2 py-0.5 font-mono text-xs font-semibold text-[var(--brand-teal)]">
-                  {info.runs} runs
-                </span>
+      {/* Secondary details blocks collapsed by default */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          What is the benchmark architecture, dataset split breakdown, and live-demo threshold scale difference? (Click to expand)
+        </summary>
+        <div className="mt-5 space-y-6">
+          <div>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p className="eyebrow">Benchmark Architecture</p>
+                <h2 className="section-title mt-1">{summary.study_title}</h2>
               </div>
-              <p className="mt-1.5 text-xs text-[var(--text-secondary)]">
-                {info.description}
-              </p>
+              <span className="rounded-md border border-[var(--border)] bg-[var(--surface-alt)] px-3 py-1 font-mono text-xs font-semibold text-[var(--text-primary)]">
+                Seed: {summary.seed} · Commit: {summary.git_commit.slice(0, 8)}
+              </span>
             </div>
-          ))}
-        </div>
-      </section>
+            <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+              {summary.study_description}
+            </p>
 
-      {/* Study Limitations List */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6">
-        <div className="flex items-center gap-2">
-          <Info className="h-5 w-5 text-[var(--status-warning)]" />
-          <h2 className="section-title">
-            Model & Simulation Limitations (Why This Is Not Field Validation)
-          </h2>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              <MetricTile
+                label="Total Benchmark Runs"
+                value={totalRuns}
+                unit="runs"
+                decimals={0}
+              />
+              <MetricTile
+                label="Observable v3 Features"
+                value={ds.n_observable_features_v3}
+                unit="cols"
+                decimals={0}
+              />
+              <MetricTile
+                label="Window Length / Step"
+                value={ds.window_length_s}
+                unit={`s (${ds.window_step_s}s step)`}
+                decimals={1}
+              />
+              <MetricTile
+                label="Windows per Run"
+                value={ds.windows_per_run}
+                unit="windows"
+                decimals={0}
+              />
+              <MetricTile
+                label="Detection SNR Limit"
+                value={snrMult}
+                unit="× IMU noise"
+                decimals={1}
+              />
+              <MetricTile
+                label="Compass Yaw Tolerance"
+                value={yawTolDeg}
+                unit="° SD max"
+                decimals={0}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-[var(--status-warning-border)] bg-[var(--status-warning-bg)] p-4">
+            <div className="flex items-start gap-3">
+              <AlertTriangle
+                className="mt-0.5 h-5 w-5 shrink-0 text-[var(--status-warning)]"
+                aria-hidden="true"
+              />
+              <div className="space-y-1.5 text-xs leading-relaxed text-[var(--text-primary)]">
+                <h3 className="text-sm font-bold text-[var(--text-primary)]">
+                  Important Scale Difference: Live Demo Engine vs. Simulation
+                  Study Thresholds
+                </h3>
+                <p>
+                  The live dashboard demonstration engine (
+                  <code className="font-mono">engine/thresholds.py</code> and{" "}
+                  <code className="font-mono">
+                    src/services/analysisAdapter.ts
+                  </code>
+                  ) uses{" "}
+                  <strong>
+                    bench-demo tilt thresholds of 15.0° (Warning) and 25.0°
+                    (Critical)
+                  </strong>{" "}
+                  so tilting a sensor by hand on a desk visibly triggers alerts.
+                  In contrast,{" "}
+                  <code className="font-mono">ProjectCanary-Sim</code> models
+                  early-warning ground subsidence tilts in{" "}
+                  <strong>0.05° to 3.0°</strong> (about 1 to 52 mm/m; high-tilt
+                  stress tests up to 12°), and the simulation&apos;s calibrated
+                  Threshold Rule triggers at{" "}
+                  <strong>~0.607° max node tilt</strong> (
+                  <code className="font-mono">
+                    basin_tilt_max_deg_th = 0.60727°
+                  </code>
+                  ). The existing live engine thresholds are intentionally left
+                  unchanged.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="eyebrow">Frozen Dataset Splits</p>
+            <h3 className="subsection-title mt-1">
+              Evaluation Splits &amp; Leakage Hygiene
+            </h3>
+            <p className="mt-1 text-xs text-[var(--text-secondary)]">
+              All models, imputers, scalers, and operating points were fit on{" "}
+              <code className="font-mono">train</code> and tuned on{" "}
+              <code className="font-mono">val</code> only (
+              <code className="font-mono">guard_no_test_data</code> enforced).
+              No run or window crosses split boundaries.
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(ds.splits).map(([splitName, info]) => (
+                <div
+                  key={splitName}
+                  className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-3.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-sm font-bold text-[var(--text-primary)]">
+                      {splitName}
+                    </span>
+                    <span className="rounded bg-[var(--surface)] px-2 py-0.5 font-mono text-xs font-semibold text-[var(--brand-teal)]">
+                      {info.runs} runs
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-xs text-[var(--text-secondary)]">
+                    {info.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+      </details>
+
+      {/* Study Limitations List inside details block */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          Why are these synthetic results not field validation? (6 model &amp; simulation limitations)
+        </summary>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           {summary.limitations.map((lim, i) => (
             <div
@@ -1046,7 +1213,7 @@ function OverviewSection({ summary }: { summary: SimSummaryData }) {
             </div>
           ))}
         </div>
-      </section>
+      </details>
     </div>
   );
 }
@@ -1167,6 +1334,19 @@ function ResultsSection({
 
   return (
     <div className="space-y-8">
+      {/* Start here guidance line */}
+      <p
+        data-testid="start-here-results"
+        className="rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)]"
+      >
+        <strong className="font-bold text-[var(--brand-green)]">
+          Start here:
+        </strong>{" "}
+        Look at the Alarm Macro-F1 bar chart across splits first, then open the
+        collapsed disclosures below to inspect per-class tables, 1× vs. 360×
+        false alarms, SNR recall curves, or feature ablations.
+      </p>
+
       {/* Split & Operating Regime Filter Bar */}
       <section className="panel-surface flex flex-wrap items-end justify-between gap-4 rounded-2xl p-4 sm:p-5">
         <div className="flex flex-wrap gap-4">
@@ -1212,10 +1392,10 @@ function ResultsSection({
         </div>
       </section>
 
-      {/* Section 2.1: Three Models by Split (Chart + Table with CIs) */}
+      {/* Section 2.1: Three Models by Split (Primary Chart visible + Large Table inside details) */}
       <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-5">
         <div>
-          <p className="eyebrow">1. Window & Alarm Metrics by Split</p>
+          <p className="eyebrow">1. Window &amp; Alarm Metrics by Split</p>
           <h2 className="section-title mt-1">
             Threshold Rule vs. Logistic Regression vs. Random Forest (v3)
           </h2>
@@ -1281,520 +1461,522 @@ function ResultsSection({
         </div>
 
         {/* Table of Window Metrics & Per-Class Recall + Run Detection Side by Side */}
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2.5">Model ({selectedSplit})</th>
-                <th className="px-3 py-2.5">Window Macro-F1 [95% CI]</th>
-                <th className="px-3 py-2.5">Alarm Macro-F1 [95% CI]</th>
-                <th className="px-3 py-2.5">Normal P / R</th>
-                <th className="px-3 py-2.5">
-                  Gradual: Win Recall vs Run Detect
-                </th>
-                <th className="px-3 py-2.5">Rapid: Win Recall vs Run Detect</th>
-                <th className="px-3 py-2.5">Sensor Fault P / R</th>
-                <th className="px-3 py-2.5">Comm Fault P / R</th>
-                <th className="px-3 py-2.5">Vibration P / R</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {splitRows.map((row) => {
-                const v3Row = v3AllRows.find((r) => r.model === row.model);
-                return (
-                  <tr
-                    key={`${row.split}-${row.model}-${row.regime}`}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2.5 font-sans font-bold text-[var(--text-primary)]">
-                      {MODEL_PLAIN_NAMES[row.model] || row.model}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {fmtCi(
-                        row.window_macro_f1,
-                        row.window_macro_f1_ci_lo,
-                        row.window_macro_f1_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2.5 font-semibold text-[var(--brand-green)]">
-                      {v3Row
-                        ? fmtCi(
-                            v3Row.alarm_macro_f1,
-                            v3Row.alarm_macro_f1_ci_lo,
-                            v3Row.alarm_macro_f1_ci_hi,
-                            3
-                          )
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {fmtNum(row.prec_normal, 2)} / {fmtNum(row.rec_normal, 2)}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      <span className="font-bold text-[var(--status-warning)]">
-                        {fmtNum(row.rec_gradual, 2)}
-                      </span>{" "}
-                      win /{" "}
-                      <span className="font-bold text-[var(--brand-teal)]">
-                        {fmtNum(row.gradual_run_detect_rate, 2)}
-                      </span>{" "}
-                      run
-                    </td>
-                    <td className="px-3 py-2.5">
-                      <span className="font-bold text-[var(--status-warning)]">
-                        {fmtNum(row.rec_rapid, 2)}
-                      </span>{" "}
-                      win /{" "}
-                      <span className="font-bold text-[var(--brand-teal)]">
-                        {fmtNum(row.rapid_run_detect_rate, 2)}
-                      </span>{" "}
-                      run
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {fmtNum(row.prec_sensor_fault, 2)} /{" "}
-                      {fmtNum(row.rec_sensor_fault, 2)}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {fmtNum(row.prec_comm_fault, 2)} /{" "}
-                      {fmtNum(row.rec_comm_fault, 2)}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {fmtNum(row.prec_abnormal_vibration, 2)} /{" "}
-                      {fmtNum(row.rec_abnormal_vibration, 2)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <details className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-3.5">
+          <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+            How do per-class precision, window recall, and run-level detection compare on {selectedSplit}?
+          </summary>
+          <div className="mt-3 overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3 py-2.5">Model ({selectedSplit})</th>
+                  <th className="px-3 py-2.5">Window Macro-F1 [95% CI]</th>
+                  <th className="px-3 py-2.5">Alarm Macro-F1 [95% CI]</th>
+                  <th className="px-3 py-2.5">Normal P / R</th>
+                  <th className="px-3 py-2.5">
+                    Gradual: Win Recall vs Run Detect
+                  </th>
+                  <th className="px-3 py-2.5">Rapid: Win Recall vs Run Detect</th>
+                  <th className="px-3 py-2.5">Sensor Fault P / R</th>
+                  <th className="px-3 py-2.5">Comm Fault P / R</th>
+                  <th className="px-3 py-2.5">Vibration P / R</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                {splitRows.map((row) => {
+                  const v3Row = v3AllRows.find((r) => r.model === row.model);
+                  return (
+                    <tr
+                      key={`${row.split}-${row.model}-${row.regime}`}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2.5 font-sans font-bold text-[var(--text-primary)]">
+                        {MODEL_PLAIN_NAMES[row.model] || row.model}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {fmtCi(
+                          row.window_macro_f1,
+                          row.window_macro_f1_ci_lo,
+                          row.window_macro_f1_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2.5 font-semibold text-[var(--brand-green)]">
+                        {v3Row
+                          ? fmtCi(
+                              v3Row.alarm_macro_f1,
+                              v3Row.alarm_macro_f1_ci_lo,
+                              v3Row.alarm_macro_f1_ci_hi,
+                              3
+                            )
+                          : "N/A"}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {fmtNum(row.prec_normal, 2)} / {fmtNum(row.rec_normal, 2)}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className="font-bold text-[var(--status-warning)]">
+                          {fmtNum(row.rec_gradual, 2)}
+                        </span>{" "}
+                        win /{" "}
+                        <span className="font-bold text-[var(--brand-teal)]">
+                          {fmtNum(row.gradual_run_detect_rate, 2)}
+                        </span>{" "}
+                        run
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className="font-bold text-[var(--status-warning)]">
+                          {fmtNum(row.rec_rapid, 2)}
+                        </span>{" "}
+                        win /{" "}
+                        <span className="font-bold text-[var(--brand-teal)]">
+                          {fmtNum(row.rapid_run_detect_rate, 2)}
+                        </span>{" "}
+                        run
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {fmtNum(row.prec_sensor_fault, 2)} /{" "}
+                        {fmtNum(row.rec_sensor_fault, 2)}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {fmtNum(row.prec_comm_fault, 2)} /{" "}
+                        {fmtNum(row.rec_comm_fault, 2)}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {fmtNum(row.prec_abnormal_vibration, 2)} /{" "}
+                        {fmtNum(row.rec_abnormal_vibration, 2)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </details>
       </section>
 
-      {/* Section 2.2: False Alarms per Hour — Sensor Time (Def B) First vs Slow-Process Time (Def A) */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-        <div>
-          <p className="eyebrow">
-            2. False Alarms per Hour (Both Time Definitions Side by Side — Sensor
-            Time First)
+      {/* Section 2.2: False Alarms per Hour — Collapsed inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          How many false alarms occur per hour in 1× sensor time (Definition B) versus 360× slow-process time (Definition A)?
+        </summary>
+        <div className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-xl border-l-4 border-l-[var(--status-danger)] bg-[var(--surface-alt)] p-4 text-xs">
+              <h3 className="font-bold text-[var(--text-primary)]">
+                Primary — Definition B: Sensor Time (1x = 240 s = 0.0667 h / run)
+              </h3>
+              <p className="mt-1 text-[var(--text-secondary)]">
+                {falseAlarms.definition_notes.definition_B_sensor_time}
+              </p>
+            </div>
+            <div className="rounded-xl border-l-4 border-l-[var(--brand-teal)] bg-[var(--surface-alt)] p-4 text-xs">
+              <h3 className="font-bold text-[var(--text-primary)]">
+                Secondary — Definition A: Slow-Process Time (360x = 24 h / run,
+                PLACEHOLDER)
+              </h3>
+              <p className="mt-1 text-[var(--text-secondary)]">
+                {falseAlarms.definition_notes.definition_A_slow_process_time}
+              </p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3 py-2.5">Split</th>
+                  <th className="px-3 py-2.5">Model</th>
+                  <th className="px-3 py-2.5">Operating Regime</th>
+                  <th className="px-3 py-2.5">FA Episodes / Normal Run</th>
+                  <th className="px-3 py-2.5 text-[var(--status-danger)]">
+                    Def B: FA / Hour (Sensor Time 1x)
+                  </th>
+                  <th className="px-3 py-2.5 text-[var(--status-danger)]">
+                    Def B: 1 FA Every
+                  </th>
+                  <th className="px-3 py-2.5">
+                    Def A: FA / Hour (Slow Time 360x)
+                  </th>
+                  <th className="px-3 py-2.5">Def A: 1 FA Every</th>
+                  <th className="px-3 py-2.5">Missed-Event Rate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                {faRows
+                  .filter((r) => r.regime !== "raw (k=1)")
+                  .map((r) => (
+                    <tr
+                      key={`${r.split}-${r.model}-${r.regime}`}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2 font-bold">{r.split}</td>
+                      <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
+                        {MODEL_PLAIN_NAMES[r.model] || r.model}
+                      </td>
+                      <td className="px-3 py-2">{r.regime}</td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.fa_episodes_per_run,
+                          r.fa_episodes_per_run_ci_lo,
+                          r.fa_episodes_per_run_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
+                        {fmtCi(
+                          r.B_sensor_fa_episodes_per_hour,
+                          r.B_sensor_ci_lo,
+                          r.B_sensor_ci_hi,
+                          2
+                        )}
+                      </td>
+                      <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
+                        {fmtEveryHours(r.B_sensor_one_fa_every_hours)}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.A_slow_fa_episodes_per_hour,
+                          r.A_slow_ci_lo,
+                          r.A_slow_ci_hi,
+                          4
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtEveryHours(r.A_slow_one_fa_every_hours)}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.missed_event_rate,
+                          r.missed_event_ci_lo,
+                          r.missed_event_ci_hi,
+                          3
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-[var(--text-muted)]">
+            <strong>Note on zero counts:</strong>{" "}
+            {falseAlarms.definition_notes.zero_count_caveat}
           </p>
-          <h2 className="section-title mt-1">
-            Definition B (1x Sensor Time) vs. Definition A (360x Slow-Process
-            Time)
-          </h2>
         </div>
+      </details>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-xl border-l-4 border-l-[var(--status-danger)] bg-[var(--surface-alt)] p-4 text-xs">
-            <h3 className="font-bold text-[var(--text-primary)]">
-              Primary — Definition B: Sensor Time (1x = 240 s = 0.0667 h / run)
-            </h3>
-            <p className="mt-1 text-[var(--text-secondary)]">
-              {falseAlarms.definition_notes.definition_B_sensor_time}
-            </p>
-          </div>
-          <div className="rounded-xl border-l-4 border-l-[var(--brand-teal)] bg-[var(--surface-alt)] p-4 text-xs">
-            <h3 className="font-bold text-[var(--text-primary)]">
-              Secondary — Definition A: Slow-Process Time (360x = 24 h / run,
-              PLACEHOLDER)
-            </h3>
-            <p className="mt-1 text-[var(--text-secondary)]">
-              {falseAlarms.definition_notes.definition_A_slow_process_time}
-            </p>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2.5">Split</th>
-                <th className="px-3 py-2.5">Model</th>
-                <th className="px-3 py-2.5">Operating Regime</th>
-                <th className="px-3 py-2.5">FA Episodes / Normal Run</th>
-                <th className="px-3 py-2.5 text-[var(--status-danger)]">
-                  Def B: FA / Hour (Sensor Time 1x)
-                </th>
-                <th className="px-3 py-2.5 text-[var(--status-danger)]">
-                  Def B: 1 FA Every
-                </th>
-                <th className="px-3 py-2.5">
-                  Def A: FA / Hour (Slow Time 360x)
-                </th>
-                <th className="px-3 py-2.5">Def A: 1 FA Every</th>
-                <th className="px-3 py-2.5">Missed-Event Rate</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {faRows
-                .filter((r) => r.regime !== "raw (k=1)")
-                .map((r) => (
-                  <tr
-                    key={`${r.split}-${r.model}-${r.regime}`}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{r.split}</td>
-                    <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
-                      {MODEL_PLAIN_NAMES[r.model] || r.model}
-                    </td>
-                    <td className="px-3 py-2">{r.regime}</td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.fa_episodes_per_run,
-                        r.fa_episodes_per_run_ci_lo,
-                        r.fa_episodes_per_run_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
-                      {fmtCi(
-                        r.B_sensor_fa_episodes_per_hour,
-                        r.B_sensor_ci_lo,
-                        r.B_sensor_ci_hi,
-                        2
-                      )}
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
-                      {fmtEveryHours(r.B_sensor_one_fa_every_hours)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.A_slow_fa_episodes_per_hour,
-                        r.A_slow_ci_lo,
-                        r.A_slow_ci_hi,
-                        4
-                      )}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtEveryHours(r.A_slow_one_fa_every_hours)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.missed_event_rate,
-                        r.missed_event_ci_lo,
-                        r.missed_event_ci_hi,
-                        3
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="text-xs text-[var(--text-muted)]">
-          <strong>Note on zero counts:</strong>{" "}
-          {falseAlarms.definition_notes.zero_count_caveat}
-        </p>
-      </section>
-
-      {/* Section 2.3: Recall vs SNR Bin & Detection Limit (~5x IMU Noise) */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-5">
-        <div>
-          <p className="eyebrow">3. Detection Limit & Recall vs. SNR Bin</p>
-          <h2 className="section-title mt-1">
-            Why Reliable Detection Requires ~5× IMU Noise (SNR &gt; 5, ~0.95°
-            Peak Tilt)
-          </h2>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+      {/* Section 2.3: Recall vs SNR Bin & Detection Limit (~5x IMU Noise) — Secondary chart & table inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          Why does reliable detection require peak tilt above ~5× IMU noise (SNR &gt; 5, ~0.95° tilt)?
+        </summary>
+        <div className="mt-4 space-y-5">
+          <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
             {recallSnr.detection_limit_note}
           </p>
-        </div>
 
-        <div className="h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={pooledSnrChartData}
-              margin={{ top: 12, right: 24, left: 4, bottom: 8 }}
-            >
-              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-              <XAxis
-                dataKey="snr_bin"
-                tick={{
-                  fontSize: 12,
-                  fill: "var(--chart-labels)",
-                  fontFamily: '"JetBrains Mono", monospace',
-                }}
-              />
-              <YAxis
-                domain={[0, 1]}
-                tick={{
-                  fontSize: 11,
-                  fill: "var(--chart-labels)",
-                  fontFamily: '"JetBrains Mono", monospace',
-                }}
-                label={{
-                  value: "Recall / Run Detection Rate",
-                  angle: -90,
-                  position: "insideLeft",
-                  style: { fill: "var(--chart-labels)", fontSize: 11 },
-                }}
-              />
-              <ReferenceLine
-                x="SNR >5"
-                stroke="var(--status-warning)"
-                strokeDasharray="4 4"
-                label={{
-                  value: "~5x Noise Detection Limit",
-                  position: "insideTopRight",
-                  fill: "var(--status-warning)",
-                  fontSize: 11,
-                }}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "var(--chart-tooltip-bg)",
-                  borderColor: "var(--chart-tooltip-border)",
-                  color: "var(--chart-tooltip-text)",
-                }}
-              />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="RF Gradual Run Detect"
-                stroke="var(--chart-series-1)"
-                strokeWidth={2.5}
-              />
-              <Line
-                type="monotone"
-                dataKey="RF Gradual Window Recall"
-                stroke="var(--chart-series-1)"
-                strokeDasharray="4 4"
-                strokeWidth={2}
-              />
-              <Line
-                type="monotone"
-                dataKey="RF Rapid Run Detect"
-                stroke="var(--status-danger)"
-                strokeWidth={2.5}
-              />
-              <Line
-                type="monotone"
-                dataKey="RF Rapid Window Recall"
-                stroke="var(--status-danger)"
-                strokeDasharray="4 4"
-                strokeWidth={2}
-              />
-              <Line
-                type="monotone"
-                dataKey="Threshold Gradual Run Detect"
-                stroke="var(--chart-series-4)"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={pooledSnrChartData}
+                margin={{ top: 12, right: 24, left: 4, bottom: 8 }}
+              >
+                <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                <XAxis
+                  dataKey="snr_bin"
+                  tick={{
+                    fontSize: 12,
+                    fill: "var(--chart-labels)",
+                    fontFamily: '"JetBrains Mono", monospace',
+                  }}
+                />
+                <YAxis
+                  domain={[0, 1]}
+                  tick={{
+                    fontSize: 11,
+                    fill: "var(--chart-labels)",
+                    fontFamily: '"JetBrains Mono", monospace',
+                  }}
+                  label={{
+                    value: "Recall / Run Detection Rate",
+                    angle: -90,
+                    position: "insideLeft",
+                    style: { fill: "var(--chart-labels)", fontSize: 11 },
+                  }}
+                />
+                <ReferenceLine
+                  x="SNR >5"
+                  stroke="var(--status-warning)"
+                  strokeDasharray="4 4"
+                  label={{
+                    value: "~5x Noise Detection Limit",
+                    position: "insideTopRight",
+                    fill: "var(--status-warning)",
+                    fontSize: 11,
+                  }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--chart-tooltip-bg)",
+                    borderColor: "var(--chart-tooltip-border)",
+                    color: "var(--chart-tooltip-text)",
+                  }}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="RF Gradual Run Detect"
+                  stroke="var(--chart-series-1)"
+                  strokeWidth={2.5}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="RF Gradual Window Recall"
+                  stroke="var(--chart-series-1)"
+                  strokeDasharray="4 4"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="RF Rapid Run Detect"
+                  stroke="var(--status-danger)"
+                  strokeWidth={2.5}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="RF Rapid Window Recall"
+                  stroke="var(--status-danger)"
+                  strokeDasharray="4 4"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Threshold Gradual Run Detect"
+                  stroke="var(--chart-series-4)"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Pooled SNR Table (Window Recall / Run Detection side by side) */}
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2">Model</th>
-                <th className="px-3 py-2">Regime</th>
-                <th className="px-3 py-2">Class</th>
-                <th className="px-3 py-2">
-                  SNR &lt; 1 (Win Recall / Run Detect)
-                </th>
-                <th className="px-3 py-2">
-                  SNR 1–2 (Win Recall / Run Detect)
-                </th>
-                <th className="px-3 py-2">
-                  SNR 2–5 (Win Recall / Run Detect)
-                </th>
-                <th className="px-3 py-2 text-[var(--brand-green)]">
-                  SNR &gt; 5 (Win Recall / Run Detect)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {["threshold_rule", "random_forest", "logistic_regression"].flatMap(
-                (m) =>
-                  ["gradual", "rapid"].map((cls) => {
-                    const bins = ["<1", "1-2", "2-5", ">5"].map((b) =>
-                      recallSnr.gradual_rapid_recall_by_snr_v3.find(
-                        (r) =>
-                          r.split.startsWith("pooled") &&
-                          r.model === m &&
-                          r.regime === "episode_fa<=1 (k=3,m=3)" &&
-                          r.class === cls &&
-                          r.snr_bin === b
-                      )
-                    );
-                    return (
-                      <tr
-                        key={`pooled-${m}-${cls}`}
-                        className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                      >
-                        <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
-                          {MODEL_PLAIN_NAMES[m] || m}
-                        </td>
-                        <td className="px-3 py-2">episode (k=3,m=3)</td>
-                        <td className="px-3 py-2 font-bold">{cls}</td>
-                        {bins.map((cell, idx) => (
-                          <td
-                            key={idx}
-                            className={`px-3 py-2 ${
-                              idx === 3
-                                ? "font-bold text-[var(--brand-green)]"
-                                : ""
-                            }`}
-                          >
-                            {cell
-                              ? `${fmtNum(cell.window_recall, 2)} / ${fmtNum(
-                                  cell.run_detect_rate,
-                                  2
-                                )}`
-                              : "N/A"}
+          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3 py-2">Model</th>
+                  <th className="px-3 py-2">Regime</th>
+                  <th className="px-3 py-2">Class</th>
+                  <th className="px-3 py-2">
+                    SNR &lt; 1 (Win Recall / Run Detect)
+                  </th>
+                  <th className="px-3 py-2">
+                    SNR 1–2 (Win Recall / Run Detect)
+                  </th>
+                  <th className="px-3 py-2">
+                    SNR 2–5 (Win Recall / Run Detect)
+                  </th>
+                  <th className="px-3 py-2 text-[var(--brand-green)]">
+                    SNR &gt; 5 (Win Recall / Run Detect)
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                {["threshold_rule", "random_forest", "logistic_regression"].flatMap(
+                  (m) =>
+                    ["gradual", "rapid"].map((cls) => {
+                      const bins = ["<1", "1-2", "2-5", ">5"].map((b) =>
+                        recallSnr.gradual_rapid_recall_by_snr_v3.find(
+                          (r) =>
+                            r.split.startsWith("pooled") &&
+                            r.model === m &&
+                            r.regime === "episode_fa<=1 (k=3,m=3)" &&
+                            r.class === cls &&
+                            r.snr_bin === b
+                        )
+                      );
+                      return (
+                        <tr
+                          key={`pooled-${m}-${cls}`}
+                          className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                        >
+                          <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
+                            {MODEL_PLAIN_NAMES[m] || m}
                           </td>
-                        ))}
-                      </tr>
-                    );
-                  })
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Section 2.4: RF vs Threshold Comparison, Permutation Importance & Ablations */}
-      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Left: Permutation Importance Groups & v3 Ablations */}
-        <div className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-          <div>
-            <p className="eyebrow">4. Feature Groups & Ablations</p>
-            <h3 className="subsection-title mt-1">
-              v3 Random Forest Feature-Group Ablations & Importance
-            </h3>
-            <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
-              {modelComp.importance_caveat}
-            </p>
-          </div>
-
-          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Removed Group</th>
-                  <th className="px-3 py-2">Kept Cols</th>
-                  <th className="px-3 py-2">Test Macro-F1 (SNR&gt;2)</th>
-                  <th className="px-3 py-2">Delta F1</th>
-                  <th className="px-3 py-2">Grad &lt;-&gt; SF Confusions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {modelComp.rf_ablations_v3.map((ab) => (
-                  <tr
-                    key={ab.group_removed}
-                    className={`bg-[var(--table-row-bg)] ${
-                      ab.group_removed === "direction"
-                        ? "bg-[var(--status-danger-bg)] font-bold"
-                        : ""
-                    }`}
-                  >
-                    <td className="px-3 py-2">{ab.group_removed}</td>
-                    <td className="px-3 py-2">{ab.n_features_kept}</td>
-                    <td className="px-3 py-2">
-                      {ab.macro_f1_snr_gt_2.toFixed(4)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {ab.delta_macro_f1_snr_gt_2 >= 0 ? "+" : ""}
-                      {ab.delta_macro_f1_snr_gt_2.toFixed(4)}
-                    </td>
-                    <td className="px-3 py-2">
-                      {ab.gradual_sf_confusions_snr_gt_2}
-                      {ab.group_removed === "direction"
-                        ? " (+72, ~3x worse!)"
-                        : ""}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Rank</th>
-                  <th className="px-3 py-2">Feature Group (val)</th>
-                  <th className="px-3 py-2">Cols</th>
-                  <th className="px-3 py-2">Mean Macro-F1 Drop</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {modelComp.permutation_importance_groups.map((pg) => (
-                  <tr key={pg.group} className="bg-[var(--table-row-bg)]">
-                    <td className="px-3 py-1.5">#{pg.rank}</td>
-                    <td className="px-3 py-1.5 font-bold">{pg.group}</td>
-                    <td className="px-3 py-1.5">{pg.feature_count}</td>
-                    <td className="px-3 py-1.5">
-                      {pg.mean_importance.toFixed(4)} ±{" "}
-                      {pg.std_importance.toFixed(4)}
-                    </td>
-                  </tr>
-                ))}
+                          <td className="px-3 py-2">episode (k=3,m=3)</td>
+                          <td className="px-3 py-2 font-bold">{cls}</td>
+                          {bins.map((cell, idx) => (
+                            <td
+                              key={idx}
+                              className={`px-3 py-2 ${
+                                idx === 3
+                                  ? "font-bold text-[var(--brand-green)]"
+                                  : ""
+                              }`}
+                            >
+                              {cell
+                                ? `${fmtNum(cell.window_recall, 2)} / ${fmtNum(
+                                    cell.run_detect_rate,
+                                    2
+                                  )}`
+                                : "N/A"}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })
+                )}
               </tbody>
             </table>
           </div>
         </div>
+      </details>
 
-        {/* Right: Where RF Does NOT Beat the Threshold Rule */}
-        <div className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-          <div>
-            <p className="eyebrow">5. Paired Bootstrap Comparison</p>
-            <h3 className="subsection-title mt-1">
-              Where Random Forest Does NOT Beat the Threshold Rule
-            </h3>
-            <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
-              Paired run-bootstrap differences (<code className="font-mono">RF - Threshold</code>).
-              Rows flagged <code className="font-mono">true</code> indicate metrics
-              where Random Forest fails to significantly outperform the simple
-              hand-built threshold rule.
-            </p>
-          </div>
+      {/* Section 2.4: RF vs Threshold Comparison, Permutation Importance & Ablations — Inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          Which feature groups reduce gradual vs. sensor-fault confusions, and where does Random Forest fail to beat the Threshold Rule?
+        </summary>
+        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Left: Permutation Importance Groups & v3 Ablations */}
+          <div className="space-y-4">
+            <div>
+              <p className="eyebrow">4. Feature Groups &amp; Ablations</p>
+              <h3 className="subsection-title mt-1">
+                v3 Random Forest Feature-Group Ablations &amp; Importance
+              </h3>
+              <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+                {modelComp.importance_caveat}
+              </p>
+            </div>
 
-          <div className="max-h-[430px] overflow-y-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="sticky top-0 bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Split</th>
-                  <th className="px-3 py-2">Metric</th>
-                  <th className="px-3 py-2">RF</th>
-                  <th className="px-3 py-2">Threshold</th>
-                  <th className="px-3 py-2">RF - TH [95% CI]</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {modelComp.rf_vs_threshold_comparison.map((row, idx) => (
-                  <tr
-                    key={`${row.split}-${row.metric}-${idx}`}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{row.split}</td>
-                    <td className="px-3 py-2">{row.metric}</td>
-                    <td className="px-3 py-2">{row.rf_val.toFixed(3)}</td>
-                    <td className="px-3 py-2">{row.th_val.toFixed(3)}</td>
-                    <td
-                      className={`px-3 py-2 font-semibold ${
-                        row.rf_minus_th < 0
-                          ? "text-[var(--status-danger)]"
-                          : "text-[var(--brand-green)]"
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Removed Group</th>
+                    <th className="px-3 py-2">Kept Cols</th>
+                    <th className="px-3 py-2">Test Macro-F1 (SNR&gt;2)</th>
+                    <th className="px-3 py-2">Delta F1</th>
+                    <th className="px-3 py-2">Grad &lt;-&gt; SF Confusions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {modelComp.rf_ablations_v3.map((ab) => (
+                    <tr
+                      key={ab.group_removed}
+                      className={`bg-[var(--table-row-bg)] ${
+                        ab.group_removed === "direction"
+                          ? "bg-[var(--status-danger-bg)] font-bold"
+                          : ""
                       }`}
                     >
-                      {fmtCi(
-                        row.rf_minus_th,
-                        row.diff_ci_lo,
-                        row.diff_ci_hi,
-                        3
-                      )}
-                    </td>
+                      <td className="px-3 py-2">{ab.group_removed}</td>
+                      <td className="px-3 py-2">{ab.n_features_kept}</td>
+                      <td className="px-3 py-2">
+                        {ab.macro_f1_snr_gt_2.toFixed(4)}
+                      </td>
+                      <td className="px-3 py-2">
+                        {ab.delta_macro_f1_snr_gt_2 >= 0 ? "+" : ""}
+                        {ab.delta_macro_f1_snr_gt_2.toFixed(4)}
+                      </td>
+                      <td className="px-3 py-2">
+                        {ab.gradual_sf_confusions_snr_gt_2}
+                        {ab.group_removed === "direction"
+                          ? " (+72, ~3x worse!)"
+                          : ""}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Rank</th>
+                    <th className="px-3 py-2">Feature Group (val)</th>
+                    <th className="px-3 py-2">Cols</th>
+                    <th className="px-3 py-2">Mean Macro-F1 Drop</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {modelComp.permutation_importance_groups.map((pg) => (
+                    <tr key={pg.group} className="bg-[var(--table-row-bg)]">
+                      <td className="px-3 py-1.5">#{pg.rank}</td>
+                      <td className="px-3 py-1.5 font-bold">{pg.group}</td>
+                      <td className="px-3 py-1.5">{pg.feature_count}</td>
+                      <td className="px-3 py-1.5">
+                        {pg.mean_importance.toFixed(4)} ±{" "}
+                        {pg.std_importance.toFixed(4)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Right: Where RF Does NOT Beat the Threshold Rule */}
+          <div className="space-y-4">
+            <div>
+              <p className="eyebrow">5. Paired Bootstrap Comparison</p>
+              <h3 className="subsection-title mt-1">
+                Where Random Forest Does NOT Beat the Threshold Rule
+              </h3>
+              <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+                Paired run-bootstrap differences (
+                <code className="font-mono">RF - Threshold</code>). Rows flagged{" "}
+                <code className="font-mono">true</code> indicate metrics where
+                Random Forest fails to significantly outperform the simple
+                hand-built threshold rule.
+              </p>
+            </div>
+
+            <div className="max-h-[430px] overflow-y-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="sticky top-0 bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Split</th>
+                    <th className="px-3 py-2">Metric</th>
+                    <th className="px-3 py-2">RF</th>
+                    <th className="px-3 py-2">Threshold</th>
+                    <th className="px-3 py-2">RF - TH [95% CI]</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {modelComp.rf_vs_threshold_comparison.map((row, idx) => (
+                    <tr
+                      key={`${row.split}-${row.metric}-${idx}`}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2 font-bold">{row.split}</td>
+                      <td className="px-3 py-2">{row.metric}</td>
+                      <td className="px-3 py-2">{row.rf_val.toFixed(3)}</td>
+                      <td className="px-3 py-2">{row.th_val.toFixed(3)}</td>
+                      <td
+                        className={`px-3 py-2 font-semibold ${
+                          row.rf_minus_th < 0
+                            ? "text-[var(--status-danger)]"
+                            : "text-[var(--brand-green)]"
+                        }`}
+                      >
+                        {fmtCi(
+                          row.rf_minus_th,
+                          row.diff_ci_lo,
+                          row.diff_ci_hi,
+                          3
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </section>
+      </details>
     </div>
   );
 }
@@ -1891,7 +2073,21 @@ function RobustnessSection({
 
   return (
     <div className="space-y-8">
-      {/* 1. Yaw Sensitivity */}
+      {/* Start here guidance line */}
+      <p
+        data-testid="start-here-robustness"
+        className="rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)]"
+      >
+        <strong className="font-bold text-[var(--brand-green)]">
+          Start here:
+        </strong>{" "}
+        Examine the Installation-Yaw Sensitivity bar chart first (showing why
+        compass alignment ≤10° SD is required), then open any collapsed
+        disclosure below for shape mismatch, high-tilt/depth checks, timescale
+        compression, or the advisory unknown-anomaly detector.
+      </p>
+
+      {/* 1. Yaw Sensitivity (Primary Chart visible + Table inside details) */}
       <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-5">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -1983,473 +2179,567 @@ function RobustnessSection({
           </ResponsiveContainer>
         </div>
 
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2">Condition</th>
-                <th className="px-3 py-2">Model</th>
-                <th className="px-3 py-2">Window Macro-F1 [95% CI]</th>
-                <th className="px-3 py-2">Alarm Macro-F1 [95% CI]</th>
-                <th className="px-3 py-2">Run Exact Detect [95% CI]</th>
-                <th className="px-3 py-2">FA Episodes / Run</th>
-                <th className="px-3 py-2">Grad &lt;-&gt; SF Confusions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {yawTable
-                .filter((r) =>
-                  ["random_forest", "threshold_rule", "logistic_regression"].includes(
-                    r.model
+        <details className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-3.5">
+          <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+            How do compass yaw errors affect Macro-F1, detection rates, and gradual↔sensor-fault confusions across models?
+          </summary>
+          <div className="mt-3 overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3 py-2">Condition</th>
+                  <th className="px-3 py-2">Model</th>
+                  <th className="px-3 py-2">Window Macro-F1 [95% CI]</th>
+                  <th className="px-3 py-2">Alarm Macro-F1 [95% CI]</th>
+                  <th className="px-3 py-2">Run Exact Detect [95% CI]</th>
+                  <th className="px-3 py-2">FA Episodes / Run</th>
+                  <th className="px-3 py-2">Grad &lt;-&gt; SF Confusions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                {yawTable
+                  .filter((r) =>
+                    ["random_forest", "threshold_rule", "logistic_regression"].includes(
+                      r.model
+                    )
                   )
-                )
-                .map((r) => (
-                  <tr
-                    key={`${r.split}-${r.condition}-${r.model}`}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{r.condition}</td>
-                    <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
-                      {MODEL_PLAIN_NAMES[r.model] || r.model}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.window_macro_f1,
-                        r.window_macro_f1_ci_lo,
-                        r.window_macro_f1_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2 font-semibold text-[var(--brand-green)]">
-                      {fmtCi(
-                        r.alarm_macro_f1,
-                        r.alarm_macro_f1_ci_lo,
-                        r.alarm_macro_f1_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.run_exact_detect_rate,
-                        r.run_exact_detect_ci_lo,
-                        r.run_exact_detect_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtNum(r.fa_episodes_per_normal_run, 2)}
-                    </td>
-                    <td className="px-3 py-2 font-bold">
-                      {r.gradual_sf_confusions}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+                  .map((r) => (
+                    <tr
+                      key={`${r.split}-${r.condition}-${r.model}`}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2 font-bold">{r.condition}</td>
+                      <td className="px-3 py-2 font-sans font-semibold text-[var(--text-primary)]">
+                        {MODEL_PLAIN_NAMES[r.model] || r.model}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.window_macro_f1,
+                          r.window_macro_f1_ci_lo,
+                          r.window_macro_f1_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2 font-semibold text-[var(--brand-green)]">
+                        {fmtCi(
+                          r.alarm_macro_f1,
+                          r.alarm_macro_f1_ci_lo,
+                          r.alarm_macro_f1_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.run_exact_detect_rate,
+                          r.run_exact_detect_ci_lo,
+                          r.run_exact_detect_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtNum(r.fa_episodes_per_normal_run, 2)}
+                      </td>
+                      <td className="px-3 py-2 font-bold">
+                        {r.gradual_sf_confusions}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
       </section>
 
-      {/* 2. Shape Mismatch Table & Chart */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-5">
-        <div>
-          <p className="eyebrow">2. Subsidence-Shape Mismatch Stress Test</p>
-          <h2 className="section-title mt-1">
-            Gaussian Control vs. Asymmetric, Two-Basin, Trough Panel & Planar
-            Slope
-          </h2>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+      {/* 2. Shape Mismatch Table & Secondary Chart inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          What happens when ground subsidence follows non-Gaussian shapes (asymmetric, two-basin, trough panel, or planar slope)?
+        </summary>
+        <div className="mt-4 space-y-5">
+          <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
             {robustness.shape_mismatch.summary_note}
           </p>
-        </div>
 
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={shapeChartData}
-              margin={{ top: 10, right: 20, left: 0, bottom: 8 }}
-            >
-              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-              <XAxis
-                dataKey="shape"
-                tick={{
-                  fontSize: 11,
-                  fill: "var(--chart-labels)",
-                  fontFamily: '"JetBrains Mono", monospace',
-                }}
-              />
-              <YAxis
-                tick={{
-                  fontSize: 11,
-                  fill: "var(--chart-labels)",
-                  fontFamily: '"JetBrains Mono", monospace',
-                }}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "var(--chart-tooltip-bg)",
-                  borderColor: "var(--chart-tooltip-border)",
-                  color: "var(--chart-tooltip-text)",
-                }}
-              />
-              <Legend />
-              <Bar
-                dataKey="RF Exact Detect Rate"
-                fill="var(--chart-series-1)"
-                radius={[4, 4, 0, 0]}
-              />
-              <Bar
-                dataKey="Threshold Exact Detect Rate"
-                fill="var(--chart-series-4)"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={shapeChartData}
+                margin={{ top: 10, right: 20, left: 0, bottom: 8 }}
+              >
+                <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                <XAxis
+                  dataKey="shape"
+                  tick={{
+                    fontSize: 11,
+                    fill: "var(--chart-labels)",
+                    fontFamily: '"JetBrains Mono", monospace',
+                  }}
+                />
+                <YAxis
+                  tick={{
+                    fontSize: 11,
+                    fill: "var(--chart-labels)",
+                    fontFamily: '"JetBrains Mono", monospace',
+                  }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--chart-tooltip-bg)",
+                    borderColor: "var(--chart-tooltip-border)",
+                    color: "var(--chart-tooltip-text)",
+                  }}
+                />
+                <Legend />
+                <Bar
+                  dataKey="RF Exact Detect Rate"
+                  fill="var(--chart-series-1)"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="Threshold Exact Detect Rate"
+                  fill="var(--chart-series-4)"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2">Shape Profile</th>
-                <th className="px-3 py-2">RF All-Event Detect [95% CI]</th>
-                <th className="px-3 py-2">RF Gradual / Rapid Detect</th>
-                <th className="px-3 py-2">
-                  RF Gradual -&gt; SensorFault Windows
-                </th>
-                <th className="px-3 py-2">
-                  SNR&gt;2 Convergence Residual p50 (m)
-                </th>
-                <th className="px-3 py-2">SNR&gt;2 Weighted Cos p50</th>
-                <th className="px-3 py-2">SNR&gt;2 Pairwise Cos p50</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {[
-                "gaussian_control",
-                "asymmetric",
-                "two_basin",
-                "trough_panel",
-                "planar_slope",
-              ].map((sh) => {
-                const rfAll = robustness.shape_mismatch.detection_rates.find(
-                  (r) =>
-                    r.shape === sh &&
-                    r.model === "random_forest" &&
-                    r.regime === "episode_fa<=1 (k=3,m=3)" &&
-                    r.subset.startsWith("all_events")
-                );
-                const rfGrad = robustness.shape_mismatch.detection_rates.find(
-                  (r) =>
-                    r.shape === sh &&
-                    r.model === "random_forest" &&
-                    r.regime === "episode_fa<=1 (k=3,m=3)" &&
-                    r.subset.startsWith("gradual")
-                );
-                const rfRap = robustness.shape_mismatch.detection_rates.find(
-                  (r) =>
-                    r.shape === sh &&
-                    r.model === "random_forest" &&
-                    r.regime === "episode_fa<=1 (k=3,m=3)" &&
-                    r.subset.startsWith("rapid")
-                );
-                const rfConf =
-                  robustness.shape_mismatch.gradual_sensor_fault_confusion.find(
-                    (r) =>
-                      r.shape === sh &&
-                      r.model === "random_forest" &&
-                      r.regime === "episode_fa<=1 (k=3,m=3)"
-                  );
-                const conv =
-                  robustness.shape_mismatch.convergence_distributions.find(
-                    (r) => r.shape === sh && r.subset === "active_windows_snr_gt_2"
-                  );
-                return (
-                  <tr
-                    key={sh}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{sh}</td>
-                    <td className="px-3 py-2 font-semibold text-[var(--brand-green)]">
-                      {rfAll
-                        ? fmtCi(
-                            rfAll.exact_detect_rate,
-                            rfAll.exact_detect_ci_lo,
-                            rfAll.exact_detect_ci_hi,
-                            3
-                          )
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtNum(rfGrad?.exact_detect_rate, 3)} /{" "}
-                      {fmtNum(rfRap?.exact_detect_rate, 3)}
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
-                      {rfConf
-                        ? `${rfConf.win_gradual_to_sensor_fault} (${(
-                            rfConf.win_gradual_to_sensor_fault_rate * 100
-                          ).toFixed(1)}%)`
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2">
-                      {conv?.dir_convergence_residual_m_p50 != null
-                        ? `${conv.dir_convergence_residual_m_p50.toFixed(2)} m`
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2">
-                      {conv?.dir_convergence_weighted_cos_p50 != null
-                        ? conv.dir_convergence_weighted_cos_p50.toFixed(3)
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2">
-                      {conv?.dir_pairwise_cos_mean_p50 != null
-                        ? conv.dir_pairwise_cos_mean_p50.toFixed(3)
-                        : "N/A"}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* 3. Literature Checks (High Tilt B1 & Realistic Depth B2) */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-5">
-        <div>
-          <p className="eyebrow">
-            3. Literature-Basis Checks (High Tilt 3–12° & Realistic Depth H =
-            50–300 m)
-          </p>
-          <h2 className="section-title mt-1">
-            High-Tilt Cutoff Failure (Threshold Rule &gt; 3.5°) & Knothe Spread
-            Grid
-          </h2>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
-            {robustness.literature_checks.summary_note}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* High Tilt & Pooled Depth Detection + Confusions */}
           <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
             <table className="w-full text-left text-xs">
               <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
                 <tr>
-                  <th className="px-3 py-2">Arm</th>
-                  <th className="px-3 py-2">Model</th>
-                  <th className="px-3 py-2">All-Event Detect</th>
-                  <th className="px-3 py-2">Grad / Rapid Detect</th>
-                  <th className="px-3 py-2">Grad -&gt; SF Win</th>
-                  <th className="px-3 py-2">Grad -&gt; Rapid Win</th>
+                  <th className="px-3 py-2">Shape Profile</th>
+                  <th className="px-3 py-2">RF All-Event Detect [95% CI]</th>
+                  <th className="px-3 py-2">RF Gradual / Rapid Detect</th>
+                  <th className="px-3 py-2">
+                    RF Gradual -&gt; SensorFault Windows
+                  </th>
+                  <th className="px-3 py-2">
+                    SNR&gt;2 Convergence Residual p50 (m)
+                  </th>
+                  <th className="px-3 py-2">SNR&gt;2 Weighted Cos p50</th>
+                  <th className="px-3 py-2">SNR&gt;2 Pairwise Cos p50</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--table-border)] font-mono">
                 {[
                   "gaussian_control",
-                  "high_tilt_3_6",
-                  "high_tilt_6_12",
-                  "depth_all_gt_1p5",
-                ].flatMap((arm) =>
-                  ["random_forest", "threshold_rule", "logistic_regression"].map(
-                    (m) => {
-                      const dAll =
+                  "asymmetric",
+                  "two_basin",
+                  "trough_panel",
+                  "planar_slope",
+                ].map((sh) => {
+                  const rfAll = robustness.shape_mismatch.detection_rates.find(
+                    (r) =>
+                      r.shape === sh &&
+                      r.model === "random_forest" &&
+                      r.regime === "episode_fa<=1 (k=3,m=3)" &&
+                      r.subset.startsWith("all_events")
+                  );
+                  const rfGrad = robustness.shape_mismatch.detection_rates.find(
+                    (r) =>
+                      r.shape === sh &&
+                      r.model === "random_forest" &&
+                      r.regime === "episode_fa<=1 (k=3,m=3)" &&
+                      r.subset.startsWith("gradual")
+                  );
+                  const rfRap = robustness.shape_mismatch.detection_rates.find(
+                    (r) =>
+                      r.shape === sh &&
+                      r.model === "random_forest" &&
+                      r.regime === "episode_fa<=1 (k=3,m=3)" &&
+                      r.subset.startsWith("rapid")
+                  );
+                  const rfConf =
+                    robustness.shape_mismatch.gradual_sensor_fault_confusion.find(
+                      (r) =>
+                        r.shape === sh &&
+                        r.model === "random_forest" &&
+                        r.regime === "episode_fa<=1 (k=3,m=3)"
+                    );
+                  const conv =
+                    robustness.shape_mismatch.convergence_distributions.find(
+                      (r) => r.shape === sh && r.subset === "active_windows_snr_gt_2"
+                    );
+                  return (
+                    <tr
+                      key={sh}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2 font-bold">{sh}</td>
+                      <td className="px-3 py-2 font-semibold text-[var(--brand-green)]">
+                        {rfAll
+                          ? fmtCi(
+                              rfAll.exact_detect_rate,
+                              rfAll.exact_detect_ci_lo,
+                              rfAll.exact_detect_ci_hi,
+                              3
+                            )
+                          : "N/A"}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtNum(rfGrad?.exact_detect_rate, 3)} /{" "}
+                        {fmtNum(rfRap?.exact_detect_rate, 3)}
+                      </td>
+                      <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
+                        {rfConf
+                          ? `${rfConf.win_gradual_to_sensor_fault} (${(
+                              rfConf.win_gradual_to_sensor_fault_rate * 100
+                            ).toFixed(1)}%)`
+                          : "N/A"}
+                      </td>
+                      <td className="px-3 py-2">
+                        {conv?.dir_convergence_residual_m_p50 != null
+                          ? `${conv.dir_convergence_residual_m_p50.toFixed(2)} m`
+                          : "N/A"}
+                      </td>
+                      <td className="px-3 py-2">
+                        {conv?.dir_convergence_weighted_cos_p50 != null
+                          ? conv.dir_convergence_weighted_cos_p50.toFixed(3)
+                          : "N/A"}
+                      </td>
+                      <td className="px-3 py-2">
+                        {conv?.dir_pairwise_cos_mean_p50 != null
+                          ? conv.dir_pairwise_cos_mean_p50.toFixed(3)
+                          : "N/A"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      {/* 3. Literature Checks (High Tilt B1 & Realistic Depth B2) inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          How do the models behave under literature high-tilt regimes (3–12°) and realistic overburden depths (H = 50–300 m)?
+        </summary>
+        <div className="mt-4 space-y-5">
+          <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+            {robustness.literature_checks.summary_note}
+          </p>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {/* High Tilt & Pooled Depth Detection + Confusions */}
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Arm</th>
+                    <th className="px-3 py-2">Model</th>
+                    <th className="px-3 py-2">All-Event Detect</th>
+                    <th className="px-3 py-2">Grad / Rapid Detect</th>
+                    <th className="px-3 py-2">Grad -&gt; SF Win</th>
+                    <th className="px-3 py-2">Grad -&gt; Rapid Win</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {[
+                    "gaussian_control",
+                    "high_tilt_3_6",
+                    "high_tilt_6_12",
+                    "depth_all_gt_1p5",
+                  ].flatMap((arm) =>
+                    ["random_forest", "threshold_rule", "logistic_regression"].map(
+                      (m) => {
+                        const dAll =
+                          robustness.literature_checks.detection_rates.find(
+                            (r) =>
+                              r.arm === arm &&
+                              r.model === m &&
+                              r.subset === "all_events"
+                          );
+                        const dGrad =
+                          robustness.literature_checks.detection_rates.find(
+                            (r) =>
+                              r.arm === arm &&
+                              r.model === m &&
+                              r.subset === "gradual"
+                          );
+                        const dRap =
+                          robustness.literature_checks.detection_rates.find(
+                            (r) =>
+                              r.arm === arm &&
+                              r.model === m &&
+                              r.subset === "rapid"
+                          );
+                        const cf =
+                          robustness.literature_checks.gradual_sensor_fault_confusion.find(
+                            (r) => r.arm === arm && r.model === m
+                          );
+                        return (
+                          <tr
+                            key={`${arm}-${m}`}
+                            className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                          >
+                            <td className="px-3 py-1.5 font-bold">{arm}</td>
+                            <td className="px-3 py-1.5 font-sans font-semibold">
+                              {MODEL_PLAIN_NAMES[m] || m}
+                            </td>
+                            <td className="px-3 py-1.5 font-bold text-[var(--brand-green)]">
+                              {fmtNum(dAll?.exact_detect_rate, 3)}
+                            </td>
+                            <td className="px-3 py-1.5">
+                              {fmtNum(dGrad?.exact_detect_rate, 2)} /{" "}
+                              {fmtNum(dRap?.exact_detect_rate, 2)}
+                            </td>
+                            <td className="px-3 py-1.5 text-[var(--status-danger)]">
+                              {cf
+                                ? `${cf.win_gradual_to_sensor_fault} (${(
+                                    cf.win_gradual_to_sensor_fault_rate * 100
+                                  ).toFixed(0)}%)`
+                                : "N/A"}
+                            </td>
+                            <td className="px-3 py-1.5">
+                              {cf ? cf.win_gradual_to_rapid : "N/A"}
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 12-Cell Realistic Depth Knothe Spread Grid */}
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Cell ID (PLACEHOLDER)</th>
+                    <th className="px-3 py-2">Depth H (m)</th>
+                    <th className="px-3 py-2">tan(beta)</th>
+                    <th className="px-3 py-2">Sigma (m)</th>
+                    <th className="px-3 py-2">Sigma / R_net</th>
+                    <th className="px-3 py-2">RF Detect</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {robustness.literature_checks.realistic_depth_sigma_grid.map(
+                    (cell) => {
+                      const rfCell =
                         robustness.literature_checks.detection_rates.find(
                           (r) =>
-                            r.arm === arm &&
-                            r.model === m &&
+                            r.arm === cell.cell_id &&
+                            r.model === "random_forest" &&
                             r.subset === "all_events"
-                        );
-                      const dGrad =
-                        robustness.literature_checks.detection_rates.find(
-                          (r) =>
-                            r.arm === arm &&
-                            r.model === m &&
-                            r.subset === "gradual"
-                        );
-                      const dRap =
-                        robustness.literature_checks.detection_rates.find(
-                          (r) =>
-                            r.arm === arm &&
-                            r.model === m &&
-                            r.subset === "rapid"
-                        );
-                      const cf =
-                        robustness.literature_checks.gradual_sensor_fault_confusion.find(
-                          (r) => r.arm === arm && r.model === m
                         );
                       return (
                         <tr
-                          key={`${arm}-${m}`}
+                          key={cell.cell_id}
                           className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
                         >
-                          <td className="px-3 py-1.5 font-bold">{arm}</td>
-                          <td className="px-3 py-1.5 font-sans font-semibold">
-                            {MODEL_PLAIN_NAMES[m] || m}
+                          <td className="px-3 py-1.5 font-bold">
+                            {cell.cell_id}
                           </td>
-                          <td className="px-3 py-1.5 font-bold text-[var(--brand-green)]">
-                            {fmtNum(dAll?.exact_detect_rate, 3)}
-                          </td>
+                          <td className="px-3 py-1.5">{cell.H_m}</td>
+                          <td className="px-3 py-1.5">{cell.tan_beta}</td>
                           <td className="px-3 py-1.5">
-                            {fmtNum(dGrad?.exact_detect_rate, 2)} /{" "}
-                            {fmtNum(dRap?.exact_detect_rate, 2)}
+                            {cell.sigma_m.toFixed(2)}
                           </td>
-                          <td className="px-3 py-1.5 text-[var(--status-danger)]">
-                            {cf
-                              ? `${cf.win_gradual_to_sensor_fault} (${(
-                                  cf.win_gradual_to_sensor_fault_rate * 100
-                                ).toFixed(0)}%)`
-                              : "N/A"}
+                          <td className="px-3 py-1.5 font-semibold">
+                            {cell.sigma_radii.toFixed(2)} R
                           </td>
-                          <td className="px-3 py-1.5">
-                            {cf ? cf.win_gradual_to_rapid : "N/A"}
+                          <td className="px-3 py-1.5 text-[var(--brand-green)] font-bold">
+                            {rfCell
+                              ? fmtNum(rfCell.exact_detect_rate, 2)
+                              : "<= 1.5R (in main range)"}
                           </td>
                         </tr>
                       );
                     }
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* 12-Cell Realistic Depth Knothe Spread Grid */}
-          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Cell ID (PLACEHOLDER)</th>
-                  <th className="px-3 py-2">Depth H (m)</th>
-                  <th className="px-3 py-2">tan(beta)</th>
-                  <th className="px-3 py-2">Sigma (m)</th>
-                  <th className="px-3 py-2">Sigma / R_net</th>
-                  <th className="px-3 py-2">RF Detect</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {robustness.literature_checks.realistic_depth_sigma_grid.map(
-                  (cell) => {
-                    const rfCell =
-                      robustness.literature_checks.detection_rates.find(
-                        (r) =>
-                          r.arm === cell.cell_id &&
-                          r.model === "random_forest" &&
-                          r.subset === "all_events"
-                      );
-                    return (
-                      <tr
-                        key={cell.cell_id}
-                        className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                      >
-                        <td className="px-3 py-1.5 font-bold">
-                          {cell.cell_id}
-                        </td>
-                        <td className="px-3 py-1.5">{cell.H_m}</td>
-                        <td className="px-3 py-1.5">{cell.tan_beta}</td>
-                        <td className="px-3 py-1.5">
-                          {cell.sigma_m.toFixed(2)}
-                        </td>
-                        <td className="px-3 py-1.5 font-semibold">
-                          {cell.sigma_radii.toFixed(2)} R
-                        </td>
-                        <td className="px-3 py-1.5 text-[var(--brand-green)] font-bold">
-                          {rfCell
-                            ? fmtNum(rfCell.exact_detect_rate, 2)
-                            : "<= 1.5R (in main range)"}
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </section>
+      </details>
 
-      {/* 4. Timescale Audit */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-        <div>
-          <p className="eyebrow">4. Timescale Compression Audit</p>
-          <h2 className="section-title mt-1">
-            Implied Tilt Rates at 360× (&ldquo;24 h / run&rdquo;) vs. 30-Day
-            Longwall Order of Magnitude (~0.1°/day)
-          </h2>
-          <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
+      {/* 4. Timescale Audit inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          What does the 360× time-compression placeholder imply for physical tilt rates and slow-process false-alarm rates?
+        </summary>
+        <div className="mt-4 space-y-4">
+          <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
             {robustness.timescale_audit.summary_note}
           </p>
-        </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Subset</th>
-                  <th className="px-3 py-2">Gradual Runs</th>
-                  <th className="px-3 py-2">&gt; 0.1 deg/day</th>
-                  <th className="px-3 py-2">Implied Rate p50 (deg/day)</th>
-                  <th className="px-3 py-2">Speedup vs 0.1 deg/day (p50)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {robustness.timescale_audit.gradual_rate_summary.map((row) => (
-                  <tr
-                    key={row.subset}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{row.subset}</td>
-                    <td className="px-3 py-2">{row.n_gradual_runs}</td>
-                    <td className="px-3 py-2 text-[var(--status-danger)] font-bold">
-                      {row.n_faster_than_0p1_deg_per_day} / {row.n_gradual_runs}{" "}
-                      ({(row.frac_faster_than_0p1_deg_per_day * 100).toFixed(1)}
-                      %)
-                    </td>
-                    <td className="px-3 py-2">
-                      {row.rate_deg_per_day_p50_median.toFixed(3)}
-                    </td>
-                    <td className="px-3 py-2 font-semibold">
-                      {row.factor_vs_0p1_p50_median.toFixed(2)}×
-                    </td>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Subset</th>
+                    <th className="px-3 py-2">Gradual Runs</th>
+                    <th className="px-3 py-2">&gt; 0.1 deg/day</th>
+                    <th className="px-3 py-2">Implied Rate p50 (deg/day)</th>
+                    <th className="px-3 py-2">Speedup vs 0.1 deg/day (p50)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-                <tr>
-                  <th className="px-3 py-2">Model (Regime)</th>
-                  <th className="px-3 py-2 text-[var(--status-danger)]">
-                    Def B (1x Sensor)
-                  </th>
-                  <th className="px-3 py-2">Def A (360x, 24h)</th>
-                  <th className="px-3 py-2">Alt A (10,800x = 30d)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--table-border)] font-mono">
-                {robustness.timescale_audit.false_alarms_under_alt_compression
-                  .filter((r) => r.regime !== "raw (k=1)")
-                  .map((r) => (
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {robustness.timescale_audit.gradual_rate_summary.map((row) => (
                     <tr
-                      key={`${r.model}-${r.regime}`}
+                      key={row.subset}
                       className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
                     >
-                      <td className="px-3 py-2 font-sans font-semibold">
-                        {MODEL_PLAIN_NAMES[r.model] || r.model} ({r.regime})
+                      <td className="px-3 py-2 font-bold">{row.subset}</td>
+                      <td className="px-3 py-2">{row.n_gradual_runs}</td>
+                      <td className="px-3 py-2 text-[var(--status-danger)] font-bold">
+                        {row.n_faster_than_0p1_deg_per_day} / {row.n_gradual_runs}{" "}
+                        ({(row.frac_faster_than_0p1_deg_per_day * 100).toFixed(1)}
+                        %)
+                      </td>
+                      <td className="px-3 py-2">
+                        {row.rate_deg_per_day_p50_median.toFixed(3)}
+                      </td>
+                      <td className="px-3 py-2 font-semibold">
+                        {row.factor_vs_0p1_p50_median.toFixed(2)}×
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                  <tr>
+                    <th className="px-3 py-2">Model (Regime)</th>
+                    <th className="px-3 py-2 text-[var(--status-danger)]">
+                      Def B (1x Sensor)
+                    </th>
+                    <th className="px-3 py-2">Def A (360x, 24h)</th>
+                    <th className="px-3 py-2">Alt A (10,800x = 30d)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                  {robustness.timescale_audit.false_alarms_under_alt_compression
+                    .filter((r) => r.regime !== "raw (k=1)")
+                    .map((r) => (
+                      <tr
+                        key={`${r.model}-${r.regime}`}
+                        className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                      >
+                        <td className="px-3 py-2 font-sans font-semibold">
+                          {MODEL_PLAIN_NAMES[r.model] || r.model} ({r.regime})
+                        </td>
+                        <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
+                          {r.B_sensor_fa_per_hour_1x.toFixed(2)}/h (
+                          {r.B_sensor_one_fa_every})
+                        </td>
+                        <td className="px-3 py-2">
+                          {r.A_slow_fa_per_hour_360x.toFixed(4)}/h (
+                          {r.A_slow_one_fa_every_360x})
+                        </td>
+                        <td className="px-3 py-2">
+                          {r.A_slow_fa_per_hour_10800x.toFixed(6)}/h (
+                          {r.A_slow_one_fa_every_10800x})
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      {/* 5. Unsupervised Unknown-Detector Complement Table (Marked ADVISORY) inside details */}
+      <details className="panel-surface rounded-2xl border-2 border-[var(--status-warning-border)] p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          Can an advisory unsupervised &ldquo;unknown_anomaly&rdquo; detector catch out-of-distribution runs missed by the classifier, and how many extra false alarms does it add?
+        </summary>
+        <div className="mt-4 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--status-warning-bg)] px-3 py-0.5 font-mono text-xs font-bold text-[var(--status-warning)]">
+              ADVISORY SIDE-STUDY · NOT A VALIDATED HAZARD DETECTOR
+            </span>
+          </div>
+
+          <p className="rounded-lg border border-[var(--status-warning-border)] bg-[var(--status-warning-bg)] p-3 text-xs text-[var(--text-primary)]">
+            {robustness.unknown_detector_complement.advisory_banner}
+          </p>
+
+          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3 py-2">Split / Arm</th>
+                  <th className="px-3 py-2">Classifier + Detector</th>
+                  <th className="px-3 py-2">Clf Exact Detect</th>
+                  <th className="px-3 py-2">Missed Runs Flagged by Det</th>
+                  <th className="px-3 py-2">Rule 1 (Clf OR Det) Detect</th>
+                  <th className="px-3 py-2">Rule 2 (Clf OR Gated) Detect</th>
+                  <th className="px-3 py-2 text-[var(--status-danger)]">
+                    Extra FA / Run (OR / Gated)
+                  </th>
+                  <th className="px-3 py-2 text-[var(--status-danger)]">
+                    Def B Extra Sensor FA/h (OR / Gated)
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)] font-mono">
+                {robustness.unknown_detector_complement.complement_table
+                  .filter((r) => r.classifier === "random_forest")
+                  .map((r) => (
+                    <tr
+                      key={`${r.split_or_arm}-${r.classifier}-${r.detector}`}
+                      className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                    >
+                      <td className="px-3 py-2 font-bold">{r.split_or_arm}</td>
+                      <td className="px-3 py-2">
+                        {r.classifier} + {r.detector}
+                      </td>
+                      <td className="px-3 py-2">
+                        {r.clf_exact_detect_rate.toFixed(3)}
+                      </td>
+                      <td className="px-3 py-2 font-bold text-[var(--brand-teal)]">
+                        {r.n_missed_flagged_by_det} / {r.n_clf_exact_missed} (
+                        {r.frac_of_clf_exact_missed_flagged_by_det !== null
+                          ? `${(
+                              r.frac_of_clf_exact_missed_flagged_by_det * 100
+                            ).toFixed(1)}%`
+                          : "N/A"}
+                        )
+                      </td>
+                      <td className="px-3 py-2 font-bold text-[var(--brand-green)]">
+                        {fmtCi(
+                          r.combined_or_detect_rate,
+                          r.combined_or_detect_ci_lo,
+                          r.combined_or_detect_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {fmtCi(
+                          r.gated_unknown_detect_rate,
+                          r.gated_unknown_detect_ci_lo,
+                          r.gated_unknown_detect_ci_hi,
+                          3
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-[var(--status-danger)]">
+                        {r.extra_fa_per_normal_run_or !== null
+                          ? `+${r.extra_fa_per_normal_run_or.toFixed(
+                              2
+                            )} / +${r.extra_fa_per_normal_run_gated?.toFixed(2)}`
+                          : "N/A"}
                       </td>
                       <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
-                        {r.B_sensor_fa_per_hour_1x.toFixed(2)}/h (
-                        {r.B_sensor_one_fa_every})
-                      </td>
-                      <td className="px-3 py-2">
-                        {r.A_slow_fa_per_hour_360x.toFixed(4)}/h (
-                        {r.A_slow_one_fa_every_360x})
-                      </td>
-                      <td className="px-3 py-2">
-                        {r.A_slow_fa_per_hour_10800x.toFixed(6)}/h (
-                        {r.A_slow_one_fa_every_10800x})
+                        {r.extra_B_sensor_fa_per_hour_or !== null
+                          ? `+${r.extra_B_sensor_fa_per_hour_or.toFixed(
+                              1
+                            )} / +${r.extra_B_sensor_fa_per_hour_gated?.toFixed(
+                              1
+                            )} /h`
+                          : "N/A"}
                       </td>
                     </tr>
                   ))}
@@ -2457,106 +2747,7 @@ function RobustnessSection({
             </table>
           </div>
         </div>
-      </section>
-
-      {/* 5. Unsupervised Unknown-Detector Complement Table (Marked ADVISORY) */}
-      <section className="panel-surface rounded-2xl border-2 border-[var(--status-warning-border)] p-5 sm:p-6 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--status-warning-bg)] px-3 py-0.5 font-mono text-xs font-bold text-[var(--status-warning)]">
-              ADVISORY SIDE-STUDY · NOT A VALIDATED HAZARD DETECTOR
-            </span>
-            <h2 className="section-title mt-2">
-              5. Unsupervised &ldquo;Unknown Anomaly&rdquo; Detector Complement
-              Table
-            </h2>
-          </div>
-        </div>
-
-        <p className="rounded-lg border border-[var(--status-warning-border)] bg-[var(--status-warning-bg)] p-3 text-xs text-[var(--text-primary)]">
-          {robustness.unknown_detector_complement.advisory_banner}
-        </p>
-
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3 py-2">Split / Arm</th>
-                <th className="px-3 py-2">Classifier + Detector</th>
-                <th className="px-3 py-2">Clf Exact Detect</th>
-                <th className="px-3 py-2">Missed Runs Flagged by Det</th>
-                <th className="px-3 py-2">Rule 1 (Clf OR Det) Detect</th>
-                <th className="px-3 py-2">Rule 2 (Clf OR Gated) Detect</th>
-                <th className="px-3 py-2 text-[var(--status-danger)]">
-                  Extra FA / Run (OR / Gated)
-                </th>
-                <th className="px-3 py-2 text-[var(--status-danger)]">
-                  Def B Extra Sensor FA/h (OR / Gated)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)] font-mono">
-              {robustness.unknown_detector_complement.complement_table
-                .filter((r) => r.classifier === "random_forest")
-                .map((r) => (
-                  <tr
-                    key={`${r.split_or_arm}-${r.classifier}-${r.detector}`}
-                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                  >
-                    <td className="px-3 py-2 font-bold">{r.split_or_arm}</td>
-                    <td className="px-3 py-2">
-                      {r.classifier} + {r.detector}
-                    </td>
-                    <td className="px-3 py-2">
-                      {r.clf_exact_detect_rate.toFixed(3)}
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--brand-teal)]">
-                      {r.n_missed_flagged_by_det} / {r.n_clf_exact_missed} (
-                      {r.frac_of_clf_exact_missed_flagged_by_det !== null
-                        ? `${(
-                            r.frac_of_clf_exact_missed_flagged_by_det * 100
-                          ).toFixed(1)}%`
-                        : "N/A"}
-                      )
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--brand-green)]">
-                      {fmtCi(
-                        r.combined_or_detect_rate,
-                        r.combined_or_detect_ci_lo,
-                        r.combined_or_detect_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2">
-                      {fmtCi(
-                        r.gated_unknown_detect_rate,
-                        r.gated_unknown_detect_ci_lo,
-                        r.gated_unknown_detect_ci_hi,
-                        3
-                      )}
-                    </td>
-                    <td className="px-3 py-2 text-[var(--status-danger)]">
-                      {r.extra_fa_per_normal_run_or !== null
-                        ? `+${r.extra_fa_per_normal_run_or.toFixed(
-                            2
-                          )} / +${r.extra_fa_per_normal_run_gated?.toFixed(2)}`
-                        : "N/A"}
-                    </td>
-                    <td className="px-3 py-2 font-bold text-[var(--status-danger)]">
-                      {r.extra_B_sensor_fa_per_hour_or !== null
-                        ? `+${r.extra_B_sensor_fa_per_hour_or.toFixed(
-                            1
-                          )} / +${r.extra_B_sensor_fa_per_hour_gated?.toFixed(
-                            1
-                          )} /h`
-                        : "N/A"}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      </details>
     </div>
   );
 }
@@ -2641,6 +2832,18 @@ function ReplaySection({
 
   return (
     <div className="space-y-8">
+      {/* Start here guidance line */}
+      <p
+        data-testid="start-here-replay"
+        className="rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)]"
+      >
+        <strong className="font-bold text-[var(--brand-green)]">
+          Start here:
+        </strong>{" "}
+        Pick one of the 6 scenario classes, scrub or play the 95-window timeline
+        ribbon, and read the advisory explanation card for the selected window.
+      </p>
+
       {/* Run Selector & Fixed Rule Documentation */}
       <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -3180,7 +3383,7 @@ function ReplaySection({
         </div>
       </section>
 
-      {/* Multi-Node Recharts Timelines (Tilt, Piezo, LiDAR, Comm + Model Score) */}
+      {/* Multi-Node Recharts Timelines (Primary Tilt & Model Score charts visible; secondary Piezo, LiDAR & Single-Node charts inside details) */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Chart 1: Per-Node Mean Tilt vs Time */}
         <div className="panel-surface rounded-2xl p-4 sm:p-5">
@@ -3264,167 +3467,14 @@ function ReplaySection({
           </div>
         </div>
 
-        {/* Chart 2: Piezo RMS vs Time */}
-        <div className="panel-surface rounded-2xl p-4 sm:p-5">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-bold text-[var(--text-primary)]">
-              Piezo RMS Acoustic Energy vs. Time (V)
-            </h3>
-            <span className="font-mono text-xs text-[var(--text-muted)]">
-              Network Mean & Per-Node
-            </span>
-          </div>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartSeries}>
-                <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-                <XAxis
-                  dataKey="t_mid"
-                  type="number"
-                  domain={[0, 240]}
-                  ticks={[0, 60, 120, 180, 240]}
-                  unit=" s"
-                  tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
-                />
-                <YAxis tick={{ fontSize: 11, fill: "var(--chart-labels)" }} />
-                <ReferenceLine
-                  y={0.028}
-                  stroke="var(--status-warning)"
-                  strokeDasharray="3 3"
-                  label={{
-                    value: "Piezo Th (0.028)",
-                    fill: "var(--status-warning)",
-                    fontSize: 10,
-                  }}
-                />
-                <ReferenceLine
-                  x={currentWin.t_mid}
-                  stroke="var(--status-danger)"
-                  strokeWidth={1.5}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--chart-tooltip-bg)",
-                    borderColor: "var(--chart-tooltip-border)",
-                    color: "var(--chart-tooltip-text)",
-                  }}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="piezo_net"
-                  name="Network Mean Piezo RMS"
-                  stroke="var(--status-danger)"
-                  dot={false}
-                  strokeWidth={2.5}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_01_piezo"
-                  stroke="var(--chart-series-1)"
-                  dot={false}
-                  strokeWidth={1.5}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_02_piezo"
-                  stroke="var(--chart-series-3)"
-                  dot={false}
-                  strokeWidth={1.5}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Chart 3: LiDAR Hub Range Change vs Time */}
-        <div className="panel-surface rounded-2xl p-4 sm:p-5">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-bold text-[var(--text-primary)]">
-              LiDAR Hub Range Change vs. Time (m)
-            </h3>
-            <span className="font-mono text-xs text-[var(--text-muted)]">
-              4 Corner Targets + Hub Common Mode
-            </span>
-          </div>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartSeries}>
-                <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-                <XAxis
-                  dataKey="t_mid"
-                  type="number"
-                  domain={[0, 240]}
-                  ticks={[0, 60, 120, 180, 240]}
-                  unit=" s"
-                  tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
-                />
-                <YAxis
-                  tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
-                  unit="m"
-                />
-                <ReferenceLine
-                  x={currentWin.t_mid}
-                  stroke="var(--status-danger)"
-                  strokeWidth={1.5}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--chart-tooltip-bg)",
-                    borderColor: "var(--chart-tooltip-border)",
-                    color: "var(--chart-tooltip-text)",
-                  }}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_01_lidar"
-                  stroke="var(--chart-series-1)"
-                  dot={false}
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_02_lidar"
-                  stroke="var(--chart-series-2)"
-                  dot={false}
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_03_lidar"
-                  stroke="var(--chart-series-3)"
-                  dot={false}
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="NODE_04_lidar"
-                  stroke="var(--chart-series-4)"
-                  dot={false}
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="hub_common_mode"
-                  stroke="var(--chart-series-5)"
-                  strokeDasharray="4 4"
-                  dot={false}
-                  strokeWidth={1.8}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
         {/* Chart 4: Frozen RF model_score & Comm Missing Fraction vs Time */}
         <div className="panel-surface rounded-2xl p-4 sm:p-5">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-sm font-bold text-[var(--text-primary)]">
-              Frozen RF model_score & Comm Missing Fraction vs. Time
+              Frozen RF model_score &amp; Comm Missing Fraction vs. Time
             </h3>
             <span className="font-mono text-xs text-[var(--text-muted)]">
-              model_score (0–1) & Packet Loss
+              model_score (0–1) &amp; Packet Loss
             </span>
           </div>
           <div className="h-64 w-full">
@@ -3486,58 +3536,228 @@ function ReplaySection({
         </div>
       </section>
 
-      {/* Reused TrendChart Component Section for Single-Node Inspection */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <Sliders className="h-4 w-4 text-[var(--brand-teal)]" />
-            <h3 className="subsection-title">
-              Single-Node Inspection (Up to Current Playback Window, simulated seconds)
-            </h3>
+      {/* Secondary Charts: Piezo RMS and LiDAR Hub Range Change collapsed inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          How do piezo acoustic vibration energy (V) and LiDAR hub range change (m) evolve over the 240 s run?
+        </summary>
+        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Chart 2: Piezo RMS vs Time */}
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">
+                Piezo RMS Acoustic Energy vs. Time (V)
+              </h3>
+              <span className="font-mono text-xs text-[var(--text-muted)]">
+                Network Mean &amp; Per-Node
+              </span>
+            </div>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartSeries}>
+                  <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                  <XAxis
+                    dataKey="t_mid"
+                    type="number"
+                    domain={[0, 240]}
+                    ticks={[0, 60, 120, 180, 240]}
+                    unit=" s"
+                    tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
+                  />
+                  <YAxis tick={{ fontSize: 11, fill: "var(--chart-labels)" }} />
+                  <ReferenceLine
+                    y={0.028}
+                    stroke="var(--status-warning)"
+                    strokeDasharray="3 3"
+                    label={{
+                      value: "Piezo Th (0.028)",
+                      fill: "var(--status-warning)",
+                      fontSize: 10,
+                    }}
+                  />
+                  <ReferenceLine
+                    x={currentWin.t_mid}
+                    stroke="var(--status-danger)"
+                    strokeWidth={1.5}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "var(--chart-tooltip-bg)",
+                      borderColor: "var(--chart-tooltip-border)",
+                      color: "var(--chart-tooltip-text)",
+                    }}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="piezo_net"
+                    name="Network Mean Piezo RMS"
+                    stroke="var(--status-danger)"
+                    dot={false}
+                    strokeWidth={2.5}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_01_piezo"
+                    stroke="var(--chart-series-1)"
+                    dot={false}
+                    strokeWidth={1.5}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_02_piezo"
+                    stroke="var(--chart-series-3)"
+                    dot={false}
+                    strokeWidth={1.5}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            {(["NODE_01", "NODE_02", "NODE_03", "NODE_04"] as const).map(
-              (nd) => (
-                <button
-                  key={nd}
-                  type="button"
-                  onClick={() => onSelectTrendNode(nd)}
-                  className={`rounded px-3 py-1 font-mono text-xs font-bold ${
-                    selectedTrendNode === nd
-                      ? "bg-[var(--brand-green)] text-white"
-                      : "bg-[var(--surface-alt)] text-[var(--text-secondary)]"
-                  }`}
-                >
-                  {nd}
-                </button>
-              )
-            )}
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <SimTrendChart
-            data={trendChartHistory.map((p) => ({ t: p.t, value: p.tilt }))}
-            label={`${selectedTrendNode} Mean Tilt (°)`}
-            unit="°"
-            color="var(--chart-series-3)"
-            reference={{ y: 0.607, label: "Sim basin threshold 0.607°" }}
-          />
-          <SimTrendChart
-            data={trendChartHistory.map((p) => ({ t: p.t, value: p.piezo }))}
-            label={`${selectedTrendNode} Piezo RMS (V)`}
-            unit="V"
-            color="var(--chart-series-5)"
-            reference={{ y: 0.028, label: "Sim piezo threshold 0.028 V" }}
-          />
-          <SimTrendChart
-            data={trendChartHistory.map((p) => ({ t: p.t, value: p.lidarCm }))}
-            label={`${selectedTrendNode} LiDAR Range Change (cm)`}
-            unit="cm"
-            color="var(--chart-series-1)"
-          />
+          {/* Chart 3: LiDAR Hub Range Change vs Time */}
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-alt)] p-4">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">
+                LiDAR Hub Range Change vs. Time (m)
+              </h3>
+              <span className="font-mono text-xs text-[var(--text-muted)]">
+                4 Corner Targets + Hub Common Mode
+              </span>
+            </div>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartSeries}>
+                  <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                  <XAxis
+                    dataKey="t_mid"
+                    type="number"
+                    domain={[0, 240]}
+                    ticks={[0, 60, 120, 180, 240]}
+                    unit=" s"
+                    tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 11, fill: "var(--chart-labels)" }}
+                    unit="m"
+                  />
+                  <ReferenceLine
+                    x={currentWin.t_mid}
+                    stroke="var(--status-danger)"
+                    strokeWidth={1.5}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "var(--chart-tooltip-bg)",
+                      borderColor: "var(--chart-tooltip-border)",
+                      color: "var(--chart-tooltip-text)",
+                    }}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_01_lidar"
+                    stroke="var(--chart-series-1)"
+                    dot={false}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_02_lidar"
+                    stroke="var(--chart-series-2)"
+                    dot={false}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_03_lidar"
+                    stroke="var(--chart-series-3)"
+                    dot={false}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="NODE_04_lidar"
+                    stroke="var(--chart-series-4)"
+                    dot={false}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="hub_common_mode"
+                    stroke="var(--chart-series-5)"
+                    strokeDasharray="4 4"
+                    dot={false}
+                    strokeWidth={1.8}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
-      </section>
+      </details>
+
+      {/* Single-Node Inspection Secondary Charts inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          What do the cumulative single-node tilt, piezo, and LiDAR traces look like up to the current playback window?
+        </summary>
+        <div className="mt-4 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Sliders className="h-4 w-4 text-[var(--brand-teal)]" />
+              <h3 className="subsection-title">
+                Single-Node Inspection (Up to Current Playback Window, simulated
+                seconds)
+              </h3>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {(["NODE_01", "NODE_02", "NODE_03", "NODE_04"] as const).map(
+                (nd) => (
+                  <button
+                    key={nd}
+                    type="button"
+                    onClick={() => onSelectTrendNode(nd)}
+                    className={`rounded px-3 py-1 font-mono text-xs font-bold ${
+                      selectedTrendNode === nd
+                        ? "bg-[var(--brand-green)] text-white"
+                        : "bg-[var(--surface-alt)] text-[var(--text-secondary)]"
+                    }`}
+                  >
+                    {nd}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <SimTrendChart
+              data={trendChartHistory.map((p) => ({ t: p.t, value: p.tilt }))}
+              label={`${selectedTrendNode} Mean Tilt (°)`}
+              unit="°"
+              color="var(--chart-series-3)"
+              reference={{ y: 0.607, label: "Sim basin threshold 0.607°" }}
+            />
+            <SimTrendChart
+              data={trendChartHistory.map((p) => ({ t: p.t, value: p.piezo }))}
+              label={`${selectedTrendNode} Piezo RMS (V)`}
+              unit="V"
+              color="var(--chart-series-5)"
+              reference={{ y: 0.028, label: "Sim piezo threshold 0.028 V" }}
+            />
+            <SimTrendChart
+              data={trendChartHistory.map((p) => ({
+                t: p.t,
+                value: p.lidarCm,
+              }))}
+              label={`${selectedTrendNode} LiDAR Range Change (cm)`}
+              unit="cm"
+              color="var(--chart-series-1)"
+            />
+          </div>
+        </div>
+      </details>
     </div>
   );
 }
@@ -3548,77 +3768,24 @@ function ReplaySection({
 function ParametersSection({ parameters }: { parameters: SimParametersData }) {
   return (
     <div className="space-y-8">
-      {/* Literature Basis Table with PLACEHOLDER tags */}
-      <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <p className="eyebrow">
-              Literature Provenance ({parameters.source_file})
-            </p>
-            <h2 className="section-title mt-1">
-              Parameter Ranges, Literature Basis & PLACEHOLDER Audit
-            </h2>
-          </div>
-          <span className="rounded-full bg-[var(--status-warning-bg)] px-3 py-1 font-mono text-xs font-bold text-[var(--status-warning)]">
-            All Unsourced Values Explicitly Tagged PLACEHOLDER
-          </span>
-        </div>
+      {/* Start here guidance line */}
+      <p
+        data-testid="start-here-parameters"
+        className="rounded-lg border border-[var(--border)] bg-[var(--surface-alt)] px-4 py-2.5 text-xs font-medium text-[var(--text-primary)]"
+      >
+        <strong className="font-bold text-[var(--brand-green)]">
+          Start here:
+        </strong>{" "}
+        Review the 6 unsourced parameter cards that must be calibrated before
+        field use, then expand the full literature provenance table below.
+      </p>
 
-        <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
-              <tr>
-                <th className="px-3.5 py-3">Parameter / Topic</th>
-                <th className="px-3.5 py-3">Status Tag</th>
-                <th className="px-3.5 py-3">Simulator Setting & Status</th>
-                <th className="px-3.5 py-3">
-                  Literature Basis & Cited Sources
-                </th>
-                <th className="px-3.5 py-3">Assessment / Scope Note</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--table-border)]">
-              {parameters.literature_table.map((row) => (
-                <tr
-                  key={row.parameter_or_topic}
-                  className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
-                >
-                  <td className="px-3.5 py-3 font-bold text-[var(--text-primary)]">
-                    {row.parameter_or_topic}
-                  </td>
-                  <td className="px-3.5 py-3">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[0.68rem] font-bold ${
-                        row.is_placeholder
-                          ? "bg-[var(--status-warning-bg)] text-[var(--status-warning)] border border-[var(--status-warning-border)]"
-                          : "bg-[var(--status-success-bg)] text-[var(--status-success)] border border-[var(--status-success-border)]"
-                      }`}
-                    >
-                      {row.status_tag}
-                    </span>
-                  </td>
-                  <td className="px-3.5 py-3 font-mono text-[var(--text-primary)]">
-                    {row.simulator_setting_and_status}
-                  </td>
-                  <td className="px-3.5 py-3 leading-relaxed text-[var(--text-secondary)]">
-                    {row.literature_basis_and_sources}
-                  </td>
-                  <td className="px-3.5 py-3 leading-relaxed text-[var(--text-secondary)]">
-                    {row.assessment_or_scope_note}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* What Is Unsourced List */}
+      {/* What Is Unsourced List (Visible cards) */}
       <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-4">
         <div className="flex items-center gap-2">
           <Layers className="h-5 w-5 text-[var(--status-warning)]" />
           <div>
-            <p className="eyebrow">Unsourced Items & Literature Leads</p>
+            <p className="eyebrow">Unsourced Items &amp; Literature Leads</p>
             <h2 className="subsection-title">
               Parameters That Must Be Sourced Before Claiming Site Calibration
             </h2>
@@ -3649,6 +3816,68 @@ function ParametersSection({ parameters }: { parameters: SimParametersData }) {
           ))}
         </div>
       </section>
+
+      {/* Literature Basis Table with PLACEHOLDER tags collapsed inside details */}
+      <details className="panel-surface rounded-2xl p-5 sm:p-6">
+        <summary className="cursor-pointer font-mono text-xs font-bold text-[var(--text-primary)]">
+          Which simulator parameter ranges have cited longwall literature sources versus PLACEHOLDER status ({parameters.source_file})?
+        </summary>
+        <div className="mt-4 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="rounded-full bg-[var(--status-warning-bg)] px-3 py-1 font-mono text-xs font-bold text-[var(--status-warning)]">
+              All Unsourced Values Explicitly Tagged PLACEHOLDER
+            </span>
+          </div>
+
+          <div className="overflow-x-auto rounded-xl border border-[var(--table-border)]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[var(--table-header-bg)] font-mono text-[0.7rem] uppercase text-[var(--table-header-text)]">
+                <tr>
+                  <th className="px-3.5 py-3">Parameter / Topic</th>
+                  <th className="px-3.5 py-3">Status Tag</th>
+                  <th className="px-3.5 py-3">Simulator Setting &amp; Status</th>
+                  <th className="px-3.5 py-3">
+                    Literature Basis &amp; Cited Sources
+                  </th>
+                  <th className="px-3.5 py-3">Assessment / Scope Note</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--table-border)]">
+                {parameters.literature_table.map((row) => (
+                  <tr
+                    key={row.parameter_or_topic}
+                    className="bg-[var(--table-row-bg)] hover:bg-[var(--surface-alt)]"
+                  >
+                    <td className="px-3.5 py-3 font-bold text-[var(--text-primary)]">
+                      {row.parameter_or_topic}
+                    </td>
+                    <td className="px-3.5 py-3">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[0.68rem] font-bold ${
+                          row.is_placeholder
+                            ? "bg-[var(--status-warning-bg)] text-[var(--status-warning)] border border-[var(--status-warning-border)]"
+                            : "bg-[var(--status-success-bg)] text-[var(--status-success)] border border-[var(--status-success-border)]"
+                        }`}
+                      >
+                        {row.status_tag}
+                      </span>
+                    </td>
+                    <td className="px-3.5 py-3 font-mono text-[var(--text-primary)]">
+                      {row.simulator_setting_and_status}
+                    </td>
+                    <td className="px-3.5 py-3 leading-relaxed text-[var(--text-secondary)]">
+                      {row.literature_basis_and_sources}
+                    </td>
+                    <td className="px-3.5 py-3 leading-relaxed text-[var(--text-secondary)]">
+                      {row.assessment_or_scope_note}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
 
       {/* Timescale Note */}
       <section className="panel-surface rounded-2xl p-5 sm:p-6 space-y-2">

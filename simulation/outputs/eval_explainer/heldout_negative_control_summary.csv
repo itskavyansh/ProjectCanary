@@ -1,0 +1,9 @@
+corruption_type,n,metric_type,guard_v2_rate,guard_v2_ci95_lo,guard_v2_ci95_hi,guard_v2_exact_ci95_lo,guard_v2_exact_ci95_hi,guard_v2_rule_of_three_hi,guard_v2_count,judge_rate,judge_ci95_lo,judge_ci95_hi,judge_exact_ci95_lo,judge_exact_ci95_hi,judge_rule_of_three_hi,judge_count
+i_trend_metaphor_unlisted,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,1.0,1.0,1.0,0.5407,1.0,,6/6
+ii_wrong_sensor_family,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,1.0,1.0,1.0,0.5407,1.0,,6/6
+iii_cross_sentence_node_number,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,1.0,1.0,1.0,0.5407,1.0,,6/6
+iv_hedge_removed_certainty,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,1.0,1.0,1.0,0.5407,1.0,,6/6
+v_invented_number_as_words,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,1.0,1.0,1.0,0.5407,1.0,,6/6
+vi_contradictory_suggested_check,6,catch_rate,0.0,0.0,0.0,0.0,0.4593,0.5,0/6,0.8333,0.5,1.0,0.3588,0.9958,,5/6
+ALL_HELDOUT_CORRUPTED_COMBINED,36,catch_rate,0.0,0.0,0.0,0.0,0.0974,0.0833,0/36,0.9722,0.9167,1.0,0.8547,0.9993,,35/36
+UNTOUCHED_FALSE_POSITIVE_RATE,42,false_positive_rate,0.0,0.0,0.0,0.0,0.0841,0.0714,0/42,0.0,0.0,0.0,0.0,0.0841,0.0714,0/42

@@ -25,6 +25,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from canary_sim.explainer import (  # noqa: E402
     AdvisoryExplainer,
@@ -506,4 +507,48 @@ def test_primary_cache_not_mutated_by_spot_check_or_negative_control() -> None:
         data = json.loads(raw_text)
         g_res = guard_v2.check({"summary": data["summary"], "suggested_check": data["suggested_check"]}, pkt)
         assert g_res.passed, f"Cached explanation for {pkt.window_id} failed Guard v2: {g_res.reasons}"
+
+
+def test_clopper_pearson_and_heldout_negative_control_builders() -> None:
+    """Verify exact Clopper-Pearson intervals, rule-of-three upper bounds, and that the 6 held-out
+    corruption types (i..vi) slip past frozen Guard v2 as pre-registered."""
+    import run_explainer_eval as REE  # noqa: E402
+
+    assert REE.clopper_pearson_ci95(0, 150) == (0.0, 0.0243)
+    assert REE.clopper_pearson_ci95(150, 150) == (0.9757, 1.0)
+    assert REE.clopper_pearson_ci95(0, 6) == (0.0, 0.4593)
+    assert REE.clopper_pearson_ci95(6, 6) == (0.5407, 1.0)
+    assert REE.clopper_pearson_ci95(0, 36) == (0.0, 0.0974)
+    assert REE.clopper_pearson_ci95(0, 42) == (0.0, 0.0841)
+    assert REE.rule_of_three_upper_bound(0, 150) == 0.02
+    assert REE.rule_of_three_upper_bound(0, 42) == 0.0714
+    assert REE.rule_of_three_upper_bound(2, 150) is None
+
+    sample_path = ROOT / "outputs" / "explainer_sample" / "packets.json"
+    cache_dir = ROOT / "outputs" / "eval_explainer" / "cache"
+    assert sample_path.is_file() and cache_dir.is_dir()
+    sample_pkts = load_packets_from_sample_json(sample_path)
+    guard_v2 = ExplanationGuard(enable_label_binding=True, enable_trend_check=True)
+
+    builders = (
+        ("i_trend_metaphor", REE.corrupt_i_trend_metaphor),
+        ("ii_wrong_sensor_family", REE.corrupt_ii_wrong_sensor_family),
+        ("iii_cross_sentence_node_number", REE.corrupt_iii_cross_sentence_node_number),
+        ("iv_hedge_removed_certainty", REE.corrupt_iv_hedge_removed_certainty),
+        ("v_invented_number_as_words", REE.corrupt_v_invented_number_as_words),
+        ("vi_contradictory_suggested_check", REE.corrupt_vi_contradictory_suggested_check),
+    )
+    for tag, fn in builders:
+        found = False
+        for pkt in sample_pkts:
+            cfile = cache_dir / f"muse-spark-1.3_{pkt.packet_hash()}.json"
+            cached_data = json.loads(cfile.read_text(encoding="utf-8"))
+            faithful = {"summary": cached_data["summary"], "suggested_check": cached_data["suggested_check"]}
+            cand, _ = fn(faithful, pkt, 0) if tag == "i_trend_metaphor" else fn(faithful, pkt)
+            if cand is not None:
+                assert guard_v2.check(cand, pkt).passed, f"Expected held-out type {tag} to slip past frozen Guard v2"
+                found = True
+                break
+        assert found, f"Builder {tag} returned None on all sample packets"
+
 

@@ -353,3 +353,107 @@ test("Scenario 7: SimulationStudy Replay view contains conditional note when tru
   );
 });
 
+// -----------------------------------------------------------------------------
+// SCENARIO 8: One-screen Summary renders values dynamically from summary.json,
+// every tab has a "Start here" line, and no <details> block hides the banner.
+// -----------------------------------------------------------------------------
+test("Scenario 8: Overview Summary renders values from summary.json and no details block hides the banner", () => {
+  const simStudyPath = path.resolve(__dirname, "..", "..", "src", "pages", "SimulationStudy.tsx");
+  const src = fs.readFileSync(simStudyPath, "utf-8");
+  const summary = readSimJson("summary.json");
+  const claims = summary.headline_claims as Array<{
+    id: string;
+    number: Record<string, unknown>;
+  }>;
+
+  const byId = new Map(claims.map((c) => [c.id, c.number]));
+  const det = byId.get("detection_limit_5x_noise")!;
+  const rf = byId.get("v3_vs_threshold_rule")!;
+  const fa = byId.get("false_alarms_both_time_definitions")!;
+  const grad = byId.get("gradual_window_recall_low")!;
+  const run = byId.get("run_level_detection_counts_any_alarm")!;
+  const yaw = byId.get("yaw_tolerance_10_deg")!;
+
+  assert.equal(det.snr_threshold_multiple, 5);
+  assert.equal(det.approx_min_peak_tilt_deg, 0.95);
+  assert.equal(rf.test_alarm_macro_f1_rf_v3, 0.6215);
+  assert.equal(rf.test_alarm_macro_f1_threshold_v3, 0.6298);
+  assert.equal(fa.rf_B_sensor_fa_per_hour, 9.75);
+  assert.equal(grad.test_episode_gradual_window_recall_rf, 0.15829);
+  assert.equal(run.test_episode_gradual_run_detect_rf, 0.4);
+  assert.equal(yaw.recommended_yaw_sd_tolerance_deg, 10);
+
+  // 1. Verify OverviewSection looks up every headline number dynamically from summary.json claims
+  for (const requiredLookup of [
+    'findClaim("detection_limit_5x_noise")',
+    'findClaim("v3_vs_threshold_rule")',
+    'findClaim("false_alarms_both_time_definitions")',
+    'findClaim("gradual_window_recall_low")',
+    'findClaim("run_level_detection_counts_any_alarm")',
+    'findClaim("yaw_tolerance_10_deg")',
+    "claimDet?.number.snr_threshold_multiple",
+    "claimDet?.number.approx_min_peak_tilt_deg",
+    "claimRf?.number.test_alarm_macro_f1_rf_v3",
+    "claimRf?.number.test_alarm_macro_f1_threshold_v3",
+    "claimFa?.number.rf_B_sensor_fa_per_hour",
+    "claimGrad?.number.test_episode_gradual_window_recall_rf",
+    "claimRun?.number.test_episode_gradual_run_detect_rf",
+    "claimYaw?.number.recommended_yaw_sd_tolerance_deg",
+  ]) {
+    assert.ok(
+      src.includes(requiredLookup),
+      `Expected OverviewSection to read "${requiredLookup}" from summary.json`
+    );
+  }
+
+  // 2. Verify all 5 tabs render a "Start here" line
+  for (const testId of [
+    'data-testid="start-here-overview"',
+    'data-testid="start-here-results"',
+    'data-testid="start-here-robustness"',
+    'data-testid="start-here-replay"',
+    'data-testid="start-here-parameters"',
+  ]) {
+    assert.ok(src.includes(testId), `Missing Start here line: ${testId}`);
+  }
+
+  // 3. Verify <SyntheticBanner is rendered at the top of <main> outside every <details> block
+  const bannerUsageIdx = src.indexOf("<SyntheticBanner");
+  assert.ok(bannerUsageIdx > 0, "Expected <SyntheticBanner to be rendered in SimulationStudy");
+
+  const detailsRegex = /<details\b[\s\S]*?<\/details>/g;
+  let match: RegExpExecArray | null;
+  let detailsCount = 0;
+  while ((match = detailsRegex.exec(src)) !== null) {
+    detailsCount += 1;
+    const block = match[0];
+    assert.ok(
+      !block.includes("<SyntheticBanner") &&
+        !block.includes("Synthetic simulation disclaimer banner"),
+      "No <details> block may wrap or hide the SyntheticBanner"
+    );
+    assert.ok(
+      !block.includes('aria-label="Simulation study views"'),
+      "No <details> block may wrap or hide the tab bar"
+    );
+    assert.ok(
+      !block.includes('id="replay-scrubber"'),
+      "No <details> block may wrap or hide Replay playback controls"
+    );
+    assert.ok(
+      !block.includes("summary.headline_claims.map"),
+      "No <details> block may wrap or hide the 7 headline claim cards"
+    );
+    // Every <details> block must remain collapsed by default (no `open` attribute on <details>)
+    const openingTag = block.slice(0, block.indexOf(">") + 1);
+    assert.ok(
+      !/\bopen\b/.test(openingTag),
+      `Expected <details> block to be collapsed by default, found: ${openingTag}`
+    );
+  }
+  assert.ok(
+    detailsCount >= 10,
+    `Expected at least 10 collapsed <details> blocks for large tables and secondary charts, found ${detailsCount}`
+  );
+});
+

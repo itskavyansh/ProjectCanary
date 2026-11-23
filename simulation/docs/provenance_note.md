@@ -53,7 +53,7 @@ $$\tilde{\theta}_i(t) = \theta_i(t) + b_{\text{fixed}, i} + b_{\text{drift}, i}(
   $$\sigma_{\text{white}} = \frac{\sigma_{\text{step}}}{\sqrt{2(1 - \rho_1)}}$$
   If $\rho_1$ is absent, falls back to $\sigma_{\text{step}} / \sqrt{2}$.
 - **Noise Multiplier:** Sampled uniformly in $[0.5, 2.0]\times$ nominal per run.
-- **NODE_04 Handling:** The empirical recording in `noise_profile.json` contained bench recordings for three physical units (`NODE_01`..`NODE_03`). `NODE_04` noise parameters are proxied using `NODE_02` parameters, as documented in `docs/report_sensors_faults.md`.
+- **NODE_04 Handling:** `NODE_04` has no bench recording in `configs/noise_profile.json` (which contains bench recordings for three physical units, `NODE_01`..`NODE_03`). As implemented in `sensors.py` (`load_noise_profile`), IMU white-noise standard deviation for all four corner nodes (including `NODE_04`) is the pooled mean over `NODE_01` to `NODE_03` of `continuous_step_noise` divided by $\sqrt{2(1 - \rho_1)}$, and piezo baseline parameters use the pooled `overall` statistics.
 
 ### 2.2 Piezoelectric Vibration Sensor (ADS1115 ADC)
 Mounted at each corner node to measure high-frequency ground vibrations. Outputs three aggregate metrics per telemetry window:
